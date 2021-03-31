@@ -157,6 +157,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.Application", "UserAuthorize\UserAuthorize.Application\UserAuthorize.Application.csproj", "{B441611B-6E39-459A-856A-3799F5E15314}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{3968B0C9-D65B-4365-A7F6-AFEFBC1E7BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.API", "UserAuthorize\UserAuthorize.API\UserAuthorize.API.csproj", "{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -299,6 +303,10 @@ Global
 		{B441611B-6E39-459A-856A-3799F5E15314}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B441611B-6E39-459A-856A-3799F5E15314}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B441611B-6E39-459A-856A-3799F5E15314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -380,6 +388,8 @@ Global
 		{EB754A59-213D-465F-960A-CA414F1AE20C} = {D15287BF-48BF-4707-AD79-8EEC7AD17795}
 		{F8B371B2-C253-4B57-960C-8DC63B10098C} = {42DFFD0E-5675-4141-A9C6-DF46DBAE1D47}
 		{B441611B-6E39-459A-856A-3799F5E15314} = {F8B371B2-C253-4B57-960C-8DC63B10098C}
+		{3968B0C9-D65B-4365-A7F6-AFEFBC1E7BB2} = {42DFFD0E-5675-4141-A9C6-DF46DBAE1D47}
+		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E} = {3968B0C9-D65B-4365-A7F6-AFEFBC1E7BB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCC8689D-A361-4643-AACA-B00A7F70292E}
