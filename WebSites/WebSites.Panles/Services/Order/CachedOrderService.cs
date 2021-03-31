@@ -144,6 +144,13 @@ namespace WebSites.Panles.Services.Order
                 Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
                 TokenCachClass.CachedOrderToken);
 
+            request.AddressID = addressId;
+            request.StoreID = storeId;
+            request.StartTime = startTime;
+            request.EndTime = endTime;
+            request.OrderDate = dt;
+            request.OrderTime = dt.TimeOfDay;
+
             return request;
         }
         public Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId)

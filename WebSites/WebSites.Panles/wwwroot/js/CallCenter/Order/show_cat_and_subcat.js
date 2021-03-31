@@ -203,14 +203,16 @@ function addCart(pid, count, uPrice, name) {
 }
 
 function addCartUpdateDetails(pid,count) {
-    $('#productImg-'+pid).removeClass('text-light');
-    $('#productImg-' + pid).removeClass('text-success');
-
-    $('#productImg-' + pid).addClass('text-success');
+    
     //var i = $('#headerShowCart').text();
     //i += count;
 
     $('#headerShowCart').text(count);
+
+    $('#productImg-' + pid).removeClass('text-light');
+    $('#productImg-' + pid).removeClass('text-success');
+
+    $('#productImg-' + pid).addClass('text-success');
 }
 
 function delCart(storeId, customerId, pid, count) {
@@ -232,8 +234,9 @@ function delCart(storeId, customerId, pid, count) {
             success: function (result, status, err) {
                 
                 if (result.isSuccess) {
-                    delCartUpdateDetails(pid, count);
                     toastr.success(result.message);
+                    delCartUpdateDetails(pid, count);
+                    
                 }
                 else {
                     toastr.error(result.message);
@@ -250,10 +253,7 @@ function delCart(storeId, customerId, pid, count) {
 }
 
 function delCartUpdateDetails(pid, count) {
-    $('#productImg-' + pid).removeClass('text-light');
-    $('#productImg-' + pid).removeClass('text-success');
-
-    $('#productImg-' + pid).addClass('text-light');
+    
     var i = $('#headerShowCart').text();
     i -= count;
 
@@ -262,6 +262,11 @@ function delCartUpdateDetails(pid, count) {
     }
 
     $('#headerShowCart').text(i);
+
+    $('#productImg-' + pid).removeClass('text-light');
+    $('#productImg-' + pid).removeClass('text-success');
+
+    $('#productImg-' + pid).addClass('text-light');
 }
 
 function ShowInvoice() {

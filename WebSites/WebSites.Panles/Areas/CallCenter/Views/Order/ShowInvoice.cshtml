@@ -1,18 +1,19 @@
 ﻿@{
-    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
+
 @model Models.Order.CachedOrderInfo
-@using BehsamFramework.Util; 
+@using BehsamFramework.Util;
 
 <input type="hidden" value="@ViewBag.CustomerId" id="CustomerId" />
 <input type="hidden" value="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)" id="txtStoreId" />
 
-<div class="container" id="divShowInvoice">
-    @if (Model != null)
+<div class="container cart-xs cart-sm cart-md cart-lg cart-xl" id="divShowInvoice">
+    @if (Model != null && Model.Items != null && Model.Items.Count > 0)
     {
 
         <div class="row">
-            <div class="col-xl-12 col-md-12">
+            <div class="col-xl-12 col-md-12 cart-xs cart-sm cart-md cart-lg cart-xl">
                 <div class="card" id="invoiceDetails">
                     <div class="float-left m-2 ">
                         <br />
@@ -63,7 +64,7 @@
                                                 <td class="text-center text-lg text-medium">@sum.ToString("#,#")</td>
                                                 <td class="text-center">
                                                     <a class="remove-from-cart" href="#" onclick="delProduct('@item.ProductId','@item.Quantity')" data-toggle="tooltip" title="" data-original-title="حذف محصول">
-                                                    <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -100,53 +101,63 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-12 col-md-12">
+                <a class="btn btn-info m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
+                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
+
+                <a class="btn btn-success m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
+                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">تایید و ثبت سفارش</a>
+            </div>
         </div>
     }
     else
     {
-        <div>
-            <h6>اطلاعات فاکتور در دسترس نمی باشد</h6>
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <h6>اطلاعات فاکتور در دسترس نمی باشد</h6>
+                </div>
+                <a class="btn btn-info m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
+                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
+            </div>
         </div>
     }
 </div>
 
-@section Scripts
-{
-    <script>
+<script src="~/js/CallCenter/Order/show_cat_and_subcat.js"></script>
+<script>
+    function delProduct(pid, count) {
 
-        function delProduct(pid, count) {
+        let storeId = $('#txtStoreId').val();
+        let cid = $('#CustomerId').val();
 
-            let storeId = $('#txtStoreId').val();
-            let cid = $('#CustomerId').val();
+        delCart(storeId, cid, pid, count);
 
-            delCart(storeId, cid, pid, count);
+        $('#divShowInvoice').html('');
 
-            $('#divShowInvoice').html('');
+        var postData = {
+            'storeId': storeId,
+            'customerId': cid
+        };
 
-            var postData = {
-                'storeId': storeId,
-                'customerId': cid
-            };
-
-            $.ajax(
-                {
-                    url: '/CallCenter/Order/ShowInvoice',
-                    type: 'post',
-                    data: postData,
-                    beforeSend: function () {
-                        showBehsamLoading();
-                    },
-                    success: function (result, status, err) {
-                        $('#divShowInvoice').html(result);
-                    },
-                    error: function (request, status, error) {
-                        console.log(request);
-                    },
-                    complete: function () {
-                        hideBehsamLoading();
-                    }
-                });
-        }
-    </script>
-}
+        $.ajax(
+            {
+                url: '/CallCenter/Order/ShowInvoice',
+                type: 'post',
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                success: function (result, status, err) {
+                    $('#divShowInvoice').html(result);
+                },
+                error: function (request, status, error) {
+                    console.log(request);
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                }
+            });
+    }
+</script>
 

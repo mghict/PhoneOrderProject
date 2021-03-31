@@ -1,14 +1,12 @@
 ﻿@model Models.Order.CachedOrderInfo;
 @{
-    Layout = null;
+    Layout = "_Layout";
 }
 <input type="hidden" value="@ViewBag.CustomerId" id="txtCustomerId" />
 <input type="hidden" value="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)" id="txtStoreId" />
-<div class="row">
-    <div class="col-xl-12 col-md-12">
-        <div class="card" id="invoiceDetails">
+<div class="row w-100">
+    <div class="col-xl-12 col-md-12 col-sm-12"  id="showInvoiceDetails">
 
-        </div>
     </div>
 </div>
 
@@ -17,42 +15,50 @@
 {
     <script>
 
-        function showInvoiceReady() {
-            let storeId = $('#txtStoreId').val();
-            let customerId = $('#txtCustomerId').val();
-
-            var postData = {
-                'storeId': storeId,
-                'customerId': customerId
-            };
-
-            $('#invoiceDetails').Html('');
-
-            $.ajax(
-                {
-                    url: '/CallCenter/Order/ShowInvoice',
-                    type: 'Post',
-                    data: postData,
-                    beforeSend: function () {
-                        showBehsamLoading();
-                    },
-                    success: function (result, status, err) {
-                        $('#invoiceDetails').Html(result);
-                    },
-                    error: function (request, status, error) {
-                        console.log(request);
-                    },
-                    complete: function () {
-                        hideBehsamLoading();
-                    }
-                });
-        }
-
         $(document).ready(function () {
-            showCartDetails();
-            showInvoiceReady();
-        });
+            console.log('ready');
 
-        
+            function showInvoiceReady() {
+
+                let storeId = $('#txtStoreId').val();
+                let customerId = $('#txtCustomerId').val();
+
+                var postData = {
+                    'storeId': storeId,
+                    'customerId': customerId
+                };
+
+                $('#invoiceDetails').html('');
+
+                $.ajax(
+                    {
+                        url: '/CallCenter/Order/ShowInvoice',
+                        type: 'Post',
+                        data: postData,
+                        beforeSend: function () {
+                            console.log('before');
+                            showBehsamLoading();
+                        },
+                        success: function (result, status, err) {
+                            console.log('success');
+                            $('#showInvoiceDetails').html(result);
+                        },
+                        error: function (request, status, error) {
+                            console.log('error');
+                            console.log(request);
+                        },
+                        complete: function () {
+                            console.log('complete');
+                            hideBehsamLoading();
+                        }
+                    });
+            }
+
+            showInvoiceReady();
+
+            showCartDetails();
+
+            
+        });
     </script>
 }

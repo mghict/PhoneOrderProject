@@ -276,6 +276,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpGet]
         public IActionResult Invoice(string storeId, long customerId)
         {
+            ViewBag.StoreId = storeId;
+            ViewBag.CustomerId = customerId;
+
             return View();
         }
 
