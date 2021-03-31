@@ -259,7 +259,10 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 model = OrderFacad.CachedOrderService.GetRequest(sid, customerId);
 
-                int c = model.Items.Select(p => p.Quantity).Sum();
+                int c = 0;
+
+                if (model!=null && model.Items!=null && model.Items.Count>0)
+                    c = model.Items.Select(p => p.Quantity).Sum();
 
                return Json(new { Count = c });
             }

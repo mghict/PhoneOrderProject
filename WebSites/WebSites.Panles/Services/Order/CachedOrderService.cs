@@ -136,7 +136,7 @@ namespace WebSites.Panles.Services.Order
             
             string key ="R->"+customerId.ToString()+"->" + storeId.ToString();
 
-            request = CacheService.RemoveAndSet(
+            request = CacheService.GetOrSet(
                 request,
                 key,
                 TimeSpan.FromMinutes(20),
