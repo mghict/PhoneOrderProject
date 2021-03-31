@@ -1,0 +1,56 @@
+﻿@model List<BehsamFramework.Models.StoreOrderModel>
+@{
+    ViewData["Title"] = "GetStoreOrder";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" value="@ViewBag.AddressId " />
+<div class="card ">
+    <div class="card-body">
+        <h5 class="card-title ">
+            <span class="fa fa-university" aria-hidden="true"></span>
+            لیست شعب فعال
+        </h5>
+        <hr />
+        <div class="row">
+
+            @if (Model != null || Model.Count > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col col-sm-12 col-md-6 col-xl-4 col-lg-4" tabindex="1">
+                        <div class="card">
+                            <div class="card-header " style="background-color:#dbdbd9;">
+                                <h6 class="tx-18 mg-t-2 mg-b-2 mg-l-auto">@item.StoreName</h6>
+                            </div>
+                            <hr />
+                            <div class="card-body">
+                                <div class="w-100" >
+                                    <p style="height:100px;">@item.StoreAddress</p>
+                                    <p class="text-info float-left">@item.Distance km</p>
+                                    <p><small class="text-muted text-danger">@item.Region --> @item.City --> @item.AreaName</small></p>
+                                </div>
+                                
+                            </div>
+                            <div class="card-footer w-100">
+                                <a class="btn btn-danger btn-block " data-toggle="tooltip"
+                                   asp-area="CallCenter"
+                                   asp-controller="Order"
+                                   asp-action="ShowProductList"
+                                   asp-route-startTime="@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)"
+                                   asp-route-endTime="@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)"
+                                   asp-route-customerId="@ViewBag.CustomerId"
+                                   asp-route-address="@ViewBag.AddressId"
+                                   asp-route-storeId="@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                    @*<i class="fa fa-check text-success" aria-hidden="true"></i>*@
+                                    انتخاب
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+@model List<BehsamFramework.Models.CategoryShowModel>
+
+<div class="container mb-2 mt-2">
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            string subcatId = "lst" + item.Id;
+
+            <li class="slide border-top">
+                <div class="row">
+                    <div class="col col-md-9 col-sm-9">
+                        <a class="text-dark" data-toggle="slide" href="#" onclick="ShowProduct('@item.Id')">
+                            <i class="fa fa-chevron-left text-danger ml-2" aria-hidden="true"></i>@item.CategoryName
+                        </a>
+                    </div>
+                    <div class="col col-md-3 col-sm-3">
+                        <a class="" href="#" onclick="ShowSubCat('@item.Id')">
+                            <i class="angle fe fe-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <ul class="side-menu" id="@subcatId">
+                </ul>
+
+            </li>
+        }
+    }
+</div>
+
+

@@ -1,0 +1,67 @@
+﻿@model List<BehsamFramework.Models.ProductShowModel>
+@using System.Globalization;
+@{
+    Layout = null;
+}
+
+
+
+@if (Model != null && Model.Count > 0)
+{
+    @foreach (var item in Model)
+    {
+        string subcatId = "product" + item.Id;
+        string txtCountP = "txtCount" + item.Id;
+
+        <div class="col-md-6 col-lg-6 col-xl-4  col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="pro-img-box">
+                        @*<div class="d-flex product-sale">
+                                <div class="badge bg-pink">جدید</div>
+                                <i class="mdi mdi-heart-outline ml-auto wishlist"></i>
+                            </div>*@
+                        @*<img class="w-auto h-auto" src="/admin/Content/assets/img/ecommerce/product.jpg" alt="تصویر محصول">*@
+                        <a href="#" class="adtocart ">
+                            <i class="las la-shopping-cart text-light" id="productImg-@item.Id"></i>
+                        </a>
+                    </div>
+                    <div class="text-center pt-3">
+                        <h3 class="h6 mb-2 mt-4 font-weight-bold text-uppercase">@item.DisplayName</h3>
+                        <span class="tx-15 ml-auto">
+                            <i class="ion ion-md-star text-warning font-weight-normal ml-1"></i>
+                            <span class="text-warning font-weight-normal tx-14 ml-1">@item.BrandName</span>
+                        </span>
+                        <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
+                            @item.UnitPrice.ToString("#,#")
+
+                        </h4>
+                    </div>
+                    <hr />
+                    <div class="form-group tx-12">
+                        <div class="row" style="justify-content:center;">
+                            <a class="btn btn-light btn-sm  ml-1" href="#" onclick="addProductCount('@txtCountP')"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+                            <input type="text" value="1" class="text-center" style="width:35px;" id="@txtCountP" />
+                            <a class="btn btn-light btn-sm  mr-1" href="#" onclick="delProductCount('@txtCountP')"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                            <a href="#" class="btn btn-danger mr-4"
+                               onclick="addCart('@item.Id',
+                                            $('#@txtCountP').val(),
+                                            '@item.UnitPrice',
+                                            '@item.ProductName.ToString(CultureInfo.InvariantCulture)');">
+                                <i class="fa fa-shopping-cart "></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="card-footer">
+
+
+                    </div>*@
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h6 class="text-danger">محصول برای نمایش وجود ندارد</h6>
+}

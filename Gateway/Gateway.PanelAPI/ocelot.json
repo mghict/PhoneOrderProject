@@ -1,0 +1,512 @@
+{
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "CustomerGroup",
+        "CustomerType",
+        "CustomerRegisterType",
+        "CustomerSex",
+        "CustomerJob",
+        "CustomerEducation"
+      ],
+      "UpstreamPathTemplate": "/Customer/List",
+      "RouteIsCaseSensitive": false
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:10000"
+  },
+  "Routes": [
+    //login-> Post -> /login/login-async
+    {
+      "DownstreamPathTemplate": "/login/login-async",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10001
+        }
+      ],
+      "UpstreamPathTemplate": "/login",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      } //,
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Authorization",
+      //  "AllowedScopes": []
+      //}
+    },
+    //Customer/Group -> Get -> /CustomerValues/GetCustomerGroup
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerGroup",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/Group",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerGroup"
+    },
+    ///Customer/Type -> Get -> /CustomerValues/GetCustomerType
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerType",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/Type",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerType"
+    },
+    //Customer/RegisterType -> Get -> /CustomerValues/GetCustomerRegisterType
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerRegisterType",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/RegisterType",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerRegisterType"
+    },
+    //Customer/Sex -> Get -> /CustomerValues/GetCustomerSex
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerSex",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/Sex",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerSex"
+    },
+    //Customer/Job -> Get -> /CustomerValues/GetCustomerJob
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerJob",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/Job",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerJob"
+    },
+    //Customer/Education -> Get -> /CustomerValues/GetCustomerEducation
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetCustomerEducation",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/Education",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "Key": "CustomerEducation"
+    },
+    ///Status -> Get -> /CustomerValues/GetAttributeStatus
+    {
+      "DownstreamPathTemplate": "/CustomerValues/GetAttributeStatus",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Status/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      }
+    },
+    //Phone/{everything} -> Post -> /CustomerPhone/{everything}
+    {
+      "DownstreamPathTemplate": "/CustomerPhone/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/Phone/{everything}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      }
+
+    },
+    //Address/{everything} -> Post -> /CustomerAddress/{everything}
+    {
+      "DownstreamPathTemplate": "/CustomerAddress/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/Address/{everything}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      }
+
+    },
+    //Customer/{everything} -> Post -> /Customer/{everything}
+    {
+      "DownstreamPathTemplate": "/Customer/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/Customer/{everything}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      }
+
+    },
+    //Address/GetCustomerAddresses -> Get -> /CustomerAddress/{GetCustomerAddresses}
+    {
+      "DownstreamPathTemplate": "/CustomerAddress/GetCustomerAddresses",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/Address/GetCustomerAddresses",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 30000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "key": "CustomerAddress"
+
+    },
+    //Phone/GetCustomerPhones -> Get -> /CustomerAddress/{GetCustomerAddresses}
+    {
+      "DownstreamPathTemplate": "/CustomerPhone/GetCustomerPhones",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/Phone/GetCustomerPhones",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 50
+      },
+      "key": "CustomerPhones"
+
+    },
+    //Setting/TimeSheetGeneral -> Post -> /TimeSheet/GetTimeSheet
+    {
+      "DownstreamPathTemplate": "/TimeSheet/GetTimeSheet",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Setting/TimeSheetGeneral",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 600
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 60000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 200
+      }
+    },
+    //Setting/StoreOrder -> Post -> /Store/GetStore
+    {
+      "DownstreamPathTemplate": "/Store/GetStore",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Setting/StoreOrder",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 600
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 60000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 200
+      }
+    },
+    //Setting/{everythings} -> Post -> /Store/{everythings}
+    {
+      "DownstreamPathTemplate": "/Store/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Setting/Store/{everythings}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 600
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 200
+      }
+    }
+  ]
+}

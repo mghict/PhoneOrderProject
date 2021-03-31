@@ -1,0 +1,31 @@
+﻿@{
+
+    Layout = null;
+}
+
+@model List<BehsamFramework.Models.CustomerAddressModel>
+
+    <div class="container" style="direction:rtl">
+        <div class="col col-md-8 mr-3 mb-3 mt-3">
+            <input type="button" class="btn btn-success btn-rounded" value="اضافه نمودن آدرس" />
+        </div>
+
+        @if (Model != null && Model.Count > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col col-md-8 card " style="height:auto;">
+                    <div class="card-body">
+                        <input type="radio" checked="false" name="Address" value="@item.Id" id="@item.Id" />
+                        <label for="@item.Id">@item.AddressValue</label>
+                        <br />
+                        <div class="col col-md-4 text-Left float-left">
+                            <input type="button" class="btn btn-outline-danger btn-rounded" value="مشاهده جزئیات" />
+                        </div>
+
+                    </div>
+                </div>
+            }
+        }
+
+    </div>

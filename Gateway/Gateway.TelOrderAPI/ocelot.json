@@ -1,0 +1,76 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/customer/{id}",
+      "DoenstreamSchema": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10001
+        },
+        {
+          "Host": "localhost",
+          "Port": 10003
+        }
+      ],
+      "UpstreamPathTemplate": "/c/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"UpstreamHost": "somedomain.com",
+      //"Priority": 0,
+      //"FileCacheOptions": {
+      //    "TtlSeconds": 15,
+      //    "Region": "somename"
+      //},
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 5
+      },
+
+      "Key": "Customer-id"
+    },
+    {
+      "DownstreamPathTemplate": "/weatherForecast",
+      "DoenstreamSchema": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10002
+        }
+      ],
+      "UpstreamPathTemplate": "/w",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "Order-id"
+    }
+
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Customer-id",
+        "Order-id"
+      ],
+      "UpstreamPathTemplate": "/op/{id}",
+      "Aggregator": "FakeDefinedAggregator"
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:10000"
+    //"ServiceDiscoveryProvider": {
+    //    "Host": "localhost",
+    //    "Port": 9500,
+    //    "ConfigurationKey": "Oceolot_A"
+    //}
+  }
+}

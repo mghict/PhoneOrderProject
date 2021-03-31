@@ -1,0 +1,42 @@
+﻿@model List<BehsamFramework.Models.CategoryShowModel>
+@{
+    Layout = null;
+}
+
+<div class="card">
+    <div class="card-header border-bottom pt-3 pb-3 mb-0 font-weight-bold text-uppercase">دسته بندی</div>
+    <div class="card-body pb-0 ">
+        <div class="col col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <ul class="side-menu">
+                @if (Model != null && Model.Count > 0)
+                {
+                    @foreach (var item in Model)
+                    {
+                        string subcatId = "lst" + item.Id;
+
+                        <li class="slide border-bottom mb-2 mt-2">
+                            <div class="row">
+                                <div class="col col-md-9 col-sm-9">
+                                    <a class="text-dark" href="#" onclick="ShowProduct('@string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}",@item.Id)');">
+                                        <i class="fa fa-outdent text-danger ml-2" aria-hidden="true"></i>@item.CategoryName
+                                    </a>
+                                </div>
+                                <div class="col col-md-3 col-sm-3">
+                                    <a class="" href="#" onclick="ShowSubCat('@item.Id')">
+                                        <i class="angle fe fe-chevron-down"></i>
+                                    </a>
+                                </div>
+                                <br />
+                            </div>
+                            <ul class="side-menu" id="@subcatId">
+                            </ul>
+
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+

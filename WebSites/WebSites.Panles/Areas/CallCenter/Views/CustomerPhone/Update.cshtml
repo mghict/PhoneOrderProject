@@ -1,0 +1,77 @@
+﻿@model WebSites.Panles.Models.CustomerPhone.CustomerPhoneUpdateModel
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.IsPartial != null && ViewBag.IsPartial == true)
+    {
+        Layout = null;
+    }
+
+}
+
+
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="main-content-label mg-b-5">
+
+            </div>
+            <form data-parsley-validate="" action="/CallCenter/CustomerPhone/Update" method="post">
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                        <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                            <h5 class="card-title mg-b-20">ویرایش تلفن</h5>
+                            <hr class="bg-danger border-danger" />
+                            <div class="form-group">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="Id" name="Id" type="hidden">
+                                <input asp-for="CustomerId" name="CustomerId" type="hidden">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneValue" class="control-label"></label>
+                                <input asp-for="PhoneValue" name="PhoneValue" class="form-control"  placeholder="تلفن مشتری" required="" type="text">
+                                <span asp-validation-for="PhoneValue" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="row row-sm">
+
+                                    <div class="col-sm-6">
+                                        <label asp-for="PhoneType" class="control-label"></label>
+                                        <select asp-for="PhoneType" name="PhoneType" id="cmbPhoneType" class="form-control select2" required asp-items="ViewBag.PhoneType">
+                                            <option selected value="" data-select2-id="0">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="PhoneType" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label asp-for="Status" class="control-label"></label>
+                                        <select asp-for="Status" name="Status" id="cmbStatus" class="form-control select2" asp-items="ViewBag.PhoneStatus" >
+                                            <option value="">انتخاب کنید</option>
+
+                                        </select>
+                                        <span asp-validation-for="Status" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <input type="submit" class="btn btn-outline-danger btn-rounded  btn-block" value="ثبت اطلاعات" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer">
+            <a href="@ViewBag.ReturnUrl"> برگشت </a>
+        </div>
+    </div>
+
+</div>
+

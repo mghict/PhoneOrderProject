@@ -1,0 +1,139 @@
+﻿.custab {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+}
+
+    .custab:hover {
+        box-shadow: 3px 3px 0px transparent;
+        transition: 0.5s;
+    }
+.imggrid
+{
+    width:30px;
+    object-fit:contain;
+}
+.desktop-logo {
+    height: 3rem;
+    text-align: center;
+    margin: 0 auto;
+    justify-content: center;
+}
+.main-logo {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 3rem;
+    margin: 0 auto;
+    justify-content: center;
+    text-align: center;
+}
+.Pager {
+    text-align: center;
+    padding: 10px;
+}
+
+    .Pager span {
+        text-align: center;
+        color: #999;
+        display: inline-block;
+        width: 50px;
+        height: 35px;
+        background-color: #eee;
+        margin-right: 3px;
+        line-height: 2;
+        border-radius: 5px;
+        border: 1px solid #3AC0F2;
+        font-size: 16px;
+    }
+
+    .Pager a {
+        text-align: center;
+        display: inline-block;
+        width: 50px;
+        height: 35px;
+        color: #222222;
+        border: 1px solid #3AC0F2;
+        margin-right: 3px;
+        line-height: 2;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #ecf0fa;
+        border: 1px solid #cdd7ef;
+    }
+
+    .Pager b {
+        font-family: Wyekan;
+        font-size: 14px;
+    }
+
+
+#register__map {
+    height: 450px;
+    z-index: 3;
+}
+#my_test_wrapper {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 192px;
+    width: 230px;
+}
+
+#my_test_mapBox {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #e5e3df;
+}
+#my_test_marker {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: calc(50% - 15px);
+    width: 30px;
+    height: 40px;
+    pointer-events: none;
+    background: url(../images/ofogh-marker.png);
+    z-index: 333;
+}
+
+@media (min-width: 1200px)
+{
+    .container
+    {
+        max-width:80%;
+        margin:auto;
+    }
+}
+
+.itemcnt
+{
+    line-height:2;
+    font-size:15px;
+
+}
+
+.badge {
+    font-size: 18px !important;
+    padding: 6px 13px 5px !important;
+}
+
+.faktoritem {
+    line-height: 4;
+    font-size: 16px;
+}
+
+.description-block > .description-header
+{
+    margin-bottom:10px;
+}
+.description-block > .description-text {
+    text-transform: uppercase;
+    color: #e83e0b;
+    font-size: 16px;
+}

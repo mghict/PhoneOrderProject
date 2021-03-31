@@ -1,0 +1,13 @@
+﻿@model List<Models.CustomerPhone.CustomerPhoneModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" value="@ViewBag.CustomerId" />
+<div>
+    @{
+        Html.RenderPartialAsync("CustomerPhonePartialView", Model);
+    }
+</div>
+

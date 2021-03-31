@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="FluentResults" Version="2.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.1" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.1.6" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="7.1.6" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
+    <ProjectReference Include="..\AuthoManagment.Domain\AuthoManagment.Domain.csproj" />
+    <ProjectReference Include="..\AuthoManagment.Persistence\AuthoManagment.Persistence.csproj" />
+    <ProjectReference Include="..\AuthoManagment.Resources\AuthoManagment.Resources.csproj" />
+  </ItemGroup>
+
+</Project>

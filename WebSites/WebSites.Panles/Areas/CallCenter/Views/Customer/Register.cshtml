@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "_Layout";
+
+    if (ViewBag.IsPartial != null && ViewBag.IsPartial == true)
+    {
+        Layout = null;
+    }
+
+
+
+}
+@model WebSites.Panles.Models.CustomerRegisterModel
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="main-content-label mg-b-5">
+
+            </div>
+            <form data-parsley-validate="" action="/CallCenter/Customer/Register" method="post">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                        <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                            <h5 class="card-title mg-b-20">ثبت نام مشتری</h5>
+                            <hr class="bg-danger border-danger" />
+                            <div class="form-group">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CustomerName" class="control-label"></label>
+                                <input asp-for="CustomerName" name="CustomerName" class="form-control" placeholder="نام و نام خانوادگی مشتری" required="" type="text">
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DefaultMobile" class="control-label">موبایل پیش فرض</label>
+                                <input asp-for="DefaultMobile" name="DefaultMobile" class="form-control" placeholder="موبایل مشتری جهت تماس ضروری" required="" type="text">
+                                <span asp-validation-for="DefaultMobile" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="row row-sm">
+                                    <div class="col-sm-6">
+                                        <label asp-for="Sex" class="control-label"></label>
+                                        <select asp-for="Sex" name="Sex" id="cmbSex" class="form-control select2" required asp-items="ViewBag.customerSex">
+                                            <option selected value="" data-select2-id="0">انتخاب کنید</option>
+
+                                        </select>
+                                        <span asp-validation-for="Sex" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label asp-for="Education" class="control-label"></label>
+                                        <select asp-for="Education" name="Education" id="cmbEducation" class="form-control select2" required asp-items="ViewBag.customerEducation">
+                                            <option selected value="" data-select2-id="0">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="Education" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row row-sm">
+                                    <div class="col-sm-6">
+                                        <label asp-for="CustomerTypeId" class="control-label"></label>
+                                        <select asp-for="CustomerTypeId" name="CustomerTypeId" id="cmbType" class="form-control select2" required asp-items="ViewBag.customerType">
+                                            <option value="" data-select2-id="0">انتخاب کنید</option>
+
+                                        </select>
+
+                                        <span asp-validation-for="CustomerTypeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @*<p class="mg-b-10">شغل</p>*@
+                                        <label asp-for="Job" class="control-label"></label>
+                                        <select asp-for="Job" name="Job" id="cmbJob" class="form-control select2" required asp-items="ViewBag.customerJob">
+                                            <option value="" data-select2-id="0">انتخاب کنید</option>
+                                        </select>
+                                        <span asp-validation-for="Job" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row row-sm">
+                                    <div class="col-sm-6">
+                                        <label asp-for="CustomerGroupId" class="control-label"></label>
+                                        <select asp-for="CustomerGroupId" name="CustomerGroupId" id="cmbGroup" class="form-control select2 required" required asp-items="ViewBag.customerGroup">
+                                            <option selected value="" data-select2-id="0">انتخاب کنید</option>
+                                        </select>
+
+                                        <span asp-validation-for="CustomerGroupId" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label asp-for="RegisterTypeId" class="control-label"></label>
+                                        <select asp-for="RegisterTypeId" name="RegisterTypeId" id="cmbRegisterType" class="form-control select2" required asp-items="ViewBag.customerRegisterType" disabled>
+                                            <option value="6" selected>سامانه فروش تلفنی</option>
+                                            <option value="">انتخاب کنید</option>
+
+                                        </select>
+                                        <span asp-validation-for="RegisterTypeId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-outline-danger btn-rounded  btn-block" value="ثبت نام" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="Index">برگشت به صفحه مشتریان</a>
+        </div>
+    </div>
+
+</div>
+
