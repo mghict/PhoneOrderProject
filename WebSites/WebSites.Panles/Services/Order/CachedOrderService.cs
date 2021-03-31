@@ -139,8 +139,8 @@ namespace WebSites.Panles.Services.Order
             request = CacheService.RemoveAndSet(
                 request,
                 key,
-                TimeSpan.FromMinutes(10),
-                TimeSpan.FromMinutes(5),
+                TimeSpan.FromMinutes(20),
+                TimeSpan.FromMinutes(20),
                 Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
                 TokenCachClass.CachedOrderToken);
 
@@ -179,8 +179,8 @@ namespace WebSites.Panles.Services.Order
             request = CacheService.RemoveAndSet(
                 request,
                 key,
-                TimeSpan.FromMinutes(10),
-                TimeSpan.FromMinutes(5),
+                TimeSpan.FromMinutes(20),
+                TimeSpan.FromMinutes(20),
                 Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
                 TokenCachClass.CachedOrderToken);
 

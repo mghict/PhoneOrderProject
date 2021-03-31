@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+@model List<WebSites.Panles.Models.CustomerAddress.CustomerAddressModel>
+
+<input type="hidden" id="CustomerId" value="@ViewBag.CustomerId" />
+
+<div class="col col-md-12 col-sm-12 col-xl-12 col-lg-12">
+    <p>
+
+        <a class="btn btn-danger btn-rounded" href="/CallCenter/CustomerAddress/Insert?customerId=@ViewBag.CustomerId?">  ایجاد آدرس جدید  </a>
+
+    </p>
+    <hr />
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-primary m-b-5 tx-14">@item.AddressTypeStr  -- @item.AreaIdStr </h5>
+                </div>
+
+                <div class="card-body bg-gray-100">
+                    @item.AddressValue
+                    <div class="float-left">
+                        <a class="btn btn-success-gradient btn-rounded" href="/CallCenter/Order/GetTimeSheet?customerId=@ViewBag.CustomerId&address=@item.Id">انتخاب آدرس و ادامه</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+
+</div>

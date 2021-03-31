@@ -35,6 +35,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
 
         [HttpPost]
+        public async Task<IActionResult> PartialGetAllViewRegister(long customerId)
+        {
+            ViewBag.CustomerId = customerId;
+            var model = await GetCustomerAddressService.ExecuteGetAddresses(customerId);
+            return PartialView("CustomerAddressesforOrderRegisterPartialView", model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete(long addressId)
         {
             try

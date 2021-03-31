@@ -51,14 +51,16 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpPost]
         public async Task<IActionResult> OrderRegister(string searchKey="")
         {
-            var model = new Models.Customer.CustomerProfileModel()
-            {
-                GetCustomerInfo = new Models.Customer.CustomerInfoModel(),
-                GetCustomerAddresses=new List<Models.CustomerAddress.CustomerAddressModel>(),
-                GetCustomerPhones=new List<Models.CustomerPhone.CustomerPhoneModel>()
-            };
+            //var model = new Models.Customer.CustomerProfileModel()
+            //{
+            //    GetCustomerInfo = new Models.Customer.CustomerInfoModel(),
+            //    GetCustomerAddresses=new List<Models.CustomerAddress.CustomerAddressModel>(),
+            //    GetCustomerPhones=new List<Models.CustomerPhone.CustomerPhoneModel>()
+            //};
 
-            if(string.IsNullOrEmpty(searchKey.Trim()))
+            Models.Customer.CustomerInfoModel model = new Models.Customer.CustomerInfoModel();
+
+            if (string.IsNullOrEmpty(searchKey.Trim()))
             {
                 return PartialView("CustomerProfilePartialView", model);
             }
@@ -66,22 +68,24 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
  
             if (!string.IsNullOrEmpty(searchKey.Trim()))
             {
-                var ret = GetCustomerBySearch.GetCustomerInfoAsync(searchKey.Trim());
+                var ret =await GetCustomerBySearch.GetCustomerInfoAsync(searchKey.Trim());
+                model = ret;
                 //var resp = ret.Result;
 
                 //if (resp != null)
                 //{
-                    var customerPhones = GetCustomerPhone.Execute(ret.Result.Id);
-                    var customerAddress = GetCustomerAddressService.ExecuteGetAddresses(ret.Result.Id);
+                //var customerPhones = GetCustomerPhone.Execute(ret.Result.Id);
+                //var customerAddress = GetCustomerAddressService.ExecuteGetAddresses(ret.Result.Id);
 
-                    
-                    //customerPhones.Wait();
-                    //customerAddress.Wait();
 
-                    model.GetCustomerInfo = ret.Result;
-                    model.GetCustomerPhones = customerPhones.Result;
-                    model.GetCustomerAddresses = customerAddress.Result;
-            //    }
+                //customerPhones.Wait();
+                //customerAddress.Wait();
+
+                //model.GetCustomerInfo = ret.Result;
+                //model.GetCustomerPhones = customerPhones.Result;
+                //model.GetCustomerAddresses = customerAddress.Result;
+                //    }
+
             }
             
 

@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
 }
 @model Models.Order.CachedOrderInfo
 @using BehsamFramework.Util; 
@@ -104,7 +104,14 @@ else
     </div>
 }
 
-
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            showCartDetails();
+        });
+    </script>
+}
 
 
 <!--<div class="row">

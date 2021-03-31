@@ -25,15 +25,15 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         public async Task<IActionResult> Index(long customerId)
         {
-            //var model = await GetCustomerPhone.Execute(customerId);
-            //return View(model);
             ViewBag.CustomerId = customerId;
             var model = await GetCustomerPhone.Execute(customerId);
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> PartialGetAllView(long customerId)
         {
+            ViewBag.CustomerId = customerId;
             var model = await GetCustomerPhone.Execute(customerId);
             return PartialView("CustomerPhonePartialView", model);
         }
