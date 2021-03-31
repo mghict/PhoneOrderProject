@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.78" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BehsamFramework.Util\BehsamFramework.Util.csproj" />
+    <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
+    <ProjectReference Include="..\UserAuthorize.Domain\UserAuthorize.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
