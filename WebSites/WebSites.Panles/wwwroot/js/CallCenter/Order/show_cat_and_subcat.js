@@ -269,5 +269,5 @@ function ShowInvoice() {
     let storeId = $('#txtStoreId').val();
     let customerId = $('#CustomerId').val();
 
-    window.location.replace("/CallCenter/Order/ShowInvoice?storeId=" + storeId +"&customerId="+customerId)
+    window.location.replace("/CallCenter/Order/Invoice?storeId=" + storeId +"&customerId="+customerId)
 }

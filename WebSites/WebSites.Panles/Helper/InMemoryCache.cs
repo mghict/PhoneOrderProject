@@ -28,6 +28,7 @@ namespace WebSites.Panles.Helper
 
             if (!_memoryCache.TryGetValue(typeof(T).Name, out ret))
             {
+                ret = input;
                 if (ret != null)
                 {
                     if (ret is FluentResult)
@@ -77,6 +78,7 @@ namespace WebSites.Panles.Helper
 
                 if (!_memoryCache.TryGetValue(typeof(T).Name, out ret))
                 {
+                    ret = input;
                     if (ret != null)
                     {
                         if (ret is FluentResult)
@@ -332,7 +334,7 @@ namespace WebSites.Panles.Helper
 
             if (!_memoryCache.TryGetValue(cacheKey, out ret))
             {
-
+                ret = input;
                 if (ret != null)
                 {
                     if (ret is FluentResult)

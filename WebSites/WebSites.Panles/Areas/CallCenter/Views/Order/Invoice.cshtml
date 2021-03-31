@@ -3,7 +3,7 @@
     Layout = null;
 }
 <input type="hidden" value="@ViewBag.CustomerId" id="txtCustomerId" />
-<input type="hidden" value="@ViewBag.StoreId" id="txtStoreId" />
+<input type="hidden" value="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)" id="txtStoreId" />
 <div class="row">
     <div class="col-xl-12 col-md-12">
         <div class="card" id="invoiceDetails">
@@ -16,7 +16,8 @@
 @section Scripts
 {
     <script>
-        function showInvoice() {
+
+        function showInvoiceReady() {
             let storeId = $('#txtStoreId').val();
             let customerId = $('#txtCustomerId').val();
 
@@ -25,16 +26,18 @@
                 'customerId': customerId
             };
 
+            $('#invoiceDetails').Html('');
+
             $.ajax(
                 {
                     url: '/CallCenter/Order/ShowInvoice',
-                    type: 'post',
+                    type: 'Post',
                     data: postData,
                     beforeSend: function () {
                         showBehsamLoading();
                     },
                     success: function (result, status, err) {
-                        $('#invoiceDetails').text(result.count);
+                        $('#invoiceDetails').Html(result);
                     },
                     error: function (request, status, error) {
                         console.log(request);
@@ -44,5 +47,12 @@
                     }
                 });
         }
+
+        $(document).ready(function () {
+            showCartDetails();
+            showInvoiceReady();
+        });
+
+        
     </script>
 }
