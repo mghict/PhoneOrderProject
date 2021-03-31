@@ -12,6 +12,7 @@ namespace UserAuthorize.Application.Token
     public interface ITokenCreate
     {
         string GenerateJWTToken(Domain.Entities.UserInfoTbl userInfo, int applicationId);
+        Task<TokenValidateModel> ValidateUserToken(string token);
     }
 
     public class TokenCreate: ITokenCreate

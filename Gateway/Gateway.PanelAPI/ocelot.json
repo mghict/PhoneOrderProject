@@ -507,6 +507,33 @@
         "PeriodTimespan": 1,
         "Limit": 200
       }
+    },
+    //loginUser/{everythings} -> Post -> /Login/{everythings}
+    {
+      "DownstreamPathTemplate": "/Login/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10005
+        }
+      ],
+      "UpstreamPathTemplate": "/loginUser/{everythings}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 500
+      }
     }
   ]
 }
