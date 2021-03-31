@@ -26,13 +26,16 @@ namespace WebSites.Panles.Helper
 
         private async Task InitialClient()
         {
-
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            if (!string.IsNullOrEmpty(Token))
+            await Task.Run( () =>
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
-            }
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                if (!string.IsNullOrEmpty(Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
+                }
+            });
+            
         }
 
         public void SetToken(string tokenValue)

@@ -69,7 +69,7 @@ namespace WebSites.Panles.Services.Order
                 var countResult = request.Items.Select(p => p.Quantity).Sum();
                 return countResult;
             }
-            catch(Exception ex)
+            catch
             {
                 return 0;
             }
@@ -90,7 +90,7 @@ namespace WebSites.Panles.Services.Order
 
                 return true;
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }
@@ -113,7 +113,7 @@ namespace WebSites.Panles.Services.Order
 
                 return true;
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }

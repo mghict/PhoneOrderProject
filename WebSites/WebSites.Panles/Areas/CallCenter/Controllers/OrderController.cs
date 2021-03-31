@@ -183,7 +183,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 var model = OrderFacad.CachedOrderService.AddItem(sid, customerId, addressId, start, end, productId, price, count,productName);
                 
-                if(model==null || model<1)
+                if( model<1)
                 {
                     throw new Exception("امکان اضافه کردن وجود ندارد");
                 }
@@ -207,7 +207,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 var result = OrderFacad.CachedOrderService.DeleteItem(sid, customerId, productId);
 
-                if (result == null || !result)
+                if ( !result)
                 {
                     throw new Exception("امکان انجام عملیات وجود ندارد");
                 }
@@ -239,7 +239,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                     throw new Exception("سفارش وجود ندارد");
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 model = new Models.Order.CachedOrderInfo();
             }
@@ -263,7 +263,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                return Json(new { Count = c });
             }
-            catch (Exception ex)
+            catch 
             {
                 return Json(new { Count=0 });
             }
@@ -290,7 +290,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                     throw new Exception("سفارش وجود ندارد");
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 model = new Models.Order.CachedOrderInfo();
             }

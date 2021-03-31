@@ -49,7 +49,7 @@ namespace WebSites.Panles.Services.Customer
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
                 return null;

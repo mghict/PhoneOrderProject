@@ -305,7 +305,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                           GetCustomerAddresses);
 
                   }
-                  catch (Exception ex)
+                  catch 
                   {
                       ret = new List<BehsamFramework.Models.CustomerAddressModel>();
                   }

@@ -54,7 +54,7 @@ namespace CustomerManagment.Application.CustomerPhoneFeature.CommandsHandler
                         }
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     
                 }

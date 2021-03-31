@@ -77,7 +77,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 retVal = res.Result;
             }
-            catch (Exception e)
+            catch
             {
                 retVal = new FluentResult<BehsamFramework.Models.CustomerInfoListModel>();
             }
@@ -117,7 +117,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 //return Json(new { IsSuccess = true, errors ="" });
 
             }
-            catch (Exception ex)
+            catch 
             {
                 //return Json(new { IsSuccess = "False", Errors = "خطا \n" + ex.Message });
 
@@ -273,21 +273,22 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpGet(Name = "CustomerProfile")]
         public async Task<IActionResult> CustomerProfile(long customerId)
         {
-            var customerInfo = GetCustomer.GetCustomerInfoAsync(customerId);
-            var customerPhones = GetCustomerPhone.Execute(customerId); ;
-            var customerAddress = GetCustomerAddressService.ExecuteGetAddresses(customerId); ;
-
             var model = new Models.Customer.CustomerProfileModel();
 
-            customerInfo.Wait();
-            customerPhones.Wait();
-            customerAddress.Wait();
+            await Task.Run(async() =>
+            {
+                var customerInfo = await GetCustomer.GetCustomerInfoAsync(customerId);
+                var customerPhones =await GetCustomerPhone.Execute(customerId);
+                var customerAddress =await GetCustomerAddressService.ExecuteGetAddresses(customerId);
 
-            model.GetCustomerInfo = customerInfo.Result;
-            model.GetCustomerPhones = customerPhones.Result;
-            model.GetCustomerAddresses = customerAddress.Result;
+                model.GetCustomerInfo =  customerInfo;
+                model.GetCustomerPhones = customerPhones;
+                model.GetCustomerAddresses = customerAddress;
+
+            });
 
             return View(model);
+
         }
         
         public void StatusFiller()
@@ -299,7 +300,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 var customerStatus = ret.Where(p => p.Subject.ToLower().Equals("CustomerStatus".ToLower()) && p.Status==true);
                 ViewBag.customerStatus = new SelectList(customerStatus, "StatusId", "Name");
             }
-            catch (Exception ex)
+            catch
             {
 
             }

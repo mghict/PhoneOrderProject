@@ -35,7 +35,7 @@ namespace BehsamFramework.Util
             {
                 return $"{pdt.GetYear(input).ToString("0000")}/{pdt.GetMonth(input).ToString("00")}/{pdt.GetDayOfMonth(input).ToString("00")}"; 
             }
-            catch(Exception ex)
+            catch
             {
                 return "";
             }
@@ -169,7 +169,7 @@ namespace BehsamFramework.Util
                             output += part2 / (decimal)Math.Pow(10, splitValue[1].Length);
                         }     
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         return 0;
                     }

@@ -90,7 +90,7 @@ namespace WebSites.Panles.Services.CustomerPhone
                     GetCustomerPhones);
 
             }
-            catch (Exception ex)
+            catch
             {
                 ret = new List<BehsamFramework.Models.CustomerPhoneModel>();
             }

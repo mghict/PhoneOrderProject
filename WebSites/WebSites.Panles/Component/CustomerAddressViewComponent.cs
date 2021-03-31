@@ -59,7 +59,7 @@ namespace WebSites.Panles.Component
                         GetCustomerAddresses);
 
                 }
-                catch (Exception ex)
+                catch 
                 {
                     ret = new List<BehsamFramework.Models.CustomerAddressModel>();
                 }
