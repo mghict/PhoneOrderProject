@@ -147,23 +147,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserAuthorize", "UserAuthor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{5624D5CC-9396-4CE2-9EFE-7767FE7A57DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.Domain", "UserAuthorize\UserAuthorize.Domain\UserAuthorize.Domain.csproj", "{8067BD2F-3C56-4DEB-8C0C-9FF305894EC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAuthorize.Domain", "UserAuthorize\UserAuthorize.Domain\UserAuthorize.Domain.csproj", "{8067BD2F-3C56-4DEB-8C0C-9FF305894EC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{D15287BF-48BF-4707-AD79-8EEC7AD17795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.Persistence", "UserAuthorize\UserAuthorize.Persistence\UserAuthorize.Persistence.csproj", "{EB754A59-213D-465F-960A-CA414F1AE20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAuthorize.Persistence", "UserAuthorize\UserAuthorize.Persistence\UserAuthorize.Persistence.csproj", "{EB754A59-213D-465F-960A-CA414F1AE20C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{F8B371B2-C253-4B57-960C-8DC63B10098C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.Application", "UserAuthorize\UserAuthorize.Application\UserAuthorize.Application.csproj", "{B441611B-6E39-459A-856A-3799F5E15314}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAuthorize.Application", "UserAuthorize\UserAuthorize.Application\UserAuthorize.Application.csproj", "{B441611B-6E39-459A-856A-3799F5E15314}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{3968B0C9-D65B-4365-A7F6-AFEFBC1E7BB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAuthorize.API", "UserAuthorize\UserAuthorize.API\UserAuthorize.API.csproj", "{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAuthorize.API", "UserAuthorize\UserAuthorize.API\UserAuthorize.API.csproj", "{14461C06-EF6C-4D85-806E-4DAACF2AEF6E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C4644696-A673-4C98-AB7C-AE63862787AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManagment.Domain", "StoreManagment\StoreManagment.Domain\StoreManagment.Domain.csproj", "{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreManagment.Domain", "StoreManagment\StoreManagment.Domain\StoreManagment.Domain.csproj", "{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{54054EB1-82EE-4E54-AA4B-070829EA186C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManagment.Persistence", "StoreManagment\StoreManagment.Persistence\StoreManagment.Persistence.csproj", "{58A1F0F8-7085-4096-B45C-12E000037256}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{7590C091-59E4-42C0-9A36-F981AD082CCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManagment.Application", "StoreManagment\StoreManagment.Application\StoreManagment.Application.csproj", "{C8C1AAE0-040F-4BDE-B614-062936877B6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{48911EE5-69FE-4A4C-8F71-7551C5D93DA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreManagment.API", "StoreManagment\StoreManagment.API\StoreManagment.API.csproj", "{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -315,6 +327,18 @@ Global
 		{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A1F0F8-7085-4096-B45C-12E000037256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A1F0F8-7085-4096-B45C-12E000037256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A1F0F8-7085-4096-B45C-12E000037256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A1F0F8-7085-4096-B45C-12E000037256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C1AAE0-040F-4BDE-B614-062936877B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C1AAE0-040F-4BDE-B614-062936877B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C1AAE0-040F-4BDE-B614-062936877B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C1AAE0-040F-4BDE-B614-062936877B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -400,6 +424,12 @@ Global
 		{14461C06-EF6C-4D85-806E-4DAACF2AEF6E} = {3968B0C9-D65B-4365-A7F6-AFEFBC1E7BB2}
 		{C4644696-A673-4C98-AB7C-AE63862787AF} = {0A81C799-BDF5-4D70-9EFF-B32A77D27AA4}
 		{9C15AC54-4943-4AF6-A81E-AB71C8FB7B9E} = {C4644696-A673-4C98-AB7C-AE63862787AF}
+		{54054EB1-82EE-4E54-AA4B-070829EA186C} = {0A81C799-BDF5-4D70-9EFF-B32A77D27AA4}
+		{58A1F0F8-7085-4096-B45C-12E000037256} = {54054EB1-82EE-4E54-AA4B-070829EA186C}
+		{7590C091-59E4-42C0-9A36-F981AD082CCC} = {0A81C799-BDF5-4D70-9EFF-B32A77D27AA4}
+		{C8C1AAE0-040F-4BDE-B614-062936877B6A} = {7590C091-59E4-42C0-9A36-F981AD082CCC}
+		{48911EE5-69FE-4A4C-8F71-7551C5D93DA2} = {0A81C799-BDF5-4D70-9EFF-B32A77D27AA4}
+		{B3C55D86-6EC9-4072-9E02-3CD7D0389DFF} = {48911EE5-69FE-4A4C-8F71-7551C5D93DA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCC8689D-A361-4643-AACA-B00A7F70292E}

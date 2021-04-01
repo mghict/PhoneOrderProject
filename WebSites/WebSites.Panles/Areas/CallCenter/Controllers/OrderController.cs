@@ -9,6 +9,8 @@ using Microsoft.Extensions.Caching.Memory;
 using WebSites.Panles.Helper;
 using BehsamFramework.Util;
 using System.Globalization;
+using Microsoft.AspNetCore.SignalR;
+using WebSites.Panles.Hubs;
 
 namespace WebSites.Panles.Areas.CallCenter.Controllers
 {
@@ -21,7 +23,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         private Services.CustomerAddress.IGetCustomerAddressService GetCustomerAddressService;
 
         private Services.IOrderFacad OrderFacad;
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
         public OrderController(
+            IHubContext<NotificationHub> notificationHubContext,
             Services.IOrderFacad orderFacad,
             Services.Customer.IGetCustomerBySearch getCustomerBySearch,
             Services.Customer.IGetCustomer getCustomer,
@@ -34,6 +38,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             GetCustomer = getCustomer;
             GetCustomerPhone = getCustomerPhone;
             GetCustomerAddressService = getCustomerAddressService;
+            _notificationHubContext = notificationHubContext;
         }
 
         public IActionResult Index()
@@ -309,6 +314,54 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult RegisterOrderFinal(string storeId, long customerId)
+        {
+            ViewBag.StoreId = storeId;
+            ViewBag.CustomerId = customerId;
+
+            Models.Order.CachedOrderInfo model = new Models.Order.CachedOrderInfo();
+            FluentResult result = new FluentResult();
+            try
+            {
+
+                float sid;
+                float.TryParse(storeId, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out sid);
+
+                model = OrderFacad.CachedOrderService.GetRequest(sid, customerId);
+
+                if (model == null || model.CustomerId < 1)
+                {
+                    throw new Exception("سفارش وجود ندارد");
+                }
+
+                result = OrderFacad.CreateOrderService.Execute(model).Result;
+
+                if(result.IsSuccess)
+                {
+                    string key = "R->" + model.CustomerId.ToString() + "->" + model.StoreID.ToString("#.##",CultureInfo.InvariantCulture);
+
+                    CacheService.ClearCache(key);
+
+                    Task.Run(async () =>
+                    {
+                        await _notificationHubContext.Clients.All.SendAsync("sendToUser", "پیغام", model.OrderCode, 2);
+                    });
+
+                    //return View();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            return Json(new { IsSuccess = result.IsSuccess, Message = result.GetErrors(),Code=model.OrderCode });
+        }
+
+        
 
     }
 }

@@ -633,13 +633,13 @@ namespace WebSites.Panles.Helper
 
         public void ClearCache(string cacheKey)
         {
-            _memoryCache.Remove("cacheKey");
+            _memoryCache.Remove(cacheKey);
         }
         public async Task ClearCacheAsync(string cacheKey)
         {
             await Task.Run(() =>
             {
-                _memoryCache.Remove("cacheKey");
+                _memoryCache.Remove(cacheKey);
             });
 
             return;

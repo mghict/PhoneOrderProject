@@ -24,24 +24,27 @@
                             </div>
                             <hr />
                             <div class="card-body">
-                                <div class="w-100" >
+                                <div class="w-100">
                                     <p style="height:100px;">@item.StoreAddress</p>
                                     <p class="text-info float-left">@item.Distance km</p>
                                     <p><small class="text-muted text-danger">@item.Region --> @item.City --> @item.AreaName</small></p>
                                 </div>
-                                
+
                             </div>
                             <div class="card-footer w-100">
+                                @*<a class="btn btn-danger btn-block " data-toggle="tooltip"
+                                       asp-area="CallCenter"
+                                       asp-controller="Order"
+                                       asp-action="ShowProductList"
+                                       asp-route-startTime="@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)"
+                                       asp-route-endTime="@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)"
+                                       asp-route-customerId="@ViewBag.CustomerId"
+                                       asp-route-address="@ViewBag.AddressId"
+                                       asp-route-storeId="@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                        انتخاب
+                                    </a>*@
                                 <a class="btn btn-danger btn-block " data-toggle="tooltip"
-                                   asp-area="CallCenter"
-                                   asp-controller="Order"
-                                   asp-action="ShowProductList"
-                                   asp-route-startTime="@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)"
-                                   asp-route-endTime="@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)"
-                                   asp-route-customerId="@ViewBag.CustomerId"
-                                   asp-route-address="@ViewBag.AddressId"
-                                   asp-route-storeId="@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
-                                    @*<i class="fa fa-check text-success" aria-hidden="true"></i>*@
+                                   href="/CallCenter/Order/ShowProductList?startTime=@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)&endTime=@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)&customerId=@ViewBag.CustomerId&address=@ViewBag.AddressId&storeId=@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
                                     انتخاب
                                 </a>
                             </div>

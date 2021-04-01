@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebSites.Panles.Models;
+using Microsoft.AspNetCore.SignalR;
+using WebSites.Panles.Hubs;
 
 namespace WebSites.Panles.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        public HomeController(ILogger<HomeController> logger, IHubContext<NotificationHub> notificationHubContext)
         {
             _logger = logger;
+            _notificationHubContext = notificationHubContext;
         }
 
         public IActionResult Index()
@@ -38,5 +41,13 @@ namespace WebSites.Panles.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SendDate(NotificationMessage model)
+        {
+            await _notificationHubContext.Clients.All.SendAsync("sendToUser", model.messageHead, model.messageBody,model.messageType);
+            return View();
+        }
     }
+    
 }

@@ -38,6 +38,8 @@ namespace WebSites.Panles
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddProgressiveWebApp();
+            services.AddSignalR();
 
             //Class BuiltIn Dependency
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -49,7 +51,7 @@ namespace WebSites.Panles
             });
             services.AddMemoryCache();
 
-            services.AddScoped<ICacheService, InMemoryCache>();
+            services.AddSingleton<ICacheService, InMemoryCache>();
             services.AddScoped<StaticValues>();
             services.AddAutoMapper(typeof(Mapper.BaseMapper).GetTypeInfo().Assembly);
 
@@ -109,10 +111,16 @@ namespace WebSites.Panles
             app.UseEndpoints(endpoints =>
             {
 
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
                 endpoints.MapAreaControllerRoute(
                     name: "Admin",
                     areaName: "Admin",
                     pattern: "Admin/{controller=Home}/{action=Index}");
+
 
                 endpoints.MapAreaControllerRoute(
                     name: "CallCenter",
@@ -120,14 +128,13 @@ namespace WebSites.Panles
                     pattern: "CallCenter/{controller=Login}/{action=Login}/{id?}"
                 );
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
+                endpoints.MapHub<Hubs.NotificationHub>("/NotificationHub");
+
             });
 
             

@@ -15,7 +15,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
+                .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
@@ -24,7 +24,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
+                .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
@@ -32,7 +32,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
+                .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
@@ -40,7 +40,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
+                .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
         }

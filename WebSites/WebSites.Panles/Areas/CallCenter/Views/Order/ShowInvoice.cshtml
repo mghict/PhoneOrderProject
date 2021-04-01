@@ -102,11 +102,9 @@
                 </div>
             </div>
             <div class="col-xl-12 col-md-12">
-                <a class="btn btn-info m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
-                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
+                <a class="btn btn-info m-2" href="/CallCenter/Order/OrderRegister?customerId=@ViewBag.CustomerId&storeId=@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
 
-                <a class="btn btn-success m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
-                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">تایید و ثبت سفارش</a>
+                <a class="btn btn-success m-2"  onclick="RegisterOrderFinal('@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)','@ViewBag.CustomerId')">تایید و ثبت سفارش</a>
             </div>
         </div>
     }
@@ -117,8 +115,7 @@
                 <div>
                     <h6>اطلاعات فاکتور در دسترس نمی باشد</h6>
                 </div>
-                <a class="btn btn-info m-2" asp-area="CallCenter" asp-controller="Order" asp-action="OrderRegister"
-                   asp-route-customerId="@ViewBag.CustomerId" asp-route-storeId="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
+                <a class="btn btn-info m-2" href="/CallCenter/Order/OrderRegister?customerId=@ViewBag.CustomerId&storeId=@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
             </div>
         </div>
     }
@@ -153,6 +150,52 @@
                 },
                 error: function (request, status, error) {
                     console.log(request);
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                }
+            });
+    }
+
+    function RegisterOrderFinal(sid, cid) {
+        var postData = {
+            'storeId': sid,
+            'customerId': cid
+        };
+
+        $.ajax(
+            {
+                url: '/CallCenter/Order/RegisterOrderFinal',
+                type: 'post',
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                success: function (res, status, err) {
+                    if (res.isSuccess == true) {
+
+                        swal.fire(
+                            'موفق!',
+                            'شماره سفارش: '+res.code+ ' با موفقیت ثبت شد ',
+                            'success'
+                        ).then(function (isConfirm) {
+                            location.replace('/CallCenter/Home/index');
+                        });
+
+                    } else {
+                        swal.fire(
+                            'هشدار!',
+                            res.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
+                    swal.fire(
+                        'هشدار!',
+                        request.responseText + '-' + status.responseText + '-' + error.responseText,
+                        'warning'
+                    );
                 },
                 complete: function () {
                     hideBehsamLoading();

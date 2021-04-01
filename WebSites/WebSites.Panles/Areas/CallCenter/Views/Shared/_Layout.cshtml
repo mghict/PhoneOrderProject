@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using System.Globalization
 
 <!DOCTYPE html>
 <html>
@@ -9,7 +10,7 @@
     <meta name="Description" content="سامانه فروش تلفنی افق کورش">
     <meta name="Author" content="Behsam Co">
 
-    <title>سامانه فروش تلفنی افق کوروش</title>م
+    <title>سامانه فروش تلفنی افق کوروش</title>
 
 
     <link rel="icon" href="~/admin/Content/assets/images/logo/logoshort.png" type="image/x-icon">
@@ -58,6 +59,10 @@
 
     @RenderSection("Styles", false)
     @RenderSection("ScriptsTop", false)
+
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/notification.js"></script>
+
 </head>
 <body class="main-body app sidebar-mini">
 
@@ -103,7 +108,7 @@
                         <i class="angle fe fe-chevron-down"></i>
                     </a>
                     <ul class="slide-menu">
-                        <li><a class="slide-item" href="/CallCenter/Customer/Register">ثبت سفارش</a></li>
+                        <li><a class="slide-item" href="/CallCenter/Order/OrderRegister">ثبت سفارش</a></li>
                     </ul>
                 </li>
             </ul>
@@ -1068,6 +1073,11 @@
 
     <script src="~/js/toaster/toastr.min.js"></script>
     <script src="~/js/toast.js"></script>
+
+
     @RenderSection("Scripts", false)
+
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/notification.js"></script>
 </body>
 </html>

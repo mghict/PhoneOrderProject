@@ -19,6 +19,7 @@ namespace WebSites.Panles.Services
         Store.IGetProductByCategoryService GetProductByCategoryService { get; }
         Store.IGetProductByCategoryAndStoreService GetProductByCategoryAndStoreService { get; }
         Order.ICachedOrderService CachedOrderService { get; }
+        Order.ICreateOrderService CreateOrderService { get; }
     }
     public class OrderFacad :Base.ServiceBase, IOrderFacad
     {
@@ -28,6 +29,7 @@ namespace WebSites.Panles.Services
         private IGetProductByCategoryService getProductByCategoryService;
         private IGetProductByCategoryAndStoreService getProductByCategoryAndStoreService;
         private ICachedOrderService cachedOrderService;
+        private ICreateOrderService _CreateOrderService;
         public OrderFacad(ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
         {
         }
@@ -50,5 +52,8 @@ namespace WebSites.Panles.Services
 
         public ICachedOrderService CachedOrderService =>
             cachedOrderService= cachedOrderService?? new CachedOrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        public ICreateOrderService CreateOrderService =>
+            _CreateOrderService= _CreateOrderService?? new Order.CreateOrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

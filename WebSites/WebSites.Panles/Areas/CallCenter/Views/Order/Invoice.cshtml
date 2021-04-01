@@ -16,7 +16,6 @@
     <script>
 
         $(document).ready(function () {
-            console.log('ready');
 
             function showInvoiceReady() {
 
@@ -36,19 +35,16 @@
                         type: 'Post',
                         data: postData,
                         beforeSend: function () {
-                            console.log('before');
                             showBehsamLoading();
                         },
                         success: function (result, status, err) {
-                            console.log('success');
                             $('#showInvoiceDetails').html(result);
+                            showCartDetails();
                         },
                         error: function (request, status, error) {
-                            console.log('error');
                             console.log(request);
                         },
                         complete: function () {
-                            console.log('complete');
                             hideBehsamLoading();
                         }
                     });

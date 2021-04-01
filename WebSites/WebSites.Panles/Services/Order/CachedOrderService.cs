@@ -134,7 +134,7 @@ namespace WebSites.Panles.Services.Order
                 OrderCode =Convert.ToInt32( BehsamFramework.Utility.GenerateUniqueId.GenerateGuid())
             };
             
-            string key ="R->"+customerId.ToString()+"->" + storeId.ToString();
+            string key ="R->"+customerId.ToString()+"->" + storeId.ToString("#.##", CultureInfo.InvariantCulture);
 
             request = CacheService.GetOrSet(
                 request,
