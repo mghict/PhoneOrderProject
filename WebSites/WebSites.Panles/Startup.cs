@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,7 @@ namespace WebSites.Panles
             services.AddRazorPages();
 
             //Class BuiltIn Dependency
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddHttpClient();
             services.AddHttpClient("ApiGateway",c=>
@@ -63,7 +65,11 @@ namespace WebSites.Panles
 
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
-            
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +85,17 @@ namespace WebSites.Panles
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 401)
+                {
+                    context.Request.Path = "/Home/Index";
+                    await next();
+                }
+            });
+
             app.UseHttpsRedirection();
 
             app.UseDefaultFiles();

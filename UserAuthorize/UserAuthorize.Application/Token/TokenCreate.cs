@@ -1,11 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace UserAuthorize.Application.Token
 {
@@ -37,11 +38,13 @@ namespace UserAuthorize.Application.Token
             var token = new JwtSecurityToken(_issuer,
                 _issuer,
                 permClaims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddHours(12),
                 signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var result= new JwtSecurityTokenHandler().WriteToken(token);
+
+            return result;
         }
 
         private List<Claim> GetClaim(Domain.Entities.UserInfoTbl userInfo,int applicationId)
@@ -50,7 +53,7 @@ namespace UserAuthorize.Application.Token
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("UserId", userInfo.Id.ToString()),
-                new Claim("UserName", userInfo.UserName.ToString()),
+                new Claim("StoreId", userInfo.StoreId==null ? "":userInfo.StoreId?.ToString(CultureInfo.InvariantCulture)),
                 new Claim("Name", string.Format("{0}", userInfo.Name)),
                 new Claim("PhoneNumber",userInfo.UserName.ToString("00000000000")),
                 new Claim("ApplicationId",applicationId.ToString())

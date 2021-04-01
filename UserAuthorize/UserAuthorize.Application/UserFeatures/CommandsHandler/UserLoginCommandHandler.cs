@@ -43,13 +43,20 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
                     result.WithValue(new LoginModel() { Token = "" });
                     return result;
                 }
+                var response =new  Domain.Entities.UserInfoTbl();
+                try
+                {
+                    response = await UnitOfWork.UserQueryRepository.UserLoginAsync(request.UserName, request.Password, request.ApplicationId);
 
-                var response =await UnitOfWork.UserQueryRepository.UserLoginAsync(request.UserName, request.Password, request.ApplicationId);
-                if(response==null)
+                    if (response == null)
+                    {
+                        throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
+                    }
+                }
+                catch(Exception ex)
                 {
                     throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
                 }
-
             
                 var model=new BehsamFramework.Models.LoginModel()
                 {

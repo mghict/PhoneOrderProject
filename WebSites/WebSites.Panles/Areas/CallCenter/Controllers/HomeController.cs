@@ -13,5 +13,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

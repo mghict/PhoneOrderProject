@@ -122,5 +122,10 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
 
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

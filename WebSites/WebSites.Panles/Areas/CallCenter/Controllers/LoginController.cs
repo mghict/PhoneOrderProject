@@ -19,10 +19,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             public long ApplicationId { get; set; }
         }
 
+        private Services.Authorize.IAuthorizeService AuthorizeService;
+
         private readonly ServiceCaller<Token> Service;
-        public LoginController(IHttpClientFactory _clientFactory)
+        public LoginController(IHttpClientFactory _clientFactory,
+            Services.Authorize.IAuthorizeService authorizeService)
         {
             Service = new ServiceCaller<Token>(_clientFactory);
+            AuthorizeService = authorizeService;
         }
 
 
@@ -40,37 +44,36 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpPost(Name = "Login")]
         public IActionResult Login(string userName, string password)
         {
-            long applicationId = 2;
+            int applicationId = 2;
+            
 
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
             {
-                return Json(new { IsSuccess = "False", Errors = "اطلاعات وارد شده صحیح نمی باشد" });
+                return Json(new { IsSuccess = false, Errors = "اطلاعات وارد شده صحیح نمی باشد" });
             }
 
-            var model = new modelLogin()
-            {
-                UserName = userName,
-                Password = password,
-                ApplicationId = applicationId
-            };
             try
             {
-                var result = Service.PostDataWithValue("login", model);
-                var ret = result.Result;
-                if (ret != null && ret.IsSuccess == true && ret.Value != null)
-                {
-                    BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token token =
-                        (BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token)ret.Value;
-                    Service.SetToken(token.TokenValue);
-                    ret.WithSuccess("ورود موفق");
-                }
+                //var result = Service.PostDataWithValue("login", model);
+                //var ret = result.Result;
+                //if (ret != null && ret.IsSuccess == true && ret.Value != null)
+                //{
+                //    BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token token =
+                //        (BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token)ret.Value;
+                //    Service.SetToken(token.TokenValue);
+                //    ret.WithSuccess("ورود موفق");
+                //}
 
-                return Json(ret);
+                //return Json(ret);
+                long uname = Convert.ToInt64(userName);
+                var result=AuthorizeService.Login(uname, password, applicationId);
+
+                return Json(new { IsSuccess = result.IsSuccess, Errors = result.GetErrors() });
 
             }
             catch (Exception ex)
             {
-                return Json(new { IsSuccess = "False", Errors = "خطا \n" + ex.Message });
+                return Json(new { IsSuccess = false, Errors = "خطا \n" + ex.Message });
 
             }
 

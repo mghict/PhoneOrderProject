@@ -22,8 +22,8 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         private ServiceCaller<long> ServiceInsert;
         protected ServiceCaller serviceCaller;
         protected AutoMapper.IMapper Mapper;
+        private Services.Authorize.IAuthorizeService AuthorizeService;
 
-        
 
         private StaticValues staticValues;
 
@@ -31,7 +31,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         private Services.Customer.IGetCustomer GetCustomer;
         private Services.CustomerPhone.IGetCustomerPhone GetCustomerPhone;
         private Services.CustomerAddress.IGetCustomerAddressService GetCustomerAddressService;
-        public CustomerController(AutoMapper.IMapper mapper,
+        public CustomerController(
+                                  Services.Authorize.IAuthorizeService authorizeService,
+                                  AutoMapper.IMapper mapper,
                                   IMemoryCache memoryCache, 
                                   IHttpClientFactory _clientFactory, 
                                   ICacheService _cacheService, 
@@ -51,9 +53,11 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             GetCustomer = _getCustomer;
             GetCustomerPhone = _getCustomerPhone;
             GetCustomerAddressService = _getCustomerAddressService;
+            AuthorizeService = authorizeService;
             //GetCustomer =new Services.Customer.GetCustomer(CacheService, serviceCaller, ClientFactory,Mapper);
         }
-        //public async Task<IActionResult> Index(int page=1,int pagesize = 10,string searchkey="")
+
+        [WebSites.Panles.Helper.Authorize.CustomAuthorize]
         public IActionResult Index(int page = 1, int pagesize = 10, string searchkey = "")
         {
             GetPagianationDataModel command =

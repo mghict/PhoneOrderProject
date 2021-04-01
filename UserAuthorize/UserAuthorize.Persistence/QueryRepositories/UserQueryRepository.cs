@@ -46,7 +46,7 @@ namespace UserAuthorize.Persistence.QueryRepositories
 
         public async Task<Domain.Entities.UserInfoTbl> UserLoginAsync(long userName, string password, int applicationId)
         {
-            var query = "exec LoginUser @UserName,@Password,@ApplicationId";
+            var query = "exec dbo.LoginUser @UserName,@Password,@ApplicationId";
             
             var param = new
             {
@@ -55,7 +55,7 @@ namespace UserAuthorize.Persistence.QueryRepositories
                 @ApplicationId = applicationId
             };
 
-            var entity = await db.QueryFirstOrDefaultAsync<Domain.Entities.UserInfoTbl>(query, param,commandType: CommandType.StoredProcedure);
+            var entity = await db.QueryFirstOrDefaultAsync<Domain.Entities.UserInfoTbl>(query, param);
             if(entity!=null)
             {
                 entity.Password = "";

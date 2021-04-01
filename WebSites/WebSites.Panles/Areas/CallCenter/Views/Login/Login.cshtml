@@ -39,12 +39,23 @@
 
     <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
 
+    <link href="~/css/loader.css" rel="stylesheet" />
+
 </head>
 
 <body class="main-body bg-primary-transparent">
     <!-- Loader -->
     <div id="global-loader">
         <img src="~/admin/Content/assets/img/loader.svg?fill=red" class="loader-img" alt="Loader">
+    </div>
+
+    <div class="page-loader">
+        <div class="text-center mg-b-20 ">
+            <button class="btn btn-danger" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                در حال بارگزاری اطلاعات ...
+            </button>
+        </div>
     </div>
     <!-- /Loader -->
     <div class="container-fluid">
@@ -84,7 +95,7 @@
                                             <div class="form-group">
                                                 <label>رمز عبور</label> <input id="txtPassword" class="form-control" placeholder="رمز عبور را وارد کنید" type="password">
                                             </div><button class="btn btn-main-primary btn-block" style="background-color: #f2003c" onclick="login()">ورود</button>
-                                            <button class="btn btn-main-primary btn-block" style="background-color: #f2003c" onclick="RegisterCustomerShow()">مشتریان</button>
+
 
                                             @*</form>*@
                                             <div class="main-signin-footer mt-5">
@@ -138,110 +149,63 @@
     <script src="~/admin/Content/assets/switcher/js/switcher-rtl.js"></script>
 
     <script src="~/Sweetalert2/sweetalert2.min.js"></script>
-    @*<script src="~/js/site.js"></script>*@
-<script>
-    function login() {
+    <script src="~/js/site.js"></script>
 
-        //alert('start login()');
+    <script>
+        function login() {
 
-        var model = {
-            'userName': $('#txtUserName').val(),
-            'password': $('#txtPassword').val()
-        };
+            //alert('start login()');
 
-        //alert(model);
+            var model = {
+                'userName': $('#txtUserName').val(),
+                'password': $('#txtPassword').val()
+            };
 
-        $.ajax({
-            dataType: 'json',
-            type: 'POST',
-            url: 'CallCenter/Login/Login',
-            data: model,
-            beforeSend: function(){
-                $("#global-loader").show();
-            },
-            complete: function(){
-                $("#global-loader").hide();
-            },
-            success: function (res) {
-                if (res.isSuccess==true) {
+            //alert(model);
 
-                    swal.fire(
-                        'موفق!',
-                        'ورود موفق کاربر',
-                        'success'
-                    ).then(function (isConfirm) {
-                        location.replace('CallCenter/Home/index');
-                    });
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '/CallCenter/Login/Login',
+                data: model,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (res) {
+                    if (res.isSuccess == true) {
 
-                } else {
-                    swal.fire(
-                        'هشدار!',
-                        res.errors,
-                        'warning'
-                    );
-                }
-            },
-            error: function (request, status, error) {
-                swal.fire(
-                    'هشدار!',
-                    request.responseText+'-'+status.responseText+'-'+error.responseText,
-                    'warning'
-                );
+                        swal.fire(
+                            'موفق!',
+                            'خوش آمدید!!',
+                            'success'
+                        ).then(function (isConfirm) {
+                            location.replace('/CallCenter/Home/index');
+                        });
 
-            }
-        });
-
-        //
-    }
-
-    function RegisterCustomerShow() {
-
-        alert('start');
-
-
-        $.ajax({
-            dataType: 'json',
-            type: 'Get',
-            url: 'CallCenter/Customer/RegisterFiller',
-            data: {},
-            beforeSend: function () {
-                $("#global-loader").show();
-            },
-            complete: function () {
-                $("#global-loader").hide();
-            },
-            success: function (res) {
-                if (res.isSuccess == true) {
-
-                    swal.fire(
-                        'موفق!',
-                        'ورود موفق کاربر',
-                        'success'
-                    ).then(function (isConfirm) {
-                        location.replace('CallCenter/Customer/Register');
-                    });
-
-                } else {
+                    } else {
+                        swal.fire(
+                            'هشدار!',
+                            res.errors,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
                     swal.fire(
                         'هشدار!',
-                        res.errors,
+                        request.responseText + '-' + status.responseText + '-' + error.responseText,
                         'warning'
                     );
+
                 }
-            },
-            error: function (request, status, error) {
-                swal.fire(
-                    'هشدار!',
-                    request.responseText + '-' + status.responseText + '-' + error.responseText,
-                    'warning'
-                );
+            });
 
-            }
-        });
-
-        //
-    }
-</script>
+            //
+        }
+    </script>
 </body>
 
 </html>
