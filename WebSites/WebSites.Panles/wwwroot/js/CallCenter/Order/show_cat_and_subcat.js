@@ -276,3 +276,25 @@ function ShowInvoice() {
 
     window.location.replace("/CallCenter/Order/Invoice?storeId=" + storeId +"&customerId="+customerId)
 }
+
+function ShowProfile(){
+
+    $.ajax(
+        {
+            url: '/CallCenter/Login/ShowUserProfile',
+            type: 'post',
+            data: {},
+            beforeSend: function () {
+                showBehsamLoading();
+            },
+            success: function (result, status, err) {
+                $('#divUserProfile').html(result);
+            },
+            error: function (request, status, error) {
+                console.log(request);
+            },
+            complete: function () {
+                hideBehsamLoading();
+            }
+        });
+}

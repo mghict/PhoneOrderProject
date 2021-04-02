@@ -100,7 +100,9 @@ namespace BehsamFramework.Util
         {
             var pdt = new System.Globalization.PersianCalendar();
 
-            return dt.TimeOfDay.ToString("HH:mm:ss");
+            return pdt.GetHour(dt).ToString("00") + ":" +
+                   pdt.GetMinute(dt).ToString("00") + ":" +
+                   pdt.GetSecond(dt).ToString("00");
         }
 
         public static decimal ToDecimal(this string input)

@@ -31,6 +31,16 @@ $(document).ready(function () {
         $('.page-loader').hide();
     })
 
+    $(document).ajaxError(function (e, xhr) {
+        if (xhr.status == 401 || xhr.status == 403 ) {
+            swal.fire(
+                'هشدار!',
+                'شما به عملیات مورد نظر دسترسی ندارید',
+                'warning'
+            );
+        }
+    });
+
 });
 
 function showNotification() {
@@ -54,4 +64,24 @@ function showNotification() {
         });
 }
 
+function logout() {
+    $.ajax(
+        {
+            url: '/CallCenter/login/logout',
+            type: 'get',
+            data: {},
+            beforeSend: function () {
+                showBehsamLoading();
+            },
+            success: function (result, status, err) {
+                window.location.replace("/CallCenter/Login/Login");
+            },
+            error: function (request, status, error) {
+                console.log(request);
+            },
+            complete: function () {
+                hideBehsamLoading();
+            }
+        });
+}
 

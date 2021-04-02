@@ -1,5 +1,4 @@
 ﻿@using System.Globalization
-@using System.Globalization
 
 <!DOCTYPE html>
 <html>
@@ -72,7 +71,7 @@
         <img src="~/admin/Content/assets/img/loader.svg" class="loader-img" alt="لودر">
     </div>
 
-    <div class="page-loader">
+    <div class="page-loader page-loader-md page-loader-xs page-loader-sm page-loader-lg page-loader-xl">
         <div class="text-center mg-b-20 ">
             <button class="btn btn-danger" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -189,18 +188,18 @@
                                     </div>
                                 </div>
                             </div>*@
-                        <div class="dropdown nav-item main-header-notification">
+                        <div class="dropdown main-header-notification nav-item ">
                             <a class="new nav-link" href="#" onclick="showNotification()">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class=" pulse"></span>
                             </a>
                             <div class="dropdown-menu" id="divShowNotification">
-                                
+
                             </div>
                         </div>
                         <div class="dropdown nav-item ">
                             <a class="new nav-link" data-toggle="dropdown"
                                onclick="showCart('@ViewBag.StoreId?.ToString(CultureInfo.InvariantCulture)','@ViewBag.CustomerId?')">
-                                <i class="fa fa-shopping-basket text-success fa-2x" aria-hidden="true">
+                                <i class="fa fa-shopping-basket text-success " aria-hidden="true">
                                     <span id="headerShowCart"></span>
                                 </i>
                             </a>
@@ -209,11 +208,17 @@
                             </div>
 
                         </div>
-                        @*<div class="dropdown main-header-message right-toggle">
-                                <a class="nav-link pr-0" data-toggle="sidebar-left" data-target=".sidebar-left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                                </a>
-                            </div>*@
+                        <div class="dropdown nav-item">
+                            <a class="new nav-link" 
+                               onclick="logout()">
+                                <i class="fa fa-power-off text-danger " aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="dropdown main-header-message right-toggle">
+                            <a class="nav-link pr-0" data-toggle="sidebar-left" data-target=".sidebar-left" onclick="ShowProfile()">
+                                <i class="fa fa-user-circle text-primary " aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -225,402 +230,8 @@
     <!-- Container closed -->
     <!-- Sidebar-right-->
     <div class="sidebar sidebar-left sidebar-animate">
-        <div class="panel panel-primary card mb-0 box-shadow">
-            <div class="tab-menu-heading border-0 p-3">
-                <div class="card-title mb-0">اطلاعیه</div>
-                <div class="card-options mr-auto">
-                    <a href="#" class="sidebar-remove"><i class="fe fe-x"></i></a>
-                </div>
-            </div>
-            <div class="panel-body tabs-menu-body latest-tasks p-0 border-0">
-                <div class="tabs-menu ">
-                    <!-- Tabs -->
-                    <ul class="nav panel-tabs">
-                        <li class=""><a href="#side1" class="active" data-toggle="tab"><i class="ion ion-md-chatboxes tx-18 ml-2"></i> گپ زدن</a></li>
-                        <li><a href="#side2" data-toggle="tab"><i class="ion ion-md-notifications tx-18  ml-2"></i> اطلاعیه</a></li>
-                        <li><a href="#side3" data-toggle="tab"><i class="ion ion-md-contacts tx-18 ml-2"></i> دوستان</a></li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane active " id="side1">
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-primary brround avatar-md">چ</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>وب سایت های جدید ایجاد شده است</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">30 دقیقه پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-danger brround avatar-md">ن</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>برای پروژه بعدی آماده شوید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">2 ساعت پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-info brround avatar-md">س</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>در مورد بحث زنده تصمیم بگیرید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">3 ساعت پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-warning brround avatar-md">ک</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>جلسه ساعت 3:00 بعد از ظهر</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">4 ساعت پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-success brround avatar-md">ب</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>برای ارائه آماده شوید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">1 روز پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-pink brround avatar-md">س</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>برای ارائه آماده شوید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">1 روز پیش</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center border-bottom p-3">
-                            <div class="">
-                                <span class="avatar bg-purple brround avatar-md">ل</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>برای ارائه آماده شوید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">45 دقیقه قبل</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="list d-flex align-items-center p-3">
-                            <div class="">
-                                <span class="avatar bg-blue brround avatar-md">تو</span>
-                            </div>
-                            <a class="wrapper w-100 mr-3" href="#">
-                                <p class="mb-0 d-flex ">
-                                    <b>برای ارائه آماده شوید</b>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <i class="mdi mdi-clock text-muted ml-1"></i>
-                                        <small class="text-muted ml-auto">2 روز قبل</small>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="tab-pane  " id="side2">
-                        <div class="list-group list-group-flush ">
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/12.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div>
-                                    <strong>مادلین</strong> هی! من در دسترس هستم ....
-                                    <div class="small text-muted">
-                                        3 ساعت پیش
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/1.jpg"></span>
-                                </div>
-                                <div>
-                                    <strong>آنتونی</strong> محصول جدید راه اندازی ...
-                                    <div class="small text-muted">
-                                        5 ساعت پیش
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/2.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div>
-                                    <strong>اولیویا</strong> محصول جدید راه اندازی ...
-                                    <div class="small text-muted">
-                                        45 دقیقه قبل
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/8.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div>
-                                    <strong>مادلین</strong> هی! من در دسترس هستم ....
-                                    <div class="small text-muted">
-                                        3 ساعت پیش
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/11.jpg"></span>
-                                </div>
-                                <div>
-                                    <strong>آنتونی</strong> محصول جدید راه اندازی ...
-                                    <div class="small text-muted">
-                                        5 ساعت پیش
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/6.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div>
-                                    <strong>اولیویا</strong> محصول جدید راه اندازی ...
-                                    <div class="small text-muted">
-                                        45 دقیقه قبل
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-3">
-                                    <span class="avatar avatar-lg brround cover-image" data-image-src="~/admin/Content/assets/img/faces/9.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div>
-                                    <strong>اولیویا</strong> هی! من در دسترس هستم ....
-                                    <div class="small text-muted">
-                                        12 دقیقه قبل
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane  " id="side3">
-                        <div class="list-group list-group-flush ">
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/9.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">کمربند موزل</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/11.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">فلوریندا کاراسکو</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/10.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">آلینا برنیر</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/2.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">زولا مکلاوگین</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/13.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">ایسیدرو هایده</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/12.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">کمربند موزل</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/4.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">فلوریندا کاراسکو</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/7.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">آلینا برنیر</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/2.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">زولا مکلاوگین</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/14.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">ایسیدرو هایده</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/11.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">فلوریندا کاراسکو</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/9.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">آلینا برنیر</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/15.jpg"><span class="avatar-status bg-success"></span></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">زولا مکلاوگین</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex  align-items-center">
-                                <div class="ml-2">
-                                    <span class="avatar avatar-md brround cover-image" data-image-src="~/admin/Content/assets/img/faces/4.jpg"></span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-semibold" data-toggle="modal" data-target="#chatmodel">ایسیدرو هایده</div>
-                                </div>
-                                <div class="mr-auto">
-                                    <a href="#" class="btn btn-sm btn-light" data-toggle="modal" data-target="#chatmodel"><i class="fab fa-facebook-messenger"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="panel panel-primary card mb-0 box-shadow" id="divUserProfile">
+            
         </div>
     </div>
     <!--/Sidebar-right-->

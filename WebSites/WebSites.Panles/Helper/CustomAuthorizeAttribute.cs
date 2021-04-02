@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Routing;
 namespace WebSites.Panles.Helper.Authorize
 {
     [System.AttributeUsage(System.AttributeTargets.All, AllowMultiple = true, Inherited = true)]
-    public class CustomAuthorizeAttribute:
+    public class CustomAuthorizeAttribute :
         System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IAsyncAuthorizationFilter
     {
-        
 
+        public IAuthorizeService _AuthorizeService { get; set; }
         public CustomAuthorizeAttribute()
         {
         }
@@ -38,9 +38,9 @@ namespace WebSites.Panles.Helper.Authorize
                     //        StatusCode = StatusCodes.Status401Unauthorized
                     //    };
 
-                    context.Result = new 
+                    context.Result = new
                         Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new  RouteValueDictionary(new { controller = "Home", action = "Index",area=""  })); 
+                            new RouteValueDictionary(new { controller = "Home", action = "Index", area = "" }));
                     //RedirectResult("/home/Index");
 
                     return;
@@ -48,14 +48,16 @@ namespace WebSites.Panles.Helper.Authorize
 
                 string MethodName = descriptor.ActionName;
                 string ControllerName = descriptor.ControllerName;
+                string areaName = descriptor.RouteValues["area"] as string;
 
+                
                 Models.UserModel user =
                     context.HttpContext.Session.Get<Models.UserModel>("User");
 
-                AuthorizeService Service =
-                    context.HttpContext.Session.Get<AuthorizeService>("AuthorizeService");
+                //AuthorizeService Service =
+                //    context.HttpContext.Session.Get<AuthorizeService>("AuthorizeService");
 
-                if(Service==null)
+                if (_AuthorizeService == null)
                 {
                     result.WithError("خطای دسترسی");
                     result.WithError("شی دسترسی وجود ندارد");
@@ -68,7 +70,7 @@ namespace WebSites.Panles.Helper.Authorize
 
                     context.Result = new
                         Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new RouteValueDictionary(new { controller = "Home", action = "Index", area = "" }));
+                            new RouteValueDictionary(new { controller = "Home", action = "Index", Areas = "" }));
 
                     return;
                 }
@@ -85,23 +87,31 @@ namespace WebSites.Panles.Helper.Authorize
                     //    };
                     context.Result = new
                         Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new RouteValueDictionary(new { controller = "Home", action = "Index", area = "" }));
+                            new RouteValueDictionary(new { controller = "Home", action = "Index", Areas = "" }));
                     return;
                 }
 
-                result=Service.CheckAccess(ControllerName+"/"+MethodName);
+                result = _AuthorizeService.CheckAccess(ControllerName + "/" + MethodName);
 
-                if(!result.IsSuccess)
+                if (!result.IsSuccess)
                 {
                     //context.Result =
                     //    new Microsoft.AspNetCore.Mvc.JsonResult(value: result)
                     //    {
                     //        StatusCode = StatusCodes.Status401Unauthorized
                     //    };
+                    if (!string.IsNullOrEmpty(areaName))
+                    {
+                        string url = $"/{areaName}/Home/AccessDenied";
+                        context.Result = new Microsoft.AspNetCore.Mvc.RedirectResult(url);
 
-                    context.Result = new
-                        Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new RouteValueDictionary(new { controller = "Home", action = "AccessDenied" }));
+                    }
+                    else
+                    {
+                        context.Result = new
+                            Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
+                                new RouteValueDictionary(new { controller = "Home", action = "AccessDenied"}));
+                    }
                     return;
                 }
 

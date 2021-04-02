@@ -158,7 +158,7 @@ namespace WebSites.Panles.Services.Authorize
                     return result;
                 }
 
-                Models.UserModel user = SetContext.HttpContext.Items["User"] as Models.UserModel;
+                Models.UserModel user = SetContext.HttpContext.Session.Get<Models.UserModel>("User");
                 if (user == null)
                 {
                     result.WithError("اطلاعات کاربر یافت نشد");
@@ -174,8 +174,7 @@ namespace WebSites.Panles.Services.Authorize
 
                 var command = new
                 {
-                    UserId = user.UserId,
-                    ApplicationId = user.ApplicationId,
+                    Token = user.Token,
                     MethodName = methodName
                 };
 

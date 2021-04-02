@@ -57,7 +57,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             //GetCustomer =new Services.Customer.GetCustomer(CacheService, serviceCaller, ClientFactory,Mapper);
         }
 
-        [WebSites.Panles.Helper.Authorize.CustomAuthorize]
+        
         public IActionResult Index(int page = 1, int pagesize = 10, string searchkey = "")
         {
             GetPagianationDataModel command =
@@ -161,7 +161,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                             throw new Exception(ret.GetErrors());
                         }
                         CacheService.ClearToken(TokenCachClass.CustomerList);
-                        return RedirectToAction("Index", "Customer",new { area= "CallCenter" });
+                        return Redirect("/Callcenter/customer/index");
                     }
                     else
                     {
@@ -185,6 +185,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         }
 
+        [WebSites.Panles.Helper.Authorize.CustomAjaxAuthorize]
         [HttpPost(Name = "Delete")]
         public async Task<IActionResult> Delete(long customerId)
         {
@@ -251,7 +252,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                         }
                         await CacheService.ClearCacheAsync("CustomerInfo"+model.Id.ToString());
                         CacheService.ClearToken(TokenCachClass.CustomerList);
-                        return RedirectToAction("Index", "Customer", new { area = "CallCenter" });
+                        return Redirect("/Callcenter/customer/index");
                     }
                     else
                     {

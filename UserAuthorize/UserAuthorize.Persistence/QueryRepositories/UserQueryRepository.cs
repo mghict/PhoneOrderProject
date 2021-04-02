@@ -18,16 +18,16 @@ namespace UserAuthorize.Persistence.QueryRepositories
 
         public async Task<bool> UserAccessAsync(int userId, string accessName, int applicationId)
         {
-            var query = "exec UserAccess  @UserId,@AccessName,@ApplicationId";
+            var query = "exec dbo.UserAccess  @UserId,@AccessName,@ApplicationId";
             var param = new
             {
                 @UserId = userId,
-                AccessName = accessName,
+                @AccessName = accessName,
                 @ApplicationId = applicationId
             };
             try
             {
-                var entity = await db.QueryFirstOrDefaultAsync(query, param, commandType: CommandType.StoredProcedure);
+                var entity = await db.QueryFirstOrDefaultAsync<int>(query, param);
                 
                 if (entity == null || entity<1)
                 {
@@ -36,9 +36,9 @@ namespace UserAuthorize.Persistence.QueryRepositories
 
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+               return false;
             }
             
 

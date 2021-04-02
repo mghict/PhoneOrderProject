@@ -40,5 +40,19 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             }
             return View(messages);
         }
+
+        [HttpPost]
+        public IActionResult DeleteNotification(long id)
+        {
+            Models.UserModel user = ContextAccessor.HttpContext.Session.Get<Models.UserModel>("User");
+            if (user != null)
+            {
+                _userConnectionManager.RemoveUserNotification(user.UserId,id);
+
+                return Json(new { IsSuccess = true });
+            }
+
+            return Json(new { IsSuccess = false });
+        }
     }
 }

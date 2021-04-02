@@ -16,5 +16,6 @@ namespace WebSites.Panles.Hubs
         void RemoveUserNotification(int userId, long messageId);
         void RemoveUserNotificationAll(int userId);
         void RemoveAllUserNotification();
+        void RemoveUser(int userId);
     }
 }

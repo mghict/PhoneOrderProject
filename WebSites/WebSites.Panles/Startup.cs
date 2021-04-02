@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using WebSites.Panles.Helper;
 
@@ -28,6 +30,9 @@ namespace WebSites.Panles
         {
             //services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddSession();
+
+            services.TryAddEnumerable(ServiceDescriptor.Transient
+            <IApplicationModelProvider, Helper.MyApplicationProvider>());
 
             services.AddMvc().AddNewtonsoftJson().AddJsonOptions(options=>
             {
@@ -60,7 +65,7 @@ namespace WebSites.Panles
 
             //Class Dependency
             
-            services.AddScoped<WebSites.Panles.Helper.ServiceCaller>();
+            services.AddTransient<WebSites.Panles.Helper.ServiceCaller>();
             services.AddScoped<Services.Customer.IGetCustomer, Services.Customer.GetCustomer>();
             services.AddScoped<Services.CustomerPhone.IGetCustomerPhone, Services.CustomerPhone.GetCustomerPhone>();
             services.AddScoped<Services.CustomerPhone.IGetPhoneByIdService, Services.CustomerPhone.GetPhoneByIdService>();
@@ -73,7 +78,7 @@ namespace WebSites.Panles
 
             //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddScoped<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
+            services.AddTransient<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
 
             services.AddSingleton<Hubs.IUserConnectionManager, Hubs.UserConnectionManager>();
 

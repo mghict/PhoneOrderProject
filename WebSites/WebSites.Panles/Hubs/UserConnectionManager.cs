@@ -26,7 +26,7 @@ namespace WebSites.Panles.Hubs
                 userDetailMap[userId] = user;
             }
         }
-        
+
         public void RemoveUserConnection(string connectionId)
         {
             //This method will remove the connectionId of user
@@ -45,7 +45,7 @@ namespace WebSites.Panles.Hubs
                 }
             }
         }
-       
+
         public List<string> GetUserConnections(int userId)
         {
             var conn = new List<string>();
@@ -68,10 +68,10 @@ namespace WebSites.Panles.Hubs
 
         public Dictionary<int, List<string>> GetConnectionMap()
         {
-            var conn = new Dictionary<int, List<string>>(); 
-            lock(userConnectionMapLocker)
+            var conn = new Dictionary<int, List<string>>();
+            lock (userConnectionMapLocker)
             {
-                conn= userConnectionMap;
+                conn = userConnectionMap;
             }
 
             return conn;
@@ -79,7 +79,7 @@ namespace WebSites.Panles.Hubs
 
         public Dictionary<int, Models.UserModel> GetDetailMap()
         {
-            var users =new  Dictionary<int, Models.UserModel>();
+            var users = new Dictionary<int, Models.UserModel>();
             lock (userConnectionMapLocker)
             {
                 users = userDetailMap;
@@ -87,26 +87,26 @@ namespace WebSites.Panles.Hubs
             return users;
         }
 
-        public void SetNotification(int userId,Models.NotificationMessage message)
+        public void SetNotification(int userId, Models.NotificationMessage message)
         {
             if (message.Id < 1)
             {
                 message.Id = GetId();
             }
             message.status = true;
-            if(message.CreateDate==null || message.CreateDate<DateTime.Now.AddDays(-1))
+            if (message.CreateDate == null || message.CreateDate < DateTime.Now.AddDays(-1))
             {
                 message.CreateDate = DateTime.Now;
             }
 
             lock (userConnectionMapLocker)
             {
-                if(userConnectionMap.ContainsKey(userId))
+                if (userConnectionMap.ContainsKey(userId))
                 {
-                    if(!userNotification.ContainsKey(userId))
+                    if (!userNotification.ContainsKey(userId))
                     {
                         userNotification[userId] = new List<Models.NotificationMessage>();
-                        
+
                     }
 
                     userNotification[userId].Add(message);
@@ -118,7 +118,7 @@ namespace WebSites.Panles.Hubs
         public List<Models.NotificationMessage> GetUserNotification(int userId)
         {
             List<Models.NotificationMessage> notifications = new List<Models.NotificationMessage>();
-            
+
             lock (userConnectionMapLocker)
             {
                 if (userNotification.ContainsKey(userId))
@@ -126,7 +126,7 @@ namespace WebSites.Panles.Hubs
                     var messages = userNotification[userId];
                     if (messages != null)
                     {
-                        notifications = userNotification[userId].Where(p=>p.status).ToList();
+                        notifications = userNotification[userId].Where(p => p.status).ToList();
                     }
                 }
             }
@@ -136,9 +136,9 @@ namespace WebSites.Panles.Hubs
 
         public long GetId()
         {
-            lock(userConnectionMapLocker)
+            lock (userConnectionMapLocker)
             {
-                if(long.MaxValue>notificationMessageId+1)
+                if (long.MaxValue > notificationMessageId + 1)
                 {
                     notificationMessageId += 1;
                 }
@@ -150,26 +150,36 @@ namespace WebSites.Panles.Hubs
             return notificationMessageId;
         }
 
-        public void RemoveUserNotification(int userId,long messageId)
+        public void RemoveUserNotification(int userId, long messageId)
         {
-            lock(userConnectionMapLocker)
+            lock (userConnectionMapLocker)
             {
-                if(userNotification.ContainsKey(userId))
+                if (userNotification.ContainsKey(userId))
                 {
                     var notifications = userNotification[userId];
-                    if(notifications!=null)
+                    if (notifications != null)
                     {
+
                         foreach (var item in notifications)
                         {
-                            if(item.Id==messageId)
+                            if (item.Id == messageId)
                             {
-                                notifications.Remove(item);
+                                item.status = false;
                             }
                         }
-                        userNotification[userId] = notifications;
+
+                        var items = notifications.Where(p => p.status == true).ToList();
+                        if (items == null || items.Count==0)
+                        {
+                            userNotification[userId] = new List<Models.NotificationMessage>();
+                        }
+                        else
+                        {
+                            userNotification[userId] = items;
+                        }
                     }
                 }
-                
+
             }
         }
 
@@ -189,7 +199,7 @@ namespace WebSites.Panles.Hubs
         {
             lock (userConnectionMapLocker)
             {
-                if (userNotification!=null && userNotification.Count>0)
+                if (userNotification != null && userNotification.Count > 0)
                 {
                     foreach (var item in userNotification.Keys)
                     {
@@ -197,6 +207,24 @@ namespace WebSites.Panles.Hubs
                     }
                 }
             }
+        }
+
+        public void RemoveUser(int userId)
+        {
+            lock (userConnectionMapLocker)
+            {
+                if (userConnectionMap.ContainsKey(userId))
+                {
+                    userConnectionMap.Remove(userId);
+                }
+
+                if (userDetailMap.ContainsKey(userId))
+                {
+                    userDetailMap.Remove(userId);
+                }
+            }
+
+            return;
         }
     }
 }

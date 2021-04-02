@@ -21,13 +21,13 @@
                 url: "/CallCenter/Customer/Delete",
                 data: postData,
                 beforeSend: function () {
-                    $("#global-loader").show();
+                    showBehsamLoading();
                 },
                 complete: function () {
-                    $("#global-loader").hide();
+                    hideBehsamLoading();
                 },
                 success: function (data) {
-                    $("#global-loader").hide();
+                    hideBehsamLoading();
                     if (data.isSuccess == true) {
                         swal.fire(
                             'موفق!',
@@ -47,8 +47,10 @@
                     }
                 },
                 error: function (request, status, error) {
-                    $("#global-loader").hide();
+                    hideBehsamLoading();
                     console.log(request);
+                    console.log(status);
+                    console.log(error);
                 }
 
             });

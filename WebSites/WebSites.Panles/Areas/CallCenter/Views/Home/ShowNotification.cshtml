@@ -16,11 +16,15 @@
         <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">
             @string.Format("شما {0} پیام خوانده نشده دارید", Model.Count.ToString("#,#"))
         </p>
+        <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">
+            پیغامهای شما با کلیک حذف می شود
+        </p>
     </div>
     <div class="main-notification-list Notification-scroll">
         @foreach (var item in Model)
         {
-            <a class="d-flex p-3 border-bottom" href="#">
+            string notId = "notif" + item.Id;
+            <a class="d-flex p-3 border-bottom" href="#" onclick="DeleteNotification('@item.Id')" id="@notId">
 
                 @if (item.messageType == 1)
                 {
@@ -48,13 +52,13 @@
                 }
                 else
                 {
-                    <div class="notifyimg bg-gray">
+                    <div class="notifyimg">
                         <i class="fa fa-envelope-open text-gray fa-2x" aria-hidden="true"></i>
                     </div>
                 }
 
                 <div class="mr-3 bg-error">
-                    <h5 class="notification-label mb-1">@item.messageHead</h5>
+                    <h5 class="notification-label mb-1 border-bottom">@item.messageHead</h5>
                     <div class="notification-subtext">
                         @item.messageBody <br />
                         @item.CreateDate.GetPersianFullDateTime()
@@ -67,9 +71,9 @@
             </a>
         }
     </div>
-    <div class="dropdown-footer">
-        @*<a href="#">مشاهده همه</a>*@
-    </div>
+    @*<div class="dropdown-footer">
+        <a href="#">مشاهده همه</a>
+    </div>*@
 }
 else
 {
@@ -83,8 +87,35 @@ else
     <div class="main-notification-list Notification-scroll">
 
     </div>
-    <div class="dropdown-footer">
-        @*<a href="#">مشاهده همه</a>*@
-    </div>
+    @*<div class="dropdown-footer">
+        <a href="#">مشاهده همه</a>
+    </div>*@
 }
 
+<script>
+    function DeleteNotification(id) {
+        var postData = {
+            'id': id
+        };
+
+        $.ajax(
+            {
+                url: '/CallCenter/Home/DeleteNotification',
+                type: 'post',
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                success: function (result, status, err) {
+
+                    showNotification();
+                },
+                error: function (request, status, error) {
+                    console.log(request);
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                }
+            });
+    }
+</script>

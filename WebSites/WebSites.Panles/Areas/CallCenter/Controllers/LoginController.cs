@@ -89,5 +89,25 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
 
         }
+
+        [HttpGet(Name = "LogOut")]
+        public IActionResult LogOut()
+        {
+            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+            
+            HttpContext.Session.Set<Models.UserModel>("User",null);
+            HttpContext.User = null;
+            
+            _userConnectionManager.RemoveUser(user.UserId);
+
+            return Redirect("/Callcenter/Login/Login");
+        }
+
+        [HttpPost]
+        public IActionResult ShowUserProfile()
+        {
+            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+            return View(user);
+        }
     }
 }
