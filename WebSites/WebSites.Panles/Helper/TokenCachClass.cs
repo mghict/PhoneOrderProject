@@ -15,5 +15,6 @@ namespace WebSites.Panles.Helper
         public static CancellationTokenSource CatgoryToken = new CancellationTokenSource();
         public static CancellationTokenSource CatgoryProductToken = new CancellationTokenSource();
         public static CancellationTokenSource CachedOrderToken = new CancellationTokenSource();
+        public static CancellationTokenSource CachedMessageToken = new CancellationTokenSource();
     }
 }

@@ -15,8 +15,8 @@ $(document).ready(function () {
         newestOnTop: true,
         positionClass: "toast-top-left",
         closeButton: true,
-        timeOut: 0,
-        extendedTimeOut: 0,
+        timeOut: 2000,
+        extendedTimeOut: 3000,
     };
 
     //doc.on('click', '.toastr-examples a.btn-success', function () {

@@ -50,10 +50,10 @@ namespace WebSites.Panles.Helper.Authorize
                 string ControllerName = descriptor.ControllerName;
 
                 Models.UserModel user =
-                    context.HttpContext.Items["User"] as Models.UserModel;
+                    context.HttpContext.Session.Get<Models.UserModel>("User");
 
                 AuthorizeService Service =
-                    context.HttpContext.Items["AuthorizeService"] as AuthorizeService;
+                    context.HttpContext.Session.Get<AuthorizeService>("AuthorizeService");
 
                 if(Service==null)
                 {
@@ -101,7 +101,7 @@ namespace WebSites.Panles.Helper.Authorize
 
                     context.Result = new
                         Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new RouteValueDictionary(new { controller = "Home", action = "Index" }));
+                            new RouteValueDictionary(new { controller = "Home", action = "AccessDenied" }));
                     return;
                 }
 
@@ -117,7 +117,7 @@ namespace WebSites.Panles.Helper.Authorize
                 //    };
                 context.Result = new
                         Microsoft.AspNetCore.Mvc.RedirectToRouteResult(
-                            new RouteValueDictionary(new { controller = "Home", action = "Index" }));
+                            new RouteValueDictionary(new { controller = "Home", action = "AccessDenied" }));
                 return;
             }
 

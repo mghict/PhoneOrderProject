@@ -98,9 +98,15 @@ namespace WebSites.Panles.Services.Authorize
                 PhoneNumber=phoneNumber,
                 Token=model.Token
             };
-
+            
+            
             SetContext.HttpContext.Items["User"]=user ;
+            SetContext.HttpContext.Session.Set<Models.UserModel>("User", user);
             SetContext.HttpContext.Items["AuthorizeService"] = this;
+            SetContext.HttpContext.Session.Set<AuthorizeService>("AuthorizeService", this);
+
+            SetContext.HttpContext.Session.Set<Models.UserModel>("User", user);
+            SetContext.HttpContext.Session.Set<AuthorizeService>("AuthorizeService", this);
         }
 
         public FluentResult Login(long userName,string password,int appllicationId)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using WebSites.Panles.Helper;
 
 namespace WebSites.Panles.Services.Base
 {
-    public class ServiceBase
+    public class ServiceBase:ControllerBase
     {
         protected ICacheService CacheService;
         protected ServiceCaller ServiceCaller;

@@ -13,18 +13,14 @@ function showBehsamLoading() {
     
 }
 
-
 function hideBehsamLoading() {
     
     $('.page-loader').fadeOut();
 
 }
 
-
-
-
-
 $(document).ready(function () {
+
     $('.page-loader').hide();
 
     $(document).ajaxStart(function () {
@@ -36,5 +32,26 @@ $(document).ready(function () {
     })
 
 });
+
+function showNotification() {
+    $.ajax(
+        {
+            url: '/CallCenter/Home/ShowNotification',
+            type: 'post',
+            data: {},
+            beforeSend: function(){
+                showBehsamLoading();
+            },
+            success: function (result, status, err) {
+                $('#divShowNotification').html(result);
+            },
+            error: function (request, status, error) {
+                console.log(request);
+            },
+            complete:  function(){
+                hideBehsamLoading();
+            }
+        });
+}
 
 

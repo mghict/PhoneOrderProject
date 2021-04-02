@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BehsamFramework.DTOs.OutPutDTOs.TokenDTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebSites.Panles.Helper;
 
@@ -20,13 +21,20 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         private Services.Authorize.IAuthorizeService AuthorizeService;
+        private readonly Hubs.IUserConnectionManager _userConnectionManager;
 
         private readonly ServiceCaller<Token> Service;
+        private readonly IHttpContextAccessor ContextAccessor;
+
         public LoginController(IHttpClientFactory _clientFactory,
-            Services.Authorize.IAuthorizeService authorizeService)
+            Services.Authorize.IAuthorizeService authorizeService,
+            Hubs.IUserConnectionManager UserConnectionManager,
+            IHttpContextAccessor contextAccessor)
         {
             Service = new ServiceCaller<Token>(_clientFactory);
             AuthorizeService = authorizeService;
+            _userConnectionManager = UserConnectionManager;
+            ContextAccessor = contextAccessor;
         }
 
 
@@ -54,20 +62,20 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
             try
             {
-                //var result = Service.PostDataWithValue("login", model);
-                //var ret = result.Result;
-                //if (ret != null && ret.IsSuccess == true && ret.Value != null)
-                //{
-                //    BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token token =
-                //        (BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token)ret.Value;
-                //    Service.SetToken(token.TokenValue);
-                //    ret.WithSuccess("ورود موفق");
-                //}
-
-                //return Json(ret);
+                
                 long uname = Convert.ToInt64(userName);
                 var result=AuthorizeService.Login(uname, password, applicationId);
-
+                if(result.IsSuccess)
+                {
+                    Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+                    var connection = HttpContext.Connection.Id;
+                    if (user != null)
+                    {
+                        _userConnectionManager.KeepUserConnection(user.UserId, connection,user);
+                        _userConnectionManager.SetNotification(user.UserId, new Models.NotificationMessage { messageBody = "Hi mostafa" });
+                    }
+                    
+                }
                 return Json(new { IsSuccess = result.IsSuccess, Errors = result.GetErrors() });
 
             }

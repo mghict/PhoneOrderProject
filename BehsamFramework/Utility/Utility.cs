@@ -89,6 +89,19 @@ namespace BehsamFramework.Util
 
             return " روز "+day+" -- مورخ " + pdt;
         }
+        public static string GetPersianFullDateTime(this DateTime dt)
+        {
+            var day = dt.GetDayOfWeekPersianStr();
+            var pdt = dt.GetPersianDate();
+
+            return " روز " + day + " -- مورخ " + pdt+" "+dt.GetTime();
+        }
+        public static string GetTime(this DateTime dt)
+        {
+            var pdt = new System.Globalization.PersianCalendar();
+
+            return dt.TimeOfDay.ToString("HH:mm:ss");
+        }
 
         public static decimal ToDecimal(this string input)
         {

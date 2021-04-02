@@ -27,6 +27,7 @@ namespace WebSites.Panles
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddSession();
 
             services.AddMvc().AddNewtonsoftJson().AddJsonOptions(options=>
             {
@@ -40,6 +41,8 @@ namespace WebSites.Panles
             services.AddRazorPages();
             services.AddProgressiveWebApp();
             services.AddSignalR();
+
+            services.AddHttpContextAccessor();
 
             //Class BuiltIn Dependency
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -68,10 +71,13 @@ namespace WebSites.Panles
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
 
+            services.AddSingleton<Hubs.IUserConnectionManager, Hubs.UserConnectionManager>();
+
+            services.AddScoped<Services.Notification.INotificationService, Services.Notification.NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,7 +113,8 @@ namespace WebSites.Panles
 
             app.UseAuthorization();
 
-            
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
 
@@ -134,7 +141,7 @@ namespace WebSites.Panles
                 endpoints.MapRazorPages();
 
                 endpoints.MapHub<Hubs.NotificationHub>("/NotificationHub");
-
+                endpoints.MapHub<Hubs.NotificationUserHub>("/NotificationUserHub");
             });
 
             

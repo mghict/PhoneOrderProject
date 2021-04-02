@@ -23,9 +23,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         private Services.CustomerAddress.IGetCustomerAddressService GetCustomerAddressService;
 
         private Services.IOrderFacad OrderFacad;
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly Services.Notification.INotificationService _notificationService;
         public OrderController(
-            IHubContext<NotificationHub> notificationHubContext,
+            Services.Notification.INotificationService NotificationService,
             Services.IOrderFacad orderFacad,
             Services.Customer.IGetCustomerBySearch getCustomerBySearch,
             Services.Customer.IGetCustomer getCustomer,
@@ -38,7 +38,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             GetCustomer = getCustomer;
             GetCustomerPhone = getCustomerPhone;
             GetCustomerAddressService = getCustomerAddressService;
-            _notificationHubContext = notificationHubContext;
+            _notificationService = NotificationService;
         }
 
         public IActionResult Index()
@@ -344,10 +344,20 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                     CacheService.ClearCache(key);
 
-                    Task.Run(async () =>
+
+
+                    Models.NotificationMessage message = new Models.NotificationMessage()
                     {
-                        await _notificationHubContext.Clients.All.SendAsync("sendToUser", "پیغام", model.OrderCode, 2);
-                    });
+                        messageBody = $"سفارش به شماره {model.OrderCode} در شعبه {model.StoreID} به ثبت رسید",
+                        messageHead = "ثبت سفارش",
+                        messageType = 1,
+                        CreateDate = DateTime.Now,
+                        status = true,
+                        storeId = model.StoreID,
+                        userId = 0
+                    };
+
+                    _notificationService.CreateGeneralNotification(message);
 
                     //return View();
                 }
