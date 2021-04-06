@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace StoreManagment.Application.OrderInfoFeature.Validators
 {
-    public class CreateOrderValidator:FluentValidation.AbstractValidator<Commands.CreateOrderCommand>
+    public class GetSummeryOrderStatusByDateValidator : FluentValidation.AbstractValidator<Commands.GetSummeryOrderStatusByDate>
     {
-        public CreateOrderValidator():base()
+        public GetSummeryOrderStatusByDateValidator():base()
         {
-            RuleFor(current => current.OrderInfo)
+            RuleFor(current => current.StartDate)
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
@@ -19,7 +19,7 @@ namespace StoreManagment.Application.OrderInfoFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
-            RuleFor(current => current.OrderInfo.Detail)
+            RuleFor(current => current.EndDate)
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
@@ -27,27 +27,14 @@ namespace StoreManagment.Application.OrderInfoFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
-            RuleFor(current => current.OrderInfo.Items)
+            RuleFor(current => current.StoreId)
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
                 .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
-
-            RuleFor(current => current.OrderInfo.Items)
-                .Must(list=>list.Count>0)
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
-
-            RuleFor(current => current.OrderInfo)
-                .SetValidator(new OrderInfoValidator());
-
-            RuleFor(current => current.OrderInfo.Detail)
-                .SetValidator(new OrderDetailValidator());
-
-            RuleForEach(current => current.OrderInfo.Items)
-                .SetValidator(new OrderItemValidator());
         }
     }
+
 }

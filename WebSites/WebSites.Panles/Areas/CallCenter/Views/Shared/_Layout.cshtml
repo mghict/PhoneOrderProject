@@ -110,6 +110,18 @@
                         <li><a class="slide-item" href="/CallCenter/Order/OrderRegister">ثبت سفارش</a></li>
                     </ul>
                 </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="index-2.html#">
+                        <span class="side-menu__label">گزارشات</span>
+                        <i class="angle fe fe-chevron-down"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        <li><a class="slide-item border-bottom m-2" href="/CallCenter/Report/GetOrderDetailsByUserId">سفارشات کاربر</a></li>
+                        <li><a class="slide-item border-bottom m-2" href="/CallCenter/Report/GetSummeryOrderByDate">خلاصه وضعیت سفارشات</a></li>
+                        <li><a class="slide-item border-bottom m-2" href="/CallCenter/Report/GetSummeryOrderStatusByDate">خلاصه وضعیت سفارشات براساس فروشگاه</a></li>
+
+                    </ul>
+                </li>
             </ul>
         </div>
     </aside>
@@ -209,7 +221,7 @@
 
                         </div>
                         <div class="dropdown nav-item">
-                            <a class="new nav-link" 
+                            <a class="new nav-link"
                                onclick="logout()">
                                 <i class="fa fa-power-off text-danger " aria-hidden="true"></i>
                             </a>
@@ -231,7 +243,7 @@
     <!-- Sidebar-right-->
     <div class="sidebar sidebar-left sidebar-animate">
         <div class="panel panel-primary card mb-0 box-shadow" id="divUserProfile">
-            
+
         </div>
     </div>
     <!--/Sidebar-right-->
@@ -608,6 +620,8 @@
     <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
     <script src="~/notification.js"></script>
     <script src="~/usernotification.js"></script>
-
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
+    </script>
 </body>
 </html>

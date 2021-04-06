@@ -61,7 +61,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is not found!.
+        ///   Looks up a localized string similar to {0} یافت نشد.
         /// </summary>
         public static string DataNotFound {
             get {
@@ -70,7 +70,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} is not found!.
+        ///   Looks up a localized string similar to {PropertyName} یافت نشد.
         /// </summary>
         public static string DataNotFoundFluent {
             get {
@@ -79,7 +79,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error Done!!.
+        ///   Looks up a localized string similar to خطا رخ داد.
         /// </summary>
         public static string ErrorDone {
             get {
@@ -88,7 +88,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is required!.
+        ///   Looks up a localized string similar to مقدار {0} الزامی می باشد.
         /// </summary>
         public static string ErrorRequired {
             get {
@@ -97,7 +97,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} is required!.
+        ///   Looks up a localized string similar to مقدار {PropertyName} الزامی می باشد.
         /// </summary>
         public static string ErrorRequiredFluent {
             get {
@@ -106,7 +106,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} value is not valid.
+        ///   Looks up a localized string similar to مقدار {PropertyName} معتبر نیست.
         /// </summary>
         public static string ErrorValueFluent {
             get {
@@ -115,7 +115,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} is longger than Max Value.
+        ///   Looks up a localized string similar to مقدار {PropertyName} در محدوده پذیرش نیست.
         /// </summary>
         public static string MaxLenghtFluent {
             get {
@@ -124,7 +124,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} is lower than Min Value.
+        ///   Looks up a localized string similar to مقدار {PropertyName} در محدوده پذیرش نیست.
         /// </summary>
         public static string MinLenghtFluent {
             get {
@@ -133,7 +133,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password and Confirm Password must be Equal.
+        ///   Looks up a localized string similar to رمز و تایید رمز باید مشابه باشد.
         /// </summary>
         public static string PasswordNotEqualConfirm {
             get {
@@ -142,7 +142,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Well Done!!.
+        ///   Looks up a localized string similar to {0} با موفقیت انجام شد.
         /// </summary>
         public static string SuccessDone {
             get {
@@ -151,7 +151,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Inserted Successfully..
+        ///   Looks up a localized string similar to {0} با موفقیت انجام شد.
         /// </summary>
         public static string SuccessInsert {
             get {
@@ -160,7 +160,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UserName or Password NotFound!!.
+        ///   Looks up a localized string similar to نام کاربری/رمزعبور صحیح نمی باشد.
         /// </summary>
         public static string UserNamePassNotFound {
             get {

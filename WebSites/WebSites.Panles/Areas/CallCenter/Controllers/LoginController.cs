@@ -93,13 +93,19 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpGet(Name = "LogOut")]
         public IActionResult LogOut()
         {
-            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
-            
-            HttpContext.Session.Set<Models.UserModel>("User",null);
-            HttpContext.User = null;
-            
-            _userConnectionManager.RemoveUser(user.UserId);
+            try
+            {
+                Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
 
+                HttpContext.Session.Set<Models.UserModel>("User", null);
+                HttpContext.User = null;
+
+                _userConnectionManager.RemoveUser(user.UserId);
+            }
+            catch
+            {
+
+            }
             return Redirect("/Callcenter/Login/Login");
         }
 

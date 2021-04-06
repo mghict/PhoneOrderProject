@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "GetSummeryOrderByDate";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+}
+@using BehsamFramework.Util
+<div class="card ">
+    <div class="card-header">
+        <h5>لیست سفارشات</h5>
+    </div>
+    <div class="card-body">
+        <div class="row row-sm">
+            <div class="col col-md-12 col-sm-12 col-lg-12">
+                <div class="input-group col-md-5 mb-2">
+                    <label> تاریخ شروع </label>
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                        </div>
+                    </div>
+                    <input id="txtStartDate" class="form-control fc-datepicker" placeholder="ماه / روز / سال" type="text"
+                           value="@DateTime.Now.ToPersianDate()" >
+                </div>
+                <div class="input-group col-md-5 mb-2">
+                    <label> تاریخ پایان </label>
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="typcn typcn-calendar-outline tx-24 lh--9 op-6"></i>
+                        </div>
+                    </div>
+                    <input id="txtEndDate" class="form-control fc-datepicker" placeholder="ماه / روز / سال" type="text"
+                           value="@DateTime.Now.ToPersianDate()" >
+                </div>
+
+                <input type="button" class="btn btn-outline-danger btn-rounded" value=" نمایش اطلاعات " onclick="callSearch()" />
+
+            </div>
+        </div>
+        <hr />
+        <div class="col col-md-12 col-sm-12 col-lg-12" id="divProfile">
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        function callSearch() {
+
+            $('#divProfile').html('');
+
+            var sDate = $("#txtStartDate").val();
+            var eDate = $("#txtEndDate").val();
+
+            if (sDate == null || sDate.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            if (eDate == null || eDate.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            var postData = {
+                'startDate': sDate,
+                'endDate':eDate
+            };
+
+            $.ajax(
+                {
+                    url: '/CallCenter/Report/GetSummeryOrderByDate',
+                    type: 'post',
+                    data: postData,
+                    beforeSend: function () {
+                        showBehsamLoading();
+                    },
+                    success: function (result, status, err) {
+                        $('#divProfile').html(result);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request);
+                    },
+                    complete: function () {
+                        hideBehsamLoading();
+                    }
+                });
+
+        }
+    </script>
+}

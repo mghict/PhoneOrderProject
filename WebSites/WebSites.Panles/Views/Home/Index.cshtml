@@ -2,20 +2,25 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center row">
-        <div class="card ml-2 mr-2" style="width: 15rem;height:17rem">
-            <img class="card-img-top img-thumbnail" src="~/admin/Content/assets/img/ownimage/CallCenter.jpg" style="width:15rem;height:13rem;" alt="Card image cap">
-                
-            </img>
-            <div class="card-body">
-                <a href="/CallCenter/Login/Login" class="card-link">پنل کال سنتر</a>
+    <div class="text-center row" style="align-content:center;align-items:center">
+        <div class="col-lg-4 col-md-4">
+            <div class="card mg-b-20 text-center">
+                <div class="card-body">
+                    <img src="~/admin/Content/assets/img/svgicons/note_taking.svg" alt="" class="wd-40p text-danger" style="height:100px;">
+                    <h5 class="mg-b-10 mg-t-15 tx-18">پنل کال سنتر</h5>
+                    <a href="/CallCenter/Login/Login" class="text-danger btn btn-warning btn-block ">برای ورود کلیک کنید</a>
+                </div>
             </div>
         </div>
 
-        <div  class="card ml-2 mr-2" style="width: 15rem;height:17rem">
-            <img class="card-img-top img-thumbnail" src="~/admin/Content/assets/img/ownimage/Admin.png" style="width:15rem;height:13rem;" alt="Card image cap">
-            <div class="card-body">
-                <a href="/Admin/Home/Index" class="card-link">پنل مدیریت</a>
+        <div class="col-lg-4 col-md-4">
+            <div class="card mg-b-20 text-center">
+                <div class="card-body" >
+                    <img src="~/admin/Content/assets/img/svgicons/imac.svg" alt="" class="wd-40p" style="height:100px;">
+                    <h5 class="mg-b-10 mg-t-15 tx-18">پنل مدیریت</h5>
+                    <a href="/CallCenter/Home/Index" class="text-danger btn btn-warning btn-block ">برای ورود کلیک کنید</a>
+                </div>
             </div>
         </div>
+
     </div>

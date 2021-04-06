@@ -28,6 +28,34 @@ namespace BehsamFramework.Util
             return user.UserName;
         }
 
+        public static DateTime ToDateTime(this string input)
+        {
+            var pdt = new System.Globalization.PersianCalendar();
+
+            int year, month, day;
+
+            if (input.Substring(0,4).Contains("/"))
+            {
+                year = Convert.ToInt32(input.Substring(6, 4));
+                month = Convert.ToInt32(input.Substring(3, 2));
+                day = Convert.ToInt32(input.Substring(0, 2));
+            }
+            else
+            {
+                year = Convert.ToInt32(input.Substring(0, 4));
+                month = Convert.ToInt32(input.Substring(5, 2));
+                day = Convert.ToInt32(input.Substring(8, 2));
+            }
+            
+            try
+            {
+                return pdt.ToDateTime(year,month,day,0,0,0,0);
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
+        }
         public static string ToPersianDate(this DateTime input)
         {
             var pdt =new  System.Globalization.PersianCalendar();
@@ -103,6 +131,15 @@ namespace BehsamFramework.Util
             return pdt.GetHour(dt).ToString("00") + ":" +
                    pdt.GetMinute(dt).ToString("00") + ":" +
                    pdt.GetSecond(dt).ToString("00");
+        }
+
+        public static string GetTime(this TimeSpan dt)
+        {
+            var pdt = new System.Globalization.PersianCalendar();
+
+            return dt.Hours.ToString("00") + ":" +
+                   dt.Minutes.ToString("00") + ":" +
+                   dt.Seconds.ToString("00");
         }
 
         public static decimal ToDecimal(this string input)

@@ -118,47 +118,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DataNotFound" xml:space="preserve">
-    <value>{0} is not found!</value>
+    <value>{0} یافت نشد</value>
     <comment>14</comment>
   </data>
   <data name="DataNotFoundFluent" xml:space="preserve">
-    <value>{PropertyName} is not found!</value>
+    <value>{PropertyName} یافت نشد</value>
     <comment>14</comment>
   </data>
   <data name="ErrorDone" xml:space="preserve">
-    <value>Error Done!!</value>
+    <value>خطا رخ داد</value>
   </data>
   <data name="ErrorRequired" xml:space="preserve">
-    <value>{0} is required!</value>
+    <value>مقدار {0} الزامی می باشد</value>
     <comment>10,11</comment>
   </data>
   <data name="ErrorRequiredFluent" xml:space="preserve">
-    <value>{PropertyName} is required!</value>
+    <value>مقدار {PropertyName} الزامی می باشد</value>
     <comment>10,11</comment>
   </data>
   <data name="ErrorValueFluent" xml:space="preserve">
-    <value>{PropertyName} value is not valid</value>
+    <value>مقدار {PropertyName} معتبر نیست</value>
     <comment>13</comment>
   </data>
   <data name="MaxLenghtFluent" xml:space="preserve">
-    <value>{PropertyName} is longger than Max Value</value>
+    <value>مقدار {PropertyName} در محدوده پذیرش نیست</value>
     <comment>9</comment>
   </data>
   <data name="MinLenghtFluent" xml:space="preserve">
-    <value>{PropertyName} is lower than Min Value</value>
+    <value>مقدار {PropertyName} در محدوده پذیرش نیست</value>
     <comment>8</comment>
   </data>
   <data name="PasswordNotEqualConfirm" xml:space="preserve">
-    <value>Password and Confirm Password must be Equal</value>
+    <value>رمز و تایید رمز باید مشابه باشد</value>
     <comment>12</comment>
   </data>
   <data name="SuccessDone" xml:space="preserve">
-    <value>{0} Well Done!!</value>
+    <value>{0} با موفقیت انجام شد</value>
   </data>
   <data name="SuccessInsert" xml:space="preserve">
-    <value>{0} Inserted Successfully.</value>
+    <value>{0} با موفقیت انجام شد</value>
   </data>
   <data name="UserNamePassNotFound" xml:space="preserve">
-    <value>UserName or Password NotFound!!</value>
+    <value>نام کاربری/رمزعبور صحیح نمی باشد</value>
   </data>
 </root>

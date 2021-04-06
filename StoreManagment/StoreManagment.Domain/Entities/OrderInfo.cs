@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using System;
+
 namespace StoreManagment.Domain.Entities
 {
     [Dapper.Contrib.Extensions.Table("CustomerPreOrderInfoTbl")]
@@ -26,7 +27,6 @@ namespace StoreManagment.Domain.Entities
         public int PaymentType { get; set; }
         public long AddressId { get; set; }
         public float StoreId { get; set; }
-
 
 
         [Dapper.Contrib.Extensions.Write(false)]

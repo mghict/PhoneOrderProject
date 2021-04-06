@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WebSites.Panles.Helper;
 using WebSites.Panles.Services.Order;
+using WebSites.Panles.Services.Reports;
 using WebSites.Panles.Services.Store;
 using WebSites.Panles.Services.TimeSheet;
 
@@ -20,7 +21,9 @@ namespace WebSites.Panles.Services
         Store.IGetProductByCategoryAndStoreService GetProductByCategoryAndStoreService { get; }
         Order.ICachedOrderService CachedOrderService { get; }
         Order.ICreateOrderService CreateOrderService { get; }
+        Reports.IReportsService ReportsService { get; }
     }
+
     public class OrderFacad :Base.ServiceBase, IOrderFacad
     {
         private Services.TimeSheet.IGetTimeSheetService getTimeSheetService;
@@ -30,6 +33,7 @@ namespace WebSites.Panles.Services
         private IGetProductByCategoryAndStoreService getProductByCategoryAndStoreService;
         private ICachedOrderService cachedOrderService;
         private ICreateOrderService _CreateOrderService;
+        private IReportsService _ReportsService;
         public OrderFacad(ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
         {
         }
@@ -55,5 +59,8 @@ namespace WebSites.Panles.Services
 
         public ICreateOrderService CreateOrderService =>
             _CreateOrderService= _CreateOrderService?? new Order.CreateOrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        public IReportsService ReportsService =>
+            _ReportsService= _ReportsService?? new Reports.ReportsService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

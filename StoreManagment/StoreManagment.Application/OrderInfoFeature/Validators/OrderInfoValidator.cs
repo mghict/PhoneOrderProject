@@ -57,5 +57,4 @@ namespace StoreManagment.Application.OrderInfoFeature.Validators
            
         }
     }
-
 }

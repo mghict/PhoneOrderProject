@@ -29,7 +29,12 @@ namespace WebSites.Panles
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc(options => options.EnableEndpointRouting = false);
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2);
+                options.Cookie.HttpOnly = true;
+                
+            });
 
             services.TryAddEnumerable(ServiceDescriptor.Transient
             <IApplicationModelProvider, Helper.MyApplicationProvider>());

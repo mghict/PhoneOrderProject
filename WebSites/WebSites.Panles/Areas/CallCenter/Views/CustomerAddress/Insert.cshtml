@@ -5,50 +5,71 @@
     Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="main-content-label mg-b-5">
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="main-content-label mg-b-5">
 
-                </div>
-                <form data-parsley-validate="" action="/CallCenter/CustomerAddress/Insert" method="post">
-                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
-                    <div class="row">
-                        <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
-                            <div class="card card-body pd-20 pd-md-40 border shadow-none">
-                                <h5 class="card-title mg-b-20">ثبت آدرس</h5>
-                                <hr class="bg-danger border-danger" />
-                                <div class="form-group">
-                                    <div asp-validation-summary="All" class="text-danger"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input asp-for="CustomerId" name="CustomerId" type="hidden">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="AddressType" class="control-label"></label>
-                                    <select asp-for="AddressType" name="AddressType" id="cmbAddressType" class="form-control select2" required asp-items="ViewBag.AddressType">
-                                        <option selected value="" data-select2-id="">انتخاب کنید</option>
-                                    </select>
-                                    <span asp-validation-for="AddressType" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="AddressValue" class="control-label"></label>
-                                    <textarea value="" name="AddressValue" class="form-control" placeholder="آدرس مشتری" required="" type="text">
+            </div>
+            <form data-parsley-validate="" action="/CallCenter/CustomerAddress/Insert" method="post">
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                        <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                            <h5 class="card-title mg-b-20">ثبت آدرس</h5>
+                            <hr class="bg-danger border-danger" />
+                            <div class="form-group">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="CustomerId" name="CustomerId" type="hidden">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="AddressType" class="control-label"></label>
+                                <select asp-for="AddressType" name="AddressType" id="cmbAddressType" class="form-control select2" required asp-items="ViewBag.AddressType">
+                                    <option selected value="" data-select2-id="">انتخاب کنید</option>
+                                </select>
+                                <span asp-validation-for="AddressType" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="AddressValue" class="control-label"></label>
+                                <textarea value="" name="AddressValue" class="form-control" placeholder="آدرس مشتری" required="" type="text">
                                         
                                     </textarea>
-                                    <span asp-validation-for="AddressValue" class="text-danger"></span>
-                                </div>
-                                <input type="submit" class="btn btn-outline-danger btn-rounded  btn-block" value="ثبت اطلاعات" />
+                                <span asp-validation-for="AddressValue" class="text-danger"></span>
                             </div>
+                            <input type="submit" class="btn btn-outline-danger btn-rounded  btn-block" value="ثبت اطلاعات" />
                         </div>
                     </div>
-                </form>
-            </div>
-
-            <div class="card-footer">
-                <a href="@ViewBag.ReturnUrl"> برگشت </a>
-            </div>
+                </div>
+            </form>
         </div>
-
+        <div id="map-canvas" style="width:100%;height:500px;"></div>
+        <div class="card-footer">
+            <a href="@ViewBag.ReturnUrl"> برگشت </a>
+        </div>
     </div>
 
+</div>
+
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
+</script>
+
+<script>
+
+
+    function initialize() {
+
+
+        var mapOptions = {
+            center: new google.maps.LatLng(35.6967329, 51.2097308),
+            zoom: 10,
+        };
+
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>

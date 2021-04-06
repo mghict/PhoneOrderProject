@@ -5,6 +5,11 @@
     Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
 }
 
+@*<input type="hidden" id="txtLat" value="@Model.Latitude.ToString(CultureInfo.InvariantCulture)"/>
+<input type="hidden" id="txtLon" value="@Model.Longitude.ToString(CultureInfo.InvariantCulture)" />
+
+<input type="button" value="نمایش" onclick="init()" />*@
+
 <div class="col-lg-12 col-md-12 col-sm-12">
     <div class="card">
         <div class="card-body">
@@ -46,8 +51,7 @@
                     </div>
                 </div>
             </form>
-            @*<input type="button" class="btn btn-outline-danger btn-rounded  btn-block" value="نمایش آدرس در نقشه"
-                onclick="showLocation('@Model.Latitude', '@Model.Longitude');" />*@
+            <div id="map-canvas" style="width:100%;height:500px;"></div>
         </div>
 
         <div class="card-footer">
@@ -55,3 +59,30 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
+</script>
+
+<script>
+
+
+    function initialize() {
+        var lat = @Model.Latitude.ToString(CultureInfo.InvariantCulture);
+        var lon = @Model.Longitude.ToString(CultureInfo.InvariantCulture);
+
+        alert(lat + ' ' + lon);
+
+        var latF = parseFloat(lat);
+        var lonF = parseFloat(lon);
+
+        var mapOptions = {
+            center: new google.maps.LatLng(latF, lonF),
+            zoom: 10,
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
