@@ -27,6 +27,7 @@
     <Folder Include="Areas\CallCenter\Models\" />
     <Folder Include="wwwroot\admin\Content\assets\img\demo\" />
     <Folder Include="wwwroot\admin\Content\assets\img\photos\" />
+    <Folder Include="wwwroot\js\Common\" />
   </ItemGroup>
 
   <ItemGroup>

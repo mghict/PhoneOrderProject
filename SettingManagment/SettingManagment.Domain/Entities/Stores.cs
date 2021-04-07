@@ -8,7 +8,7 @@ using Dapper;
 
 namespace SettingManagment.Domain.Entities
 {
-    
+
     public class Stores:BehsamFramework.Entity.IEntity<float>
     {
         public Stores()

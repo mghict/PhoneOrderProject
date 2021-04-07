@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SettingManagment.Domain.IRepositories.Store
 {
     public interface IStoreRepository:
-        BehsamFramework.DapperDomain.Base.IRepository<Entities.Stores,float>
+        BehsamFramework.DapperDomain.Base.IRepository<Entities.StoreInfoTbl,float>
     {
     }
 }

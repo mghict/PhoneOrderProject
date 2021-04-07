@@ -23,24 +23,7 @@ namespace StoreManagment.Persistence.Repositories
         public async Task RegisterOrderAsync(OrderInfo entity)
         {
 
-            //using (var transaction = new TransactionScope())
-            //{
-            //    var effect = await db.InsertAsync(entity);
-
-            //    entity.Detail.OrderId = effect;
-
-
-            //    var detailEffect = await db.InsertAsync(entity.Detail);
-
-            //    //foreach (var item in entity.Items)
-            //    //{
-            //    //    item.OrderId = effect;
-            //    //}
-            //    //var itemEffect = await db.InsertAsync(entity.Items);
-
-            //    transaction.Complete();
-
-            //}
+           
 
             db.Open();
 

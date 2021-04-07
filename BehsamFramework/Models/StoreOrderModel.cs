@@ -19,5 +19,6 @@ namespace BehsamFramework.Models
         public string Region { get; set; }
         public string City { get; set; }
         public float Distance { get; set; }
+        public string StatusStr { get; set; }
     }
 }

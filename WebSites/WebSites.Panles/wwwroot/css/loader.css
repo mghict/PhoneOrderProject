@@ -1,9 +1,11 @@
 ﻿.page-loader {
-    width: 300px;
-    height: 300px;
-    position: absolute;
-    top:300px;
-    left:200px;
+    position: fixed;
+    width: 200px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
     z-index: 9999;
 }
 
@@ -25,11 +27,13 @@
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
     .page-loader-xs {
-        width: 300px;
-        height: 300px;
-        position: absolute;
-        top: 200px;
-        left: 200px;
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
         z-index: 9999;
     }
 }
@@ -37,11 +41,13 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .page-loader-sm {
-        width: 300px;
-        height: 300px;
-        position: absolute;
-        top: 200px;
-        left: 250px;
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
         z-index: 9999;
     }
 }
@@ -49,11 +55,13 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
     .page-loader-md {
-        width: 300px;
-        height: 300px;
-        position: absolute;
-        top: 250px;
-        left: 300px;
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
         z-index: 9999;
     }
 }
@@ -61,11 +69,13 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
     .page-loader-lg {
-        width: 300px;
-        height: 300px;
-        position: absolute;
-        top: 400px;
-        left: 400px;
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
         z-index: 9999;
     }
 }
@@ -73,11 +83,13 @@
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
     .page-loader-xl {
-        width: 300px;
-        height: 300px;
-        position: absolute;
-        top: 500px;
-        left: 500px;
+        position: fixed;
+        width: 200px;
+        height: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
         z-index: 9999;
     }
 }

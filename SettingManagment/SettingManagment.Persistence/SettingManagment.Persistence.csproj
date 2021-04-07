@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.SqlBuilder" Version="2.0.78" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\SettingManagment.Domain\SettingManagment.Domain.csproj" />
   </ItemGroup>

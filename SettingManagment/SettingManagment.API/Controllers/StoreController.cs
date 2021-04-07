@@ -166,5 +166,43 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+        #region GetStorePagination
+
+        [HttpPost("GetStorePagination")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.StoreInfoListModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.StoreInfoListModel>>>
+            GetStorePaginationAsync([FromBody] Application.StoreFeature.Commands.StoreInfoPaginationCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.StoreInfoListModel> result =
+                new FluentResults.Result<BehsamFramework.Models.StoreInfoListModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
     }
 }

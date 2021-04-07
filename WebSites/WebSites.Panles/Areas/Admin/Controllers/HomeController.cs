@@ -3,27 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using BehsamFramework.DTOs.OutPutDTOs.TokenDTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using WebSites.Panles.Helper;
 
 namespace WebSites.Panles.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area(areaName:"Admin")]
     public class HomeController : BaseController
     {
-        class modelLogin
-        {
-            public string UserName { get; set; }
-            public string Password { get; set; }
-            public long ApplicationId { get; set; }
-        }
+        
 
-        private readonly ServiceCaller<BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token> Service;
-        public HomeController(IHttpClientFactory _clientFactory)
+        
+        private Services.Authorize.IAuthorizeService AuthorizeService;
+        private readonly Hubs.IUserConnectionManager _userConnectionManager;
+
+
+        public HomeController(
+            Services.Authorize.IAuthorizeService authorizeService,
+            Hubs.IUserConnectionManager UserConnectionManager,
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
-            Service = new ServiceCaller<Token>(_clientFactory);
+            AuthorizeService = authorizeService;
+            _userConnectionManager = UserConnectionManager;
         }
 
         [HttpGet]
@@ -38,83 +44,44 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             return View();
         }
 
-        //[HttpPost("LoginAsync")]
-        //public async Task<IActionResult> LoginAsync(string userName, string password)
-        //{
-        //    long applicationId = 1;
-        //    if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-        //    {
-        //        return await Task.Run(() =>
-        //        {
-        //            return Json(new { IsSuccess = "False", Errors = "اطلاعات وارد شده صحیح نمی باشد" });
-        //        });
 
-        //    }
-
-        //    var model = new modelLogin()
-        //    {
-        //        UserName = userName,
-        //        Password = password,
-        //        ApplicationId = applicationId
-        //    };
-        //    try
-        //    {
-        //        var result = await Service.PostData("login", model);
-
-        //        return await Task.Run(() =>
-        //        {
-        //            return Json(result);
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return await Task.Run(() =>
-        //        {
-        //            return Json(new { IsSuccess = "False", Errors = "خطا \n" + ex.Message });
-        //        });
-        //    }
-
-
-
-
-        //}
-
-        //[HttpPost("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         [HttpPost(Name = "Login")]
         public IActionResult Login(string userName, string password)
         {
-            long applicationId = 1;
+            int applicationId = 1;
+
 
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
             {
-                return Json(new { IsSuccess = "False", Errors = "اطلاعات وارد شده صحیح نمی باشد" });
+                return Json(new { IsSuccess = false, Errors = "اطلاعات وارد شده صحیح نمی باشد" });
             }
 
-            var model = new modelLogin()
-            {
-                UserName = userName,
-                Password = password,
-                ApplicationId = applicationId
-            };
             try
             {
-                var result = Service.PostDataWithValue("login", model);
-                var ret = result.Result;
-                if (ret!=null && ret.IsSuccess==true && ret.Value!=null)
-                {
-                    BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token token =
-                        (BehsamFramework.DTOs.OutPutDTOs.TokenDTO.Token) ret.Value;
-                    Service.SetToken(token.TokenValue);
-                    ret.WithSuccess("ورود موفق");
-                }
 
-                return Json(ret);
+                long uname = Convert.ToInt64(userName);
+                var result = AuthorizeService.Login(uname, password, applicationId);
+                if (result.IsSuccess)
+                {
+                    Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+                    var connection = HttpContext.Connection.Id;
+                    if (user != null)
+                    {
+                        _userConnectionManager.KeepUserConnection(user.UserId, connection, user);
+                    }
+
+                }
+                return Json(new { IsSuccess = result.IsSuccess, Errors = result.GetErrors() });
 
             }
             catch (Exception ex)
             {
-                return Json(new { IsSuccess = "False", Errors = "خطا \n" + ex.Message });
+                return Json(new { IsSuccess = false, Errors = "خطا \n" + ex.Message });
 
             }
 
@@ -123,9 +90,60 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
         }
 
+        [HttpGet(Name = "LogOut")]
+        public IActionResult LogOut()
+        {
+            try
+            {
+                Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+
+                HttpContext.Session.Set("User", (Models.UserModel)null);
+                HttpContext.User = null;
+
+                _userConnectionManager.RemoveUser(user.UserId);
+            }
+            catch
+            {
+
+            }
+            return Redirect("/Admin/Home/Login");
+        }
+
+        [HttpPost]
+        public IActionResult ShowUserProfile()
+        {
+            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+            return View(user);
+        }
+
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        public IActionResult ShowNotification()
+        {
+            Models.UserModel user = this.HttpContext.Session.Get<Models.UserModel>("User");
+            List<Models.NotificationMessage> messages = new List<Models.NotificationMessage>();
+            if (user != null)
+            {
+                messages = _userConnectionManager.GetUserNotification(user.UserId);
+            }
+            return View(messages);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteNotification(long id)
+        {
+            Models.UserModel user = this.HttpContext.Session.Get<Models.UserModel>("User");
+            if (user != null)
+            {
+                _userConnectionManager.RemoveUserNotification(user.UserId, id);
+
+                return Json(new { IsSuccess = true });
+            }
+
+            return Json(new { IsSuccess = false });
         }
     }
 }

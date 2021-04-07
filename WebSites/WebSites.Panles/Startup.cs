@@ -77,7 +77,7 @@ namespace WebSites.Panles
             services.AddScoped<Services.CustomerAddress.IGetAddressByIdService, Services.CustomerAddress.GetAddressByIdService>();
             services.AddScoped<Services.CustomerAddress.IGetCustomerAddressService, Services.CustomerAddress.GetCustomerAddressService>();
             services.AddScoped<Services.Customer.IGetCustomerBySearch, Services.Customer.GetCustomerBySearch>();
-
+            services.AddScoped<Services.Store.IGetStoreInfoPaginationService, Services.Store.GetStoreInfoPaginationService>();
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
 
@@ -149,6 +149,8 @@ namespace WebSites.Panles
 
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+
+                
 
                 endpoints.MapHub<Hubs.NotificationHub>("/NotificationHub");
                 endpoints.MapHub<Hubs.NotificationUserHub>("/NotificationUserHub");

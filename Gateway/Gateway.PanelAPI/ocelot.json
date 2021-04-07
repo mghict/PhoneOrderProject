@@ -480,7 +480,7 @@
     },
     //Setting/{everythings} -> Post -> /Store/{everythings}
     {
-      "DownstreamPathTemplate": "/Store/{everythings}",
+      "DownstreamPathTemplate": "/{everythings}",
       "DownstreamScheme": "http",
       "DownstreamHttpMethod": "Post",
       "DownstreamHostAndPorts": [
@@ -489,7 +489,7 @@
           "Port": 10010
         }
       ],
-      "UpstreamPathTemplate": "/Setting/Store/{everythings}",
+      "UpstreamPathTemplate": "/Setting/{everythings}",
       "UpstreamHttpMethod": [ "Post" ],
       "RouteIsCaseSensitive": false,
       "FileCacheOptions": {
