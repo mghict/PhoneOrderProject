@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib;
 using BehsamFramework.Models;
+using System.Globalization;
 
 namespace SettingManagment.Persistence.Repositories.Store
 {
@@ -25,29 +26,36 @@ namespace SettingManagment.Persistence.Repositories.Store
             var query = "Select APPROX_COUNT_DISTINCT(StoreCode) as StoreCount  FROM dbo.StoreInfoTbl ;";
 
             var builder = new SqlBuilder();
-            builder.Where(" a.AreaID = b.ID ");
-            builder.Where(" b.CityId = c.Id  ");
-            builder.Where(" p.Id = c.ProvinceId ");
+            
 
             if (!string.IsNullOrEmpty(search))
             {
                 float storeId = 0;
-
-                if (float.TryParse(search, out storeId))
+                System.Globalization.NumberStyles style = System.Globalization.NumberStyles.AllowDecimalPoint;
+                System.Globalization.CultureInfo info = System.Globalization.CultureInfo.InvariantCulture;
+                if (float.TryParse(search, style,info, out storeId))
                 {
-                    builder.Where($" (StoreName like '%{search}%' or Round(StoreCode,3)=Round({storeId},3) ) ");
+                    builder.Where($" (a.StoreName like '%{search}%' or Round(a.StoreCode,3)=Round({storeId.ToString(CultureInfo.InvariantCulture)},3) )");
                 }
                 else
                 {
-                    builder.Where($" StoreName like '%{search}%' ");
+                    builder.Where($" a.StoreName like '%{search}%' ");
                 }
 
             }
 
             var qu = builder.AddTemplate("select a.[StoreCode] , a.[StoreName] , a.[StoreAddress], a.[StorePhone]"+
-            ", a.[Latitude] , a.[Longitude] , a.[AreaID], b.AreaName , c.CityName , p.ProvinceName  FROM[PhoneOrderDB].[dbo].[StoreInfoTbl] a,"+
-            " [dbo].[AreaInfoTbl] b,+ [dbo].[CityTbl] c, [dbo].[ProvinceTbl] p  "+
-            "  /**where**/ order by Id OFFSET @PageNumer ROWS FETCH NEXT @PageSize ROWS ONLY");
+            ", a.[Latitude] , a.[Longitude] , a.[AreaID], coalesce(b.AreaName,'') AreaName , coalesce( c.CityName,'')CityName ,coalesce( p.ProvinceName,'') ProvinceName  FROM " +
+            "[PhoneOrderDB].[dbo].[StoreInfoTbl] a " +
+            " left outer join " +
+            "[dbo].[AreaInfoTbl] b " +
+            "on   a.AreaID = b.ID " +
+            "left outer join " +
+            "[dbo].[CityTbl] c " +
+            "on b.CityId = c.Id " +
+            " left outer join [dbo].[ProvinceTbl] p  " +
+            " on p.Id = c.ProvinceId " +
+            "  /**where**/ order by a.StoreCode OFFSET @PageNumer ROWS FETCH NEXT @PageSize ROWS ONLY");
             query += qu.RawSql;
 
             pageNumber = pageNumber - 1;

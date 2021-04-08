@@ -16,9 +16,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
     [Area(areaName:"Admin")]
     public class HomeController : BaseController
     {
-        
-
-        
+               
         private Services.Authorize.IAuthorizeService AuthorizeService;
         private readonly Hubs.IUserConnectionManager _userConnectionManager;
 
@@ -32,13 +30,13 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             _userConnectionManager = UserConnectionManager;
         }
 
-        [HttpGet]
+        
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet( Name = "AdminPanel")]
+        [HttpGet]
         public IActionResult AdminPanel()
         {
             return View();
@@ -50,7 +48,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost(Name = "Login")]
+        [HttpPost]
         public IActionResult Login(string userName, string password)
         {
             int applicationId = 1;
@@ -90,7 +88,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
         }
 
-        [HttpGet(Name = "LogOut")]
+        [HttpGet]
         public IActionResult LogOut()
         {
             try

@@ -52,5 +52,82 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+        #region UpdateTimeSheet
+
+        [HttpPost("UpdateTimeSheet")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            UpdateTimeSheetAsync([FromBody] Application.TimeSheetFeature.Commands.UpdateTimeSheetCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetAllTimeSheet
+
+        [HttpPost("GetAllTimeSheet")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.StoreTimeSheetTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.StoreTimeSheetTbl>>>>
+            GetAllTimeSheetAsync([FromBody] Application.TimeSheetFeature.Commands.GetAllTimeSheetCommand command)
+        {
+
+            FluentResults.Result<List<Domain.Entities.StoreTimeSheetTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.StoreTimeSheetTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
     }
 }

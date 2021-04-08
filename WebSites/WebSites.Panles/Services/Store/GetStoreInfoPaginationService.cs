@@ -31,10 +31,10 @@ namespace WebSites.Panles.Services.Store
                                                     TokenCachClass.StoreToken
                                                     );
 
-            if (ret == null)
+            if (ret == null || ret.RowCount==0 || ret.Stores==null ||ret.Stores.Count==0)
             {
                 ret = await GetStores(page, pageSize, searchKey);
-                ret = await CacheService.GetOrSetAsync(
+                await CacheService.GetOrSetAsync(
                                                         ret,
                                                         key,
                                                         TimeSpan.FromHours(8),

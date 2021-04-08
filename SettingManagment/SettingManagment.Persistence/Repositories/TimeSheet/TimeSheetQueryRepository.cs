@@ -3,13 +3,12 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib;
-using System.Linq;
 using BehsamFramework.Util;
 
 namespace SettingManagment.Persistence.Repositories.TimeSheet
 {
     public class TimeSheetQueryRepository :
-        BehsamFramework.DapperDomain.QueryRepository<Domain.Entities.TimeSheet, int>,
+        BehsamFramework.DapperDomain.QueryRepository<Domain.Entities.StoreTimeSheetTbl, byte>,
         Domain.IRepositories.TimeSheet.ITimeSheetQueryRepository
     {
         protected internal TimeSheetQueryRepository(IDbConnection _db) : base(_db)

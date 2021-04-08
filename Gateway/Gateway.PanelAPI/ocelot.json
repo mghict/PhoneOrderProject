@@ -493,7 +493,7 @@
       "UpstreamHttpMethod": [ "Post" ],
       "RouteIsCaseSensitive": false,
       "FileCacheOptions": {
-        "TtlSeconds": 600
+        "TtlSeconds": 1
       },
       "QoSOptions": {
         "ExceptionsAllowedBeforeBreaking": 5,

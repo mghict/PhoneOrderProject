@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SettingManagment.Domain.IRepositories.TimeSheet
 {
     public interface ITimeSheetRepository:
-        BehsamFramework.DapperDomain.Base.IRepository<Entities.TimeSheet,int>
+        BehsamFramework.DapperDomain.Base.IRepository<Entities.StoreTimeSheetTbl,byte>
     {
     }
 }

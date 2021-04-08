@@ -13,5 +13,8 @@ namespace SettingManagment.Persistence
         Domain.IRepositories.Store.IStoreQueryRepository StoreQueryRepository { get; }
         Domain.IRepositories.Category.ICategoryQueryRepository CategoryQueryRepository { get; }
         Domain.IRepositories.Product.IProductQueryRepository ProductQueryRepository { get; }
+        Domain.IRepositories.TimeSheet.ICustomeTimeSheetQueryRepository CustomeTimeSheetQueryRepository { get; }
+        Domain.IRepositories.InActive.IInActiveQueryRepository InActiveQueryRepository { get; }
+        Domain.IRepositories.InActive.IStoreInActiveQueryRepository StoreInActiveQueryRepository { get; }
     }
 }

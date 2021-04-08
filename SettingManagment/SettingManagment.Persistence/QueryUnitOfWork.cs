@@ -1,6 +1,7 @@
 ﻿using BehsamFramework.DapperDomain;
 using SettingManagment.Domain.IRepositories;
 using SettingManagment.Domain.IRepositories.Category;
+using SettingManagment.Domain.IRepositories.InActive;
 using SettingManagment.Domain.IRepositories.Product;
 using SettingManagment.Domain.IRepositories.Store;
 using SettingManagment.Domain.IRepositories.TimeSheet;
@@ -35,5 +36,19 @@ namespace SettingManagment.Persistence
         private IProductQueryRepository _productQueryRepository;
         public IProductQueryRepository ProductQueryRepository =>
             _productQueryRepository = _productQueryRepository ?? new Repositories.Product.ProductQueryRepository(IDbConnection);
+
+
+        private ICustomeTimeSheetQueryRepository _CustomeTimeSheetQueryRepository;
+        public ICustomeTimeSheetQueryRepository CustomeTimeSheetQueryRepository =>
+            _CustomeTimeSheetQueryRepository = _CustomeTimeSheetQueryRepository ?? new Repositories.TimeSheet.CustomeTimeSheetQueryRepository(IDbConnection);
+
+        private IInActiveQueryRepository _InActiveQueryRepository;
+        public IInActiveQueryRepository InActiveQueryRepository =>
+            _InActiveQueryRepository = _InActiveQueryRepository ?? new Repositories.InActive.InActiveQueryRepository(IDbConnection);
+
+
+        private IStoreInActiveQueryRepository _StoreInActiveQueryRepository;
+        public IStoreInActiveQueryRepository StoreInActiveQueryRepository =>
+            _StoreInActiveQueryRepository = _StoreInActiveQueryRepository ?? new Repositories.InActive.StoreInActiveQueryRepository(IDbConnection);
     }
 }

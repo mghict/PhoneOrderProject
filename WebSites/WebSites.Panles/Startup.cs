@@ -80,8 +80,11 @@ namespace WebSites.Panles
             services.AddScoped<Services.Store.IGetStoreInfoPaginationService, Services.Store.GetStoreInfoPaginationService>();
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
+            services.AddScoped<Services.ISettingFacad, Services.SettingFacad>();
 
-            //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+
+
+
 
             services.AddTransient<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
 
@@ -127,6 +130,7 @@ namespace WebSites.Panles
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
 
                 endpoints.MapControllerRoute(
                     name: "default",
@@ -147,10 +151,11 @@ namespace WebSites.Panles
 
 
 
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute(); 
+                
                 endpoints.MapRazorPages();
 
-                
+
 
                 endpoints.MapHub<Hubs.NotificationHub>("/NotificationHub");
                 endpoints.MapHub<Hubs.NotificationUserHub>("/NotificationUserHub");

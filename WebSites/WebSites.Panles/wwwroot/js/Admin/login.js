@@ -20,10 +20,10 @@ function login() {
         url: '/Admin/Home/Login',
         data: model,
         beforeSend: function () {
-            $("#global-loader").show();
+            showBehsamLoading();
         },
         complete: function () {
-            $("#global-loader").hide();
+            hideBehsamLoading();
         },
         success: function (res) {
             if (res.isSuccess == true) {

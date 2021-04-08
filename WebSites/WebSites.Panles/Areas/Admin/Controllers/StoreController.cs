@@ -13,13 +13,27 @@ namespace WebSites.Panles.Areas.Admin.Controllers
     [Area("Admin")]
     public class StoreController : BaseController
     {
-        public StoreController(IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        private readonly Services.Store.IGetStoreInfoPaginationService storeInfoPaginationService;
+        public StoreController(
+            Services.Store.IGetStoreInfoPaginationService StoreInfoPaginationService,
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
+            storeInfoPaginationService = StoreInfoPaginationService;
         }
 
-        public IActionResult Index(int page = 1,int pagesize = 20,string searchKey="")
+        public async Task< IActionResult > Index(int page = 1,int pagesize = 20,string searchKey="")
         {
-            return View();
+            var model=await storeInfoPaginationService.GetStoresAsync(page, pagesize, searchKey);
+            if(model==null)
+            {
+                model = new BehsamFramework.Models.StoreInfoListModel();
+                model.RowCount = 0;
+                model.Stores = new List<BehsamFramework.Models.StoreOrderModel>();
+            }
+
+            return View(model);
         }
+
+        
     }
 }
