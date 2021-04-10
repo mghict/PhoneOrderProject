@@ -61,7 +61,7 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} یافت نشد.
+        ///   Looks up a localized string similar to اطلاعات یافت نشد.
         /// </summary>
         public static string DataNotFound {
             get {

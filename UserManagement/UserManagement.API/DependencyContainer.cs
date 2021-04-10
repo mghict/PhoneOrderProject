@@ -23,11 +23,11 @@ namespace UserManagement
             
 
 			services.AddMediatR
-                (typeof(UserManagment.Application.UsersFeature.Commands.CreateUserCommand).GetTypeInfo().Assembly);
+                (typeof(UserManagment.Application.ApplicationInfo.Commands.GetAllApplicationInfoCommand).GetTypeInfo().Assembly);
             // **************************************************
-			services.AddAutoMapper(typeof(UserManagment.Application.UsersFeature.MappingProfile).GetTypeInfo().Assembly);
+			services.AddAutoMapper(typeof(UserManagment.Application.ApplicationInfo.MappingProfile).GetTypeInfo().Assembly);
 			// **************************************************
-			services.AddTransient<UserManagment.Persistence.IUnitOfWork, UserManagment.Persistence.UnitOfWork>(current =>
+			services.AddSingleton<UserManagment.Persistence.IUnitOfWork, UserManagment.Persistence.UnitOfWork>(current =>
 			{
 				string databaseConnectionString =
 					configuration
@@ -55,7 +55,7 @@ namespace UserManagement
 			});
 			// **************************************************
             // **************************************************
-			services.AddTransient<UserManagment.Persistence.IQueryUnitOfWork, UserManagment.Persistence.QueryUnitOfWork>(current =>
+			services.AddSingleton<UserManagment.Persistence.IQueryUnitOfWork, UserManagment.Persistence.QueryUnitOfWork>(current =>
 			{
 				string databaseConnectionString =
 					configuration

@@ -81,7 +81,7 @@ namespace WebSites.Panles
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
             services.AddScoped<Services.ISettingFacad, Services.SettingFacad>();
-
+            services.AddScoped<Services.IUserFacad, Services.UserFacad>();
 
 
 

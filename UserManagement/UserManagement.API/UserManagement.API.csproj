@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentResults" Version="2.3.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
@@ -13,6 +14,8 @@
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
     <ProjectReference Include="..\..\UserManagment\UserManagment.Application\UserManagment.Application.csproj" />
+    <ProjectReference Include="..\..\UserManagment\UserManagment.Domain\UserManagment.Domain.csproj" />
+    <ProjectReference Include="..\..\UserManagment\UserManagment.Persistence\UserManagment.Persistence.csproj" />
   </ItemGroup>
 
 

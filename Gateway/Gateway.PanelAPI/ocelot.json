@@ -561,6 +561,60 @@
         "PeriodTimespan": 1,
         "Limit": 100
       }
+    },
+    //Users/{everythings} -> Post -> /{everythings}
+    {
+      "DownstreamPathTemplate": "/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10003
+        }
+      ],
+      "UpstreamPathTemplate": "/Users/{everythings}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 100
+      }
+    },
+    //Users/{everythings} -> Get -> /{everythings}
+    {
+      "DownstreamPathTemplate": "/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10003
+        }
+      ],
+      "UpstreamPathTemplate": "/Users/{everythings}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 100
+      }
     }
   ]
 }

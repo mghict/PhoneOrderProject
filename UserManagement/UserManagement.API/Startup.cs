@@ -31,6 +31,21 @@ namespace UserManagement.API
                 options.JsonSerializerOptions.Converters.Add(new BehsamFramework.Utility.TimeSpanToStringConverter());
             });
 
+            services.AddSingleton<BehsamFramework.Util.Security.ISecurePasswordHasherHelper, BehsamFramework.Util.Security.SecurePasswordHasherHelper>(current=> {
+                string _Iterate =
+                    Configuration
+                    .GetSection(key: "Iterate")
+                    .Value;
+
+                string _PassFormat =
+                    Configuration
+                    .GetSection(key: "PassFormat")
+                    .Value;
+                return new BehsamFramework.Util.Security.SecurePasswordHasherHelper(_PassFormat, Convert.ToInt32( _Iterate));
+
+
+            });
+
             services.ConfigureServices
                 (configuration: Configuration); 
         }

@@ -1,0 +1,66 @@
+﻿@model List<WebSites.Panles.Models.Authorize.ApplicationInfoModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست سیستم ها
+        </h6>
+
+        <br />
+        <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+            <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="1">#</th>
+                        <th rowspan="1" colspan="1">نام</th>
+                        <th rowspan="1" colspan="1">وضعیت</th>
+                        <th rowspan="1" colspan="1">عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        var row = 1;
+
+
+                        @foreach (var app in Model)
+                        {
+                            <tr role="row">
+                                <td>@row </td>
+                                <td>@app.ApplicationName</td>
+                                <td>
+                                    @if (app.Status)
+                                    {
+                                        <span>فعال</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span>غیرفعال</span>
+                                    }
+                                </td>
+                                <td>
+                                        <a href="/Admin/Application/Update?Id=@app.Id" class="d-inline"
+                                           data-toggle="tooltip" data-placement="bottom" title="ویرایش">
+                                            <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
+                                        </a>
+
+                                    </td>
+                            </tr>
+
+                            row++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
