@@ -1,4 +1,5 @@
 ﻿using BehsamFramework.DapperDomain;
+using UserManagment.Domain.IRepositories.ApplicationInfo;
 using UserManagment.Domain.IRepositories.RolesInfo;
 using UserManagment.Domain.IRepositories.UserInfo;
 using UserManagment.Domain.IRepositories.UsersRolesInfo;
@@ -25,5 +26,9 @@ namespace UserManagment.Persistence
 
         public IUsersRolesRepository UsersRolesRepository =>
             _usersRolesRepository = _usersRolesRepository ?? new UsersRolesInfoRepository(IDbConnection);
+
+        private IApplicationInfoRepository _applicationInfoRepository;
+        public IApplicationInfoRepository ApplicationInfoRepository =>
+            _applicationInfoRepository = _applicationInfoRepository ?? new Repositories.ApplicationInfo.ApplicationInfoRepository(IDbConnection);
     }
 }

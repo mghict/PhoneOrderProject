@@ -1,4 +1,5 @@
 ﻿using BehsamFramework.DapperDomain;
+using UserManagment.Domain.IRepositories.ApplicationInfo;
 using UserManagment.Domain.IRepositories.RolesInfo;
 using UserManagment.Domain.IRepositories.UserInfo;
 using UserManagment.Domain.IRepositories.UsersRolesInfo;
@@ -15,6 +16,7 @@ namespace UserManagment.Persistence
         private IUserInfoQueryRepository _userQueryRepository;
         private IRoleQueryRepository _roleQueryRepository;
         private IUsersRolesQueryRepository _usersRolesQueryRepository;
+        private IApplicationInfoQueryRepository _applicationInfoQueryRepository;
         public QueryUnitOfWork(Options options) : base(options)
         {
         }
@@ -27,5 +29,8 @@ namespace UserManagment.Persistence
 
         public IUsersRolesQueryRepository UsersRolesQueryRepository =>
             _usersRolesQueryRepository = _usersRolesQueryRepository ?? new UsersRolesInfoQueryRepository(IDbConnection);
+
+        public IApplicationInfoQueryRepository ApplicationInfoQueryRepository =>
+            _applicationInfoQueryRepository = _applicationInfoQueryRepository ?? new Repositories.ApplicationInfo.ApplicationInfoQueryRepository(IDbConnection);
     }
 }

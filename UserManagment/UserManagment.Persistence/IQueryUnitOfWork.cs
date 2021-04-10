@@ -11,5 +11,6 @@ namespace UserManagment.Persistence
         Domain.IRepositories.UserInfo.IUserInfoQueryRepository UserQueryRepository { get; }
         Domain.IRepositories.RolesInfo.IRoleQueryRepository RoleQueryRepository { get; }
         Domain.IRepositories.UsersRolesInfo.IUsersRolesQueryRepository UsersRolesQueryRepository { get; }
+        Domain.IRepositories.ApplicationInfo.IApplicationInfoQueryRepository ApplicationInfoQueryRepository { get; }
     }
 }
