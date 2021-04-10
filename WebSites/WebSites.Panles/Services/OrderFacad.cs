@@ -22,6 +22,8 @@ namespace WebSites.Panles.Services
         Order.ICachedOrderService CachedOrderService { get; }
         Order.ICreateOrderService CreateOrderService { get; }
         Reports.IReportsService ReportsService { get; }
+        Store.IGetProductsService ProductsService { get;}
+        Store.ICategoryService CategoryService { get; }
     }
 
     public class OrderFacad :Base.ServiceBase, IOrderFacad
@@ -62,5 +64,13 @@ namespace WebSites.Panles.Services
 
         public IReportsService ReportsService =>
             _ReportsService= _ReportsService?? new Reports.ReportsService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private IGetProductsService _ProductsService;
+        public IGetProductsService ProductsService =>
+            _ProductsService= _ProductsService ?? new Store.GetProductsService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private ICategoryService _CategoryService;
+        public ICategoryService CategoryService =>
+            _CategoryService= _CategoryService ?? new Store.CategoryService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

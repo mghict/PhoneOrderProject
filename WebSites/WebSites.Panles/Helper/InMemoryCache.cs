@@ -373,8 +373,8 @@ namespace WebSites.Panles.Helper
         }
         public async Task<T> GetOrSetAsync<T>(T input, string cacheKey, TimeSpan duration, TimeSpan durationIdel, CacheItemPriority priority = CacheItemPriority.Low, CancellationTokenSource token = null)
         {
-            return await Task.Run(() =>
-            {
+            //return await Task.Run(() =>
+            //{
                 T ret = input;
 
                 if (token == null)
@@ -420,7 +420,7 @@ namespace WebSites.Panles.Helper
                 }
 
                 return ret;
-            });
+            //});
 
         }
         public T GetOrSet<T>(T input, string cacheKey, TimeSpan duration, TimeSpan durationIdel, CacheItemPriority priority = CacheItemPriority.Low, CancellationTokenSource token = null, Func<T> getItemCallback = null)

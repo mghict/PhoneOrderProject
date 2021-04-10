@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WebSites.Panles.Helper;
 using WebSites.Panles.Services.InActive;
+using WebSites.Panles.Services.Store;
 using WebSites.Panles.Services.TimeSheet;
 
 namespace WebSites.Panles.Services
@@ -15,6 +16,8 @@ namespace WebSites.Panles.Services
         TimeSheet.IGetTimeSheetService GetTimeSheetService { get; }
         TimeSheet.ITimeSheetService TimeSheetService { get; }
         InActive.IInActive InActiveService { get; }
+        Store.ICategoryService CategoryService { get; }
+        Store.IProductService ProductService { get; }
     }
     public class SettingFacad :Base.ServiceBase, ISettingFacad
     {
@@ -35,5 +38,14 @@ namespace WebSites.Panles.Services
         private IInActive _InActiveService;
         public IInActive InActiveService =>
             _InActiveService= _InActiveService?? new InActive.InActiveService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private ICategoryService _CategoryService;
+        public ICategoryService CategoryService =>
+            _CategoryService= _CategoryService ?? new CategoryService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        
+        private IProductService _ProductService;
+        public IProductService ProductService =>
+            _ProductService = _ProductService?? new Store.ProductService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

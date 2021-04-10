@@ -20,8 +20,8 @@ namespace CustomerManagment.Persistence.Repositories.CustomerInfo
 
         public async Task<CustomerInfoListModel> GetAllByPageingAndSearch(int pageNumber, int pageSize, string search)
         {
-            var query = "Select APPROX_COUNT_DISTINCT(Id) as CustomerCount  FROM dbo.CustomerInfoTbl ;";
-
+            //var query = "Select COUNT(Id) as CustomerCount  FROM dbo.CustomerInfoTbl ;";
+            var query = "Select COUNT(Id) as CustomerCount  FROM dbo.CustomerInfoTbl ;";
             var builder = new SqlBuilder();    
             if (!string.IsNullOrEmpty(search))
             {

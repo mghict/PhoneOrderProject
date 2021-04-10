@@ -1,0 +1,115 @@
+﻿@model BehsamFramework.Models.CategoriesModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, LazZiya.TagHelpers
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int PageNumber = 1;
+    int PageSize = 20;
+    int.TryParse(Context.Request.Query["page"], out PageNumber);
+    int.TryParse(Context.Request.Query["pagesize"], out PageSize);
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست دسته بندی ها
+        </h6>
+
+        <br />
+        <form action="/Admin/Category/Index" method="get" class="form-search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="جستجو براساس نام دسته بندی یا نام پدر" name="searchkey">
+                <div class="input-group-append">
+                    <button class="btn btn-light" type="submit">
+                        <i class="ti-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <br />
+        <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+            <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="1">#</th>
+                        <th rowspan="1" colspan="1">کد دسته بندی</th>
+                        <th rowspan="1" colspan="1">نام دسته بندی</th>
+                        <th rowspan="1" colspan="1">کد پدر</th>
+                        <th rowspan="1" colspan="1">نام پدر</th>
+                        <th rowspan="1" colspan="1">وضعیت</th>
+                        @*<th rowspan="1" colspan="1">عملیات</th>*@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Categories != null)
+                    {
+                        var row = ((PageNumber <= 0 ? 1 : PageNumber) - 1) * (PageSize == 0 ? 20 : PageSize) + 1;
+
+
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <tr role="row">
+                                <td>@row </td>
+                                <td>@cat.Id.ToString(CultureInfo.InvariantCulture)</td>
+                                <td>@cat.CategoryName</td>
+                                <td>@cat.ParentId.ToString(CultureInfo.InvariantCulture)</td>
+                                <td>@cat.ParentName</td>
+                                <td>
+                                    @if (cat.Status == 0)
+                                    {
+                                        <span>غیرفعال</span>
+                                    }
+                                    else if (cat.Status == 1)
+                                    {
+                                        <span>فعال</span>
+                                    }
+                                    else
+                                    {
+                                        <span>نامشخص</span>
+                                    }
+                                </td>
+                                @*<td>
+                                    <a href="/Admin/Store/StoreInActive?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="ثبت تعطیلی">
+                                        <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
+                                    </a>
+
+                                </td>*@
+                            </tr>
+
+                            row++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination pagination-rounded float-left">
+            <nav aria-label="Page navigation example" class="mb-3">
+                <paging total-records="@Model.RowCount.ToInt()"
+                        page-no="@PageNumber==0?1:PageNumber"
+                        page-size="@PageSize==0?20:PageSize"
+                        show-prev-next="true"
+                        show-total-pages="false"
+                        show-total-records="false"
+                        show-page-size-nav="false"
+                        show-first-numbered-page="true"
+                        show-last-numbered-page="true"
+                        query-string-key-page-no="page"
+                        query-string-key-page-size="pagesize"
+                        query-string-value="@@(Request.QueryString.Value)"
+                        gap-size="2">
+                </paging>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+

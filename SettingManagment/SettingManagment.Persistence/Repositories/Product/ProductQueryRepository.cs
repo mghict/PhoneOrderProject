@@ -18,6 +18,57 @@ namespace SettingManagment.Persistence.Repositories.Product
         {
         }
 
+        public async Task<ProductsModel> GetProductAll(string searchKey = "", int pageNumber = 0, int pageSize = 20)
+        {
+            var query = " exec dbo.[GetProductAll] @ProdName,@PageNumber,@PageSize ";
+
+            var param = new
+            {
+                @ProdName= searchKey,
+                @PageNumber = pageNumber,
+                @PageSize = pageSize
+            };
+
+            ProductsModel lst = new ProductsModel();
+            lst.Products = new List<ProductShowModel>();
+
+            using (var list = await db.QueryMultipleAsync(query, param))
+            {
+                lst.RowCount = list.ReadFirst<long>();
+                var temp = list.Read<ProductShowModel>().ToList();
+                lst.Products.AddRange(temp);
+
+            }
+
+            return lst;
+        }
+
+        public async Task<ProductsModel> GetProductAllByStore(float storeId, string searchKey = "", int pageNumber = 0, int pageSize = 20)
+        {
+            var query = " exec dbo.[GetProductByStore] @StoreId,@ProdName,@PageNumber,@PageSize ";
+
+            var param = new
+            {
+                @StoreId=storeId,
+                @ProdName = searchKey,
+                @PageNumber = pageNumber,
+                @PageSize = pageSize
+            };
+
+            ProductsModel lst = new ProductsModel();
+            lst.Products = new List<ProductShowModel>();
+
+            using (var list = await db.QueryMultipleAsync(query, param))
+            {
+                lst.RowCount = list.ReadFirst<long>();
+                var temp = list.Read<ProductShowModel>().ToList();
+                lst.Products.AddRange(temp);
+
+            }
+
+            return lst;
+        }
+
         public async Task<List<ProductShowModel>> GetProductByCatAndStoreAsync(float catId, float storeId)
         {
             
@@ -48,6 +99,33 @@ namespace SettingManagment.Persistence.Repositories.Product
             var entity =await db.QueryAsync<ProductShowModel>(query,param);
 
             return entity.ToList();
+        }
+
+        public async Task<ProductsModel> GetProducts(float storeId, string searchKey = "", float catId = 0,int pageNumber=0,int pageSize=20)
+        {
+            var query = " exec dbo.GetProducts @StoreId,@ProdName,@CatId,@PageNumber,@PageSize ";
+
+            var param = new
+            {
+                @StoreId = storeId,
+                @CatId = catId,
+                @PageNumber = pageNumber,
+                @PageSize = pageSize,
+                @ProdName=searchKey
+            };
+
+            ProductsModel lst = new ProductsModel();
+            lst.Products = new List<ProductShowModel>();
+
+            using (var list = await db.QueryMultipleAsync(query, param))
+            {
+                lst.RowCount = list.ReadFirst<long>();
+                var temp = list.Read<ProductShowModel>().ToList();
+                lst.Products.AddRange(temp);
+
+            }
+
+            return lst;
         }
     }
 }

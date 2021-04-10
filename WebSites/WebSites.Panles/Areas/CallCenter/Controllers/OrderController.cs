@@ -131,12 +131,11 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         {
             DateTime requestDate = DateTime.Now;
 
-            //var data = await OrderFacad.GetStoreOrderService.GetStores(startTime, endTime, requestDate, customerId);
-
             ViewBag.CustomerId = customerId;
             ViewBag.AddressId = address;
             ViewBag.StartTime = startTime;
             ViewBag.EndTime = endTime;
+
             ViewBag.StoreId = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}", storeId);
 
             return View();
@@ -161,15 +160,12 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpPost]
-        public  IActionResult ShowProduct(string catId,string storeId)
+        public  IActionResult ShowProduct(string storeId, string catId,int pageNumber=0,int pageSize=20)
         {
             decimal cid= catId.ToDecimal();
             decimal sid = storeId.ToDecimal();
 
-            cid = 1695.199M;
-            sid = 323.199M;
-
-            var model = OrderFacad.GetProductByCategoryAndStoreService.Execute(cid, sid).Result;
+            var model = OrderFacad.ProductsService.Execute(cid, sid,pageNumber,pageSize).Result;
             return View(model);
         }
 

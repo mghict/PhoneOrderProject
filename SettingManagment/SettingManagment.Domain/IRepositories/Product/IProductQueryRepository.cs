@@ -12,5 +12,9 @@ namespace SettingManagment.Domain.IRepositories.Product
         Task<List<BehsamFramework.Models.ProductShowModel>> GetProductByCatAndStoreAsync(float catId, float storeId);
 
         Task<List<BehsamFramework.Models.ProductShowModel>> GetProductByCatgoryAsync(float catId);
+
+        Task<BehsamFramework.Models.ProductsModel> GetProducts(float storeId, string searchKey = "", float catId = 0, int pageNumber = 0, int pageSize = 20);
+        Task<BehsamFramework.Models.ProductsModel> GetProductAll(string searchKey="", int pageNumber = 0, int pageSize = 20);
+        Task<BehsamFramework.Models.ProductsModel> GetProductAllByStore(float storeId, string searchKey = "", int pageNumber = 0, int pageSize = 20);
     }
 }

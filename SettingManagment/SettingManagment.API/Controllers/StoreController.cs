@@ -167,6 +167,158 @@ namespace SettingManagment.API.Controllers
 
         #endregion
 
+        #region GetProducts
+
+        [HttpPost("GetProducts")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.ProductsModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.ProductsModel>>>
+            GetProductsAsync([FromBody] Application.CustomerValuesFeature.Commands.GetProductsCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.ProductsModel> result =
+                new FluentResults.Result<BehsamFramework.Models.ProductsModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
+        #region GetProductsAll
+
+        [HttpPost("GetProductsAll")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.ProductsModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.ProductsModel>>>
+            GetProductsAllAsync([FromBody] Application.CustomerValuesFeature.Commands.GetProductsAllCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.ProductsModel> result =
+                new FluentResults.Result<BehsamFramework.Models.ProductsModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
+        #region GetProductsAllByStore
+
+        [HttpPost("GetProductsAllByStore")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.ProductsModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.ProductsModel>>>
+            GetProductsAllByStoreAsync([FromBody] Application.CustomerValuesFeature.Commands.GetProductsAllByStoreCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.ProductsModel> result =
+                new FluentResults.Result<BehsamFramework.Models.ProductsModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
+        #region GetCategories
+
+        [HttpPost("GetCategories")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.CategoriesModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.ProductsModel>>>
+            GetCategoriesAsync([FromBody] Application.CustomerValuesFeature.Commands.GetCategoriesCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.CategoriesModel> result =
+                new FluentResults.Result<BehsamFramework.Models.CategoriesModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
         #region GetStorePagination
 
         [HttpPost("GetStorePagination")]

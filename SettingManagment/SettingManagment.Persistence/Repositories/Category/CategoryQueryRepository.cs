@@ -18,6 +18,44 @@ namespace SettingManagment.Persistence.Repositories.Category
         {
         }
 
+        public async Task<CategoriesModel> GetCategoryAllAsync(string catName = "", int pageNumber = 0, int pageSize = 20)
+        {
+            var param =
+                new
+                {
+                    @CatName = catName,
+                    @PageNumber = pageNumber,
+                    @PageSize = pageSize
+                };
+
+            var query = "exec [dbo].[GetCategories] @CatName,@PageNumber,@PageSize";
+
+            var model = new CategoriesModel()
+            {
+                RowCount = 0,
+                Categories = new List<CategoryShowModel>()
+            };
+            try
+            {
+                using (var lst = await db.QueryMultipleAsync(query, param))
+                {
+                    model.RowCount = lst.ReadFirst<long>();
+                    var temp = lst.Read<CategoryShowModel>().ToList();
+                    model.Categories.AddRange(temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                model = new CategoriesModel()
+                {
+                    RowCount = 0,
+                    Categories = new List<CategoryShowModel>()
+                };
+            }
+
+            return model;
+        }
+
         public async Task<List<CategoryShowModel>> GetCategoryByParentAsync(float id)
         {
             var queryParent = "select * FROM [dbo].[CategoryInfoTbl] where(ParentID = 0 or ParentID is null) and id> 0";

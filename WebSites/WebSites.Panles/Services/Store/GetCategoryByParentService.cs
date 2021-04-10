@@ -77,7 +77,4 @@ namespace WebSites.Panles.Services.Store
             return model.Value;
         }
     }
-
-
-
 }

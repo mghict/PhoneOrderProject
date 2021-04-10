@@ -39,7 +39,16 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var model = await _settingFacad.InActiveService.GetById(id);
+            var entity = await _settingFacad.InActiveService.GetById(id);
+            
+            var model = new Models.InActive.InActiveActivity()
+            {
+                Id = entity.Id,
+                Status = entity.Status,
+                Title = entity.Title,
+                FromDate = entity.FromDate.ToPersianDate(),
+                ToDate=entity.ToDate.ToPersianDate()
+            };
 
             return View(model);
         }

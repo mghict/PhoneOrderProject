@@ -10,5 +10,6 @@ namespace SettingManagment.Domain.IRepositories.Category
         BehsamFramework.DapperDomain.Base.IQueryRepository<Entities.CategoryInfoTbl,float>
     {
         Task<List<BehsamFramework.Models.CategoryShowModel>> GetCategoryByParentAsync(float id);
+        Task<BehsamFramework.Models.CategoriesModel> GetCategoryAllAsync(string catName="",int pageNumber=0,int pageSize=20);
     }
 }
