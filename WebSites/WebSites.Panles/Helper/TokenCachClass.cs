@@ -19,5 +19,6 @@ namespace WebSites.Panles.Helper
         public static CancellationTokenSource StoreToken = new CancellationTokenSource();
         public static CancellationTokenSource InActiveToken = new CancellationTokenSource();
         public static CancellationTokenSource Product = new CancellationTokenSource();
+        public static CancellationTokenSource Page = new CancellationTokenSource();
     }
 }

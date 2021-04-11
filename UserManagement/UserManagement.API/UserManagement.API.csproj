@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AccessManagment\AccessManagment.Application\AccessManagment.Application.csproj" />
+    <ProjectReference Include="..\..\AccessManagment\AccessManagment.Domain\AccessManagment.Domain.csproj" />
+    <ProjectReference Include="..\..\AccessManagment\AccessManagment.Persistence\AccessManagment.Persistence.csproj" />
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
-    <ProjectReference Include="..\..\UserManagment\UserManagment.Application\UserManagment.Application.csproj" />
-    <ProjectReference Include="..\..\UserManagment\UserManagment.Domain\UserManagment.Domain.csproj" />
-    <ProjectReference Include="..\..\UserManagment\UserManagment.Persistence\UserManagment.Persistence.csproj" />
   </ItemGroup>
 
 

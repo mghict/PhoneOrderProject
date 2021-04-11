@@ -11,7 +11,6 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
-		<ProjectReference Include="..\UserManagment.Domain\UserManagment.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
-    <ProjectReference Include="..\UserManagment.Persistence\UserManagment.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

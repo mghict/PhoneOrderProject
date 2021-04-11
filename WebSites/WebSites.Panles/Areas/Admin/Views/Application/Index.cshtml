@@ -46,12 +46,15 @@
                                     }
                                 </td>
                                 <td>
-                                        <a href="/Admin/Application/Update?Id=@app.Id" class="d-inline"
-                                           data-toggle="tooltip" data-placement="bottom" title="ویرایش">
-                                            <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
-                                        </a>
-
-                                    </td>
+                                    <a href="/Admin/Application/Update?Id=@app.Id" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="ویرایش">
+                                        <i class="fa fa-credit-card  text-danger m-2" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="/Admin/Application/AppPages?appId=@app.Id" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="مشاهده صفحات">
+                                        <i class="fa fa-info-circle text-info m-2" aria-hidden="true"></i>
+                                    </a>
+                                </td>
                             </tr>
 
                             row++;
