@@ -10,7 +10,7 @@ using WebSites.Panles.Helper;
 
 namespace WebSites.Panles.Areas.Admin.Controllers
 {
-    
+
     public class ApplicationController : BaseController
     {
         private Services.IUserFacad _userFacad;
@@ -300,5 +300,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 return View("UpdatePagesChild", model);
             }
         }
+
+
     }
 }

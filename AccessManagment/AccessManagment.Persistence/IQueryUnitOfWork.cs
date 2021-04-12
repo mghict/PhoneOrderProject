@@ -4,6 +4,8 @@
     {
         Domain.IRepositories.IApplicationInfo.IApplicationInfoQueryRepository ApplicationInfoQueryRepository { get; }
         Domain.IRepositories.IPageInfo.IPageInfoQueryRepository PageInfoQueryRepository { get; }
+        Domain.IRepositories.IRoleInfo.IRoleInfoQueryRepository RoleInfoQueryRepository { get; }
+        Domain.IRepositories.IRolePageAccess.IRolePageAccessQueryRepository RolePageAccessQueryRepository { get; }
     }
 }
 

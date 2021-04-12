@@ -1,0 +1,88 @@
+﻿@model WebSites.Panles.Models.Authorize.PermisionsModelView
+@using System.Linq
+@{
+    ViewData["Title"] = "GetPermisions";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+
+        <div class="card-body">
+            @if (Model != null && Model.Permistions.Count > 0)
+            {
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                        <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                            <h5 class="card-title mg-b-20">ویرایش دسترسی ها: @ViewBag.AppName - @ViewBag.RoleName</h5>
+                            <hr class="bg-danger border-danger" />
+
+                            
+                            <div class="row">
+                                <div class="form-group">
+                                    <!-- col -->
+                                    @for (int i = 0; i < Model.Permistions.Count; i++)
+                                    {
+                                        @if (Model.Permistions[i].ParentId == 0 || Model.Permistions[i].ParentId == null)
+                                        {
+                                            @*@Html.HiddenFor(modelItem => Model.Permistions[i].PageId)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].IsAccess)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].PageAccessId)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].ParentId)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].RoleId)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].ApplicationId)
+                                            @Html.HiddenFor(modelItem => Model.Permistions[i].DisplayName)*@
+
+                                            <ul id="treeview1">
+                                                <li>
+                                                    <a href="#">@Model.Permistions[i].DisplayName</a>
+                                                </li>
+                                                <ul>
+                                                    @for (int j = 0; j < Model.Permistions.Count; j++)
+                                                    {
+                                                        if (Model.Permistions[j].ParentId == Model.Permistions[i].PageId)
+                                                        {
+                                                            @*@Html.HiddenFor(modelItem => Model.Permistions[j].PageId)
+                                                            @Html.HiddenFor(modelItem => Model.Permistions[j].PageAccessId)
+                                                            @Html.HiddenFor(modelItem => Model.Permistions[j].ParentId)
+                                                            @Html.HiddenFor(modelItem => Model.Permistions[j].RoleId)
+                                                            @Html.HiddenFor(modelItem => Model.Permistions[j].ApplicationId)
+                                                            @Html.HiddenFor(modelItem => Model.Permistions[j].DisplayName)*@
+
+                                                            <li>
+                                                                @Html.CheckBoxFor(modelItem => Model.Permistions[j].IsAccess) - @Model.Permistions[j].DisplayName
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </ul>
+                                        }
+                                    }
+
+
+                                </div>
+                            </div>
+                            <hr class="bg-danger border-danger" />
+                            <form action="/Admin/Role/CreatePermisions" method="post" data-parsley-validate="">
+                                <input asp-for="Permistions" class="form-control" type="hidden" />
+                                <div class="form-group">
+                                    <input type="submit" value="ویرایش اطلاعات" class="btn btn-danger btn-block" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-danger">موردی برای ویرایش وجود ندارد</p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a href="/Admin/Role/AppRoles?appId=@ViewBag.AppId">برگشت</a>
+        </div>
+
+    </div>
+</div>
+

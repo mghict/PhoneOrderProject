@@ -1,7 +1,6 @@
-﻿@model List<WebSites.Panles.Models.Authorize.PageInfoModel>
-
+﻿@model List<WebSites.Panles.Models.Authorize.RoleInfoModel>
 @{
-    ViewData["Title"] = "AppPagesChild";
+    ViewData["Title"] = "AppRoles";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,11 +8,10 @@
     <div class="card-body">
         <h6 class="card-title ">
             @*<span class="fa fa-tab"></span>*@
-            لیست المانهای: @ViewBag.AppName - @ViewBag.PageName
+            لیست نقشها: @ViewBag.AppName
         </h6>
-        <br />
         <p>
-            <a class="btn btn-danger btn-rounded" href="/Admin/Application/AddPagesChild?appId=@ViewBag.AppId&pageId=@ViewBag.PageId">  ایجاد المان جدید  </a>
+            <a class="btn btn-danger btn-rounded" href="/Admin/Role/AddRole?appId=@ViewBag.AppId">  ایجاد نقش جدید  </a>
         </p>
         <br />
         <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
@@ -33,13 +31,13 @@
                         var row = 1;
 
 
-                        @foreach (var pg in Model)
+                        @foreach (var role in Model)
                         {
                             <tr role="row">
                                 <td>@row </td>
-                                <td>@pg.DisplayName</td>
+                                <td>@role.RoleName</td>
                                 <td>
-                                    @if (pg.Status)
+                                    @if (role.Status)
                                     {
                                         <span>فعال</span>
 
@@ -50,24 +48,18 @@
                                     }
                                 </td>
                                 <td>
-                                    <a href="/Admin/Application/UpdatePagesChild?pageId=@pg.Id" class="d-inline"
+                                    <a href="/Admin/role/UpdateRole?roleId=@role.Id" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="ویرایش">
                                         <i class="fa fa-credit-card  text-danger m-2" aria-hidden="true"></i>
                                     </a>
-                                    <a href="#" onclick="DeletePage('@pg.Id');" class="d-inline"
-                                       data-toggle="tooltip" data-placement="bottom" title="حذف المان">
+                                    <a href="#" onclick="DeleteRole('@role.Id');" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="حذف">
                                         <i class="fa fa-times  text-danger m-2" aria-hidden="true"></i>
                                     </a>
-
-                                    @*<a href="/CallCenter/CustomerPhone/Index?customerId=@customer.Id" class="d-inline"
-                                           data-toggle="tooltip" data-placement="bottom" title="تلفن مشتری">
-                                            <i class="fa fa-phone-square text-warning" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="/CallCenter/Customer/CustomerProfile?customerId=@customer.Id" class="d-inline"
-                                           data-toggle="tooltip" data-placement="bottom" title="پروفایل مشتری">
-                                            <i class="fa fa-info-circle text-info" aria-hidden="true"></i>
-                                        </a>*@
-
+                                    <a href="/Admin/Role/GetPermisions?roleId=@role.Id" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="دسترسی">
+                                        <i class="fa fa-key  text-danger m-2" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
 
@@ -80,14 +72,15 @@
 
     </div>
     <div class="card-footer">
-        <a class="btn btn-primary" href="/Admin/Application/AppPages?appId=@ViewBag.AppId">برگشت</a>
+        <a class="btn btn-primary" href="/Admin/Application/Index">برگشت</a>
     </div>
 </div>
+
 
 @section Scripts
 {
     <script>
-        function DeletePage(id) {
+        function DeleteRole(id) {
             swal.fire({
                 title: 'حذف',
                 text: "آیا از حذف اطلاعات مطمئن هستید؟",
@@ -107,7 +100,7 @@
                         //contentType: 'application/x-www-form-urlencoded',
                         dataType: 'json',
                         type: "POST",
-                        url: "/Admin/Application/RemovePages",
+                        url: "/Admin/Role/RemoveRole",
                         data: postData,
                         beforeSend: function () {
                             showBehsamLoading();
@@ -132,6 +125,7 @@
                                     data.message,
                                     'warning'
                                 );
+                                
                             }
                         },
                         error: function (request, status, error) {

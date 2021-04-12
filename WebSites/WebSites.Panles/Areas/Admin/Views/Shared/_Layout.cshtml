@@ -36,6 +36,8 @@
     <link href="~/admin/Content/assets/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" />
     <!-- Maps css -->
     <link href="~/admin/Content/assets/plugins/jqvmap/jqvmap.min.css" rel="stylesheet">
+    <!--Internal  treeview -->
+    <link href="~/admin/Content/assets/plugins/treeview/treeview-rtl.css" rel="stylesheet" type="text/css" />
     <!--- Style css -->
     <link href="~/admin/Content/assets/css-rtl/style.css" rel="stylesheet">
     <!--- Dark-mode css -->
@@ -48,12 +50,14 @@
     <link href="~/admin/Content/assets/switcher/demo.css" rel="stylesheet">
     <link href="~/admin/Content/assets/css-rtl/CustomeStyle.css" rel="stylesheet" />
 
+
+
     <!---SweetAlert css-->
     <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="~/css/loader.css" rel="stylesheet" />
 
     <link href="~/js/toaster/toastr.css" rel="stylesheet" />
-    
+
 
 
     @RenderSection("Styles", false)
@@ -149,7 +153,7 @@
                 <div class="main-header-right">
 
                     <div class="nav nav-item  navbar-nav-right ml-auto">
-                       
+
                         <div class="dropdown main-header-notification nav-item ">
                             <a class="new nav-link" href="#" onclick="showNotification()">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class=" pulse"></span>
@@ -158,7 +162,7 @@
 
                             </div>
                         </div>
-                        
+
                         <div class="dropdown nav-item">
                             <a class="new nav-link"
                                onclick="logout()">
@@ -186,10 +190,6 @@
         </div>
     </div>
     <!--/Sidebar-right-->
-
- 
-    
-
     <!-- Back-to-top -->
     <a href="#top" id="back-to-top"><i class="las la-angle-double-up bg-danger"></i></a>
 
@@ -204,6 +204,9 @@
 
     <!-- Ionicons js -->
     <script src="~/admin/Content/assets/plugins/ionicons/ionicons.js"></script>
+
+    <!-- Internal Treeview js -->
+    <script src="~/admin/Content/assets/plugins/treeview/treeview.js"></script> 
 
     <!-- Rating js-->
     <script src="~/admin/Content/assets/plugins/rating/jquery.rating-stars.js"></script>
@@ -299,7 +302,7 @@
     <script src="~/notification.js"></script>
     <script src="~/usernotification.js"></script>
     <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
     </script>
 </body>
 </html>

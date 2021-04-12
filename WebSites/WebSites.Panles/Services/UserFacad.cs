@@ -13,6 +13,7 @@ namespace WebSites.Panles.Services
     {
         Authorize.IApplicationService ApplicationService { get; }
         Authorize.IPageService PageService { get; }
+        Authorize.IRoleService RoleService { get; }
     }
     public class UserFacad : Base.ServiceBase, IUserFacad
     {
@@ -28,5 +29,10 @@ namespace WebSites.Panles.Services
         private IPageService _pageService;
         public IPageService PageService =>
             _pageService= _pageService?? new Authorize.PageService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+
+        private IRoleService _roleService;
+        public IRoleService RoleService =>
+            _roleService= _roleService?? new Authorize.RoleService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

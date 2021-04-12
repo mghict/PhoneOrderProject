@@ -1,5 +1,7 @@
 ﻿using AccessManagment.Domain.IRepositories.IApplicationInfo;
 using AccessManagment.Domain.IRepositories.IPageInfo;
+using AccessManagment.Domain.IRepositories.IRoleInfo;
+using AccessManagment.Domain.IRepositories.IRolePageAccess;
 using BehsamFramework.DapperDomain;
 
 namespace AccessManagment.Persistence
@@ -17,6 +19,16 @@ namespace AccessManagment.Persistence
         private IPageInfoQueryRepository _pageInfoQueryRepository;
         public IPageInfoQueryRepository PageInfoQueryRepository =>
             _pageInfoQueryRepository = _pageInfoQueryRepository ?? new Repositories.PageInfo.PageInfoQueryRepository(IDbConnection);
+
+
+        private IRoleInfoQueryRepository _roleInfoQueryRepository;
+        public IRoleInfoQueryRepository RoleInfoQueryRepository =>
+            _roleInfoQueryRepository = _roleInfoQueryRepository ?? new Repositories.RoleInfo.RoleInfoQueryRepository(IDbConnection);
+
+
+        private IRolePageAccessQueryRepository _rolePageAccessQueryRepository;
+        public IRolePageAccessQueryRepository RolePageAccessQueryRepository =>
+            _rolePageAccessQueryRepository = _rolePageAccessQueryRepository ?? new Repositories.RoleAccessPage.RolePageAccessQueryRepository(IDbConnection);
     }
 }
 
