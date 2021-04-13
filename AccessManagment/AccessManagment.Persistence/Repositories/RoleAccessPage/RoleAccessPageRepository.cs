@@ -20,20 +20,37 @@ namespace AccessManagment.Persistence.Repositories.RoleAccessPage
 
         public async Task CreatePermision(List<RolePagesAccess> input)
         {
-            var query = "exec [dbo].[RolePermisions_Insert] @tbl ";
+            db.Open();
 
-            var lst = input.Select(s => new
+            var isoLevel = System.Data.IsolationLevel.Serializable;
+            using (var transaction = db.BeginTransaction(isoLevel))
             {
-                RoleId = s.RoleId,
-                PageId = s.PageId,
-                IsAccess = (s.IsAccess?1:0)
-            }).ToList();
+                try
+                {
+                    var query = "exec [dbo].[RolePermisions_Insert_element] @PageId,@RoleId,@Status ";
 
-            var param = new DynamicParameters();
-            
-            param.AddTable("@tbl", "RolePermisionDto", lst);
+                    var lst = input.Select(s => new
+                    {
+                        RoleId = s.RoleId,
+                        PageId = s.PageId,
+                        Status = (s.IsAccess ? 1 : 0)
+                    }).ToList();
 
-            var resp =await db.ExecuteAsync(query, param);
+
+                    foreach (var item in lst)
+                    {
+                        var resp = await db.ExecuteAsync(query, item,transaction: transaction);
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("عدم امکان درج اطلاعات");
+                }
+
+            }
 
             return;
         }

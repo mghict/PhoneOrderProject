@@ -161,7 +161,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePermisions(int roleId, List<Models.Authorize.PermistionModel> permistions)
+        public async Task<IActionResult> CreatePermisions(int roleId, List<int> pageIds)
         {
             var model = await _userFacad.RoleService.GetById(roleId);
 
@@ -174,39 +174,21 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 ViewBag.RoleName = model.RoleName;
             };
 
-            if (permistions != null && permistions.Count > 0)
+            var lst = await _userFacad.RoleService.GetPermisionsAsync(roleId);
+
+            foreach (var item in lst)
             {
-                
+                item.IsAccess = false;
 
-                try
+                if (pageIds.Contains(item.PageId))
                 {
-                    if (ModelState.IsValid)
-                    {
-                        var result = await _userFacad.RoleService.CreatePermisionsAsync(permistions);
-                        if (result.IsFailed)
-                        {
-                            ModelState.AddModelError("Error", result.GetErrors());
-                            return View("GetPermisions", permistions);
-                        }
-
-                        return Redirect($"/Admin/Role/AppRoles?appId={model.ApplicationId}");
-                    }
-                    else
-                    {
-                        return View("GetPermisions", permistions);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("Error", ex.Message);
-                    return View("GetPermisions", permistions);
+                    item.IsAccess = true;
                 }
             }
-            else
-            {
-                var lst = await _userFacad.RoleService.GetPermisionsAsync(roleId);
-                return View("GetPermisions", lst);
-            }
+
+            var resp =await _userFacad.RoleService.CreatePermisionsAsync(lst);
+
+            return Json(new { IsSuccess = resp.IsSuccess, Message = resp.GetErrors() });
         }
 
         [HttpPost]

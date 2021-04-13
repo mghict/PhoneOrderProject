@@ -19,13 +19,13 @@ namespace AccessManagment.Application.RolePageAccess.Validators
     {
         public RolePagesAccessValidator()
         {
-            RuleFor(current=>current.IsAccess)
-                .NotEmpty()
-                .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotNull()
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+            //RuleFor(current=>current.IsAccess)
+            //    .NotEmpty()
+            //    .WithErrorCode("10")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+            //    .NotNull()
+            //    .WithErrorCode("11")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
             RuleFor(current => current.PageId)
                 .NotEmpty()

@@ -16,7 +16,7 @@
                         <div class="card card-body pd-20 pd-md-40 border shadow-none">
                             <h5 class="card-title mg-b-20">ویرایش دسترسی ها: @ViewBag.AppName - @ViewBag.RoleName</h5>
                             <hr class="bg-danger border-danger" />
-                            <form action="/Admin/Role/CreatePermisions" method="post" data-parsley-validate="">
+                            @*<form action="/Admin/Role/CreatePermisions" method="post" data-parsley-validate="">*@
                                 <input type="hidden" value="@ViewBag.RoleId" name="roleId" />
                                 <div class="row">
                                     <div class="form-group">
@@ -28,7 +28,7 @@
                                                     var items = Model.Where(p => p.ParentId == item.PageId).ToList();
 
                                                     <tr class="bg-dark">
-                                                        <td class="text-white-50">@item.DisplayName</td>
+                                                        <td class="text-white">@item.DisplayName</td>
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
@@ -42,11 +42,17 @@
                                                             <td class="text-left">
                                                                 @if (subitem.IsAccess)
                                                                 {
-                                                                    <a class="btn btn-danger tx-10 " href="#" onclick="delPermision('@subitem.PageId','@subitem.RoleId')"> حذف دسترسی </a>
+                                                                <a class="tx-13 " href="#" onclick="delPermision('@subitem.PageId','@subitem.RoleId')"
+                                                                   data-toggle="tooltip" data-placement="bottom" title="حذف دسترسی المان مذکور">
+                                                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                                                </a>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <a class="btn btn-success tx-10" href="#" onclick="addPermision('@subitem.PageId','@subitem.RoleId')">تخصیص دسترسی</a>
+                                                                    <a class="tx-13" href="#" onclick="addPermision('@subitem.PageId','@subitem.RoleId')"
+                                                                       data-toggle="tooltip" data-placement="bottom" title="تخصیص دسترسی المان مذکور">
+                                                                        <i class="fa fa-plus text-success" aria-hidden="true"></i>
+                                                                    </a>
                                                                 }
                                                             </td>
                                                         </tr>
@@ -58,9 +64,9 @@
                                 </div>
                                 <hr class="bg-danger border-danger" />
                                 <div class="form-group">
-                                    <input type="submit" value="ویرایش اطلاعات" class="btn btn-danger btn-block" />
+                                    <input type="button" value="اعمال کلی تغییرات" class="btn btn-danger btn-block" onclick="selectedPermision('@ViewBag.RoleId','@ViewBag.AppId')"/>
                                 </div>
-                            </form>
+                            @*</form>*@
                         </div>
                     </div>
                 </div>
@@ -142,5 +148,50 @@
             });
         }
 
+        function selectedPermision(roleId,appId) {
+            let myChkArr = [];
+
+            $('input[type=checkbox]').each(function () {
+                if (this.checked) {
+                    myChkArr.push($(this).attr("id"));
+                }
+            });
+
+            let postData = {
+                'roleId': roleId,
+                'pageIds': myChkArr
+            };
+
+            $.ajax({
+                //contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "POST",
+                url: "/Admin/Role/CreatePermisions",
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        location.replace("/Admin/Role/AppRoles?appid=" + appId);
+                    }
+                    else {
+                        swal.fire(
+                            'هشدار!',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
+                    hideBehsamLoading();
+                }
+
+            });
+            
+        }
     </script>
 }
