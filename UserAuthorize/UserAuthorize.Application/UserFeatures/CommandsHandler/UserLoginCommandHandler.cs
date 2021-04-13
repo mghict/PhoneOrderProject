@@ -46,7 +46,7 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
                 var response =new  Domain.Entities.UserInfoTbl();
                 try
                 {
-                    response = await UnitOfWork.UserQueryRepository.UserLoginAsync(request.UserName, request.Password, request.ApplicationId);
+                    response = await UnitOfWork.UserQueryRepository.UserLoginAsync(request.UserName,Hashing.CreateMD5( request.Password), request.ApplicationId);
 
                     if (response == null)
                     {

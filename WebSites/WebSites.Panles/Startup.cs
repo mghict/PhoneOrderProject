@@ -85,7 +85,6 @@ namespace WebSites.Panles
 
 
 
-
             services.AddTransient<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();
 
             services.AddSingleton<Hubs.IUserConnectionManager, Hubs.UserConnectionManager>();

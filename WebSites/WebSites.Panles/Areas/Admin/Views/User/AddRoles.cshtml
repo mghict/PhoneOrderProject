@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "ثبت نقش جدید";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+
+        <div class="card-body">
+
+            <form action="/Admin/User/AddRoles" method="post" data-parsley-validate="">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                        <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                            <h5 class="card-title mg-b-20">ثبت نقش جدید</h5>
+                            <hr class="bg-danger border-danger" />
+
+                            <input name="userId" id="userId" type="hidden" value="@ViewBag.UserId" />
+
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                            </div>
+
+                            <div class="form-group form-check">
+                                <label  class="control-label">سیستم : </label>
+                                <select name="appId" id="appId" class="form-control select2" required asp-items="@ViewBag.AppList"onchange="fillRole()">
+                                    <option value="" data-select2-id="">انتخاب کنید</option>
+                                </select>
+                                <span validation-for="appId" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group form-check">
+                                <label  class="control-label">نقش :</label>
+                                <select name="roleId" id="roleId" class="form-control select2" required >
+                                    <option value="" data-select2-id="">انتخاب کنید</option>
+                                </select>
+                                <span validation-for="roleId" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group form-check">
+                                <label  class="control-label">وضعیت :</label>
+                                <select name="status" id="status" class="form-control select2">
+                                    <option value="true" data-select2-id="true">فعال</option>
+                                    <option value="false" data-select2-id="false">غیرفعال</option>
+                                </select>
+                                <span validation-for="status" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="ثبت اطلاعات" class="btn btn-danger btn-block" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer">
+            <a href="/Admin/User/ShowRoles?userId=@ViewBag.UserId" class="btn btn-primary">برگشت</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function fillRole() {
+            let appId = $('#appId').val();
+            if (appId == 0 || appId == null || appId == "") {
+                swal.fire(
+                    'هشدار!',
+                    data.message,
+                    'warning'
+                );
+                return;
+            }
+
+            var postData = {
+                'appId': appId,
+            };
+
+            $.ajax({
+                //contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "Get",
+                url: "/Admin/User/GetRolesByApp",
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (data) {
+                    $('#roleId').html('');
+                    let s = '<option value="">انتخاب کنید</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        s += '<option value="' + data[i].id + '">' + data[i].roleName + '</option>';
+                    }
+                    $("#roleId").html(s); 
+                },
+                error: function (request, status, error) {
+                    hideBehsamLoading();
+                }
+
+            });
+        }
+    </script>
+}
+

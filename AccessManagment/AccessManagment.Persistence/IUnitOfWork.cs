@@ -12,6 +12,8 @@ namespace AccessManagment.Persistence
         Domain.IRepositories.IPageInfo.IPageInfoRepository PageInfoRepository { get; }
         Domain.IRepositories.IRoleInfo.IRoleInfoRepository RoleInfoRepository { get; }
         Domain.IRepositories.IRolePageAccess.IRolePageAccessRepository RolePageAccessRepository { get; }
+        Domain.IRepositories.IUser.IUserRepository UserRepository { get; }
+        Domain.IRepositories.IUserRole.IUserRoleRepository UserRoleRepository { get; }
     }
 }
 
