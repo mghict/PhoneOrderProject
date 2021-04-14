@@ -104,6 +104,46 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
         }
 
+
+        public async Task<IActionResult> ResetAdminPass(int userId)
+        {
+            var item = await _userFacad.UserService.GetByIdAsync(userId);
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetAdminPass(Models.Authorize.UserInfoModel usr)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if(usr.Password!=usr.PasswordConfirm || string.IsNullOrEmpty(usr.Password))
+                    {
+                        throw new Exception("رمزعبور و تایید آن مشابه نیستند");
+                    }
+
+                    var ret = await _userFacad.UserService.ResetAdminAsync(usr);
+                    if (ret.IsFailed)
+                    {
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("ResetAdminPass", usr);
+                    }
+
+                    return Redirect("/Admin/User/Index");
+                }
+                else
+                {
+                    return View("ResetAdminPass", usr);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("ResetAdminPass", usr);
+            }
+        }
+
         //---------------------------------------------
         //---------------------------------------------
 
