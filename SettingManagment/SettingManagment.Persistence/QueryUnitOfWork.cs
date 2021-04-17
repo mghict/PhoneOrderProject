@@ -1,5 +1,6 @@
 ﻿using BehsamFramework.DapperDomain;
 using SettingManagment.Domain.IRepositories;
+using SettingManagment.Domain.IRepositories.Area;
 using SettingManagment.Domain.IRepositories.Category;
 using SettingManagment.Domain.IRepositories.InActive;
 using SettingManagment.Domain.IRepositories.Product;
@@ -50,5 +51,18 @@ namespace SettingManagment.Persistence
         private IStoreInActiveQueryRepository _StoreInActiveQueryRepository;
         public IStoreInActiveQueryRepository StoreInActiveQueryRepository =>
             _StoreInActiveQueryRepository = _StoreInActiveQueryRepository ?? new Repositories.InActive.StoreInActiveQueryRepository(IDbConnection);
+
+
+        private IAreaInfoQueryRepository _AreaInfoQueryRepository;
+        public IAreaInfoQueryRepository AreaInfoQueryRepository =>
+            _AreaInfoQueryRepository = _AreaInfoQueryRepository ?? new Repositories.Area.AreaInfoQueryReposiroty(IDbConnection);
+
+        private IProvinceQueryRepository _provinceQueryRepository;
+        public IProvinceQueryRepository ProvinceQueryRepository =>
+            _provinceQueryRepository = _provinceQueryRepository ?? new Repositories.Area.ProvinceQueryRepository(IDbConnection);
+
+        private ICityQueryRepository _cityQueryRepository;
+        public ICityQueryRepository CityQueryRepository =>
+            _cityQueryRepository = _cityQueryRepository ?? new Repositories.Area.CityQueryRepository(IDbConnection);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebSites.Panles.Helper;
+using WebSites.Panles.Services.Area;
 using WebSites.Panles.Services.InActive;
 using WebSites.Panles.Services.Store;
 using WebSites.Panles.Services.TimeSheet;
@@ -18,6 +19,8 @@ namespace WebSites.Panles.Services
         InActive.IInActive InActiveService { get; }
         Store.ICategoryService CategoryService { get; }
         Store.IProductService ProductService { get; }
+        Area.IAreaInfoService AreaInfoService { get; }
+        Area.ICityAndProvinceService CityAndProvinceService { get; }
     }
     public class SettingFacad :Base.ServiceBase, ISettingFacad
     {
@@ -47,5 +50,13 @@ namespace WebSites.Panles.Services
         private IProductService _ProductService;
         public IProductService ProductService =>
             _ProductService = _ProductService?? new Store.ProductService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private IAreaInfoService _areaInfoService;
+        public IAreaInfoService AreaInfoService =>
+            _areaInfoService= _areaInfoService ?? new Area.AreaInfoService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private ICityAndProvinceService _cityAndProvinceService;
+        public ICityAndProvinceService CityAndProvinceService =>
+            _cityAndProvinceService= _cityAndProvinceService?? new Area.CityAndProvinceService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

@@ -60,11 +60,16 @@
 
 
 
-    @RenderSection("Styles", false)
-    @RenderSection("ScriptsTop", false)
+
+
 
     <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
     <script src="~/notification.js"></script>
+
+
+    @RenderSection("ScriptsTop", false)
+    @RenderSection("Styles", false)
+
 
 </head>
 <body class="main-body app sidebar-mini">
@@ -82,7 +87,9 @@
                 در حال بارگزاری اطلاعات ...
             </button>
         </div>
+
     </div>
+    
     <!-- /Loader -->
     <!-- main-sidebar -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
@@ -126,6 +133,7 @@
                     <ul class="slide-menu">
                         <li><a class="slide-item" href="/Admin/Application/Index">مدیریت سیستمها</a></li>
                         <li><a class="slide-item" href="/Admin/User/Index">مدیریت کاربران</a></li>
+                        <li><a class="slide-item" href="/Admin/Area/Index">مدیریت مناطق</a></li>
                     </ul>
                 </li>
 
@@ -192,7 +200,7 @@
     </div>
     <!--/Sidebar-right-->
     <!-- Back-to-top -->
-    <a href="#top" id="back-to-top"><i class="las la-angle-double-up bg-danger"></i></a>
+    <a href="#top" id="back-to-top"><i class="las la-angle-double-up"></i></a>
 
     <!-- JQuery min js -->
     <script src="~/admin/Content/assets/plugins/jquery/jquery.min.js"></script>
@@ -207,7 +215,7 @@
     <script src="~/admin/Content/assets/plugins/ionicons/ionicons.js"></script>
 
     <!-- Internal Treeview js -->
-    <script src="~/admin/Content/assets/plugins/treeview/treeview.js"></script> 
+    <script src="~/admin/Content/assets/plugins/treeview/treeview.js"></script>
 
     <!-- Rating js-->
     <script src="~/admin/Content/assets/plugins/rating/jquery.rating-stars.js"></script>

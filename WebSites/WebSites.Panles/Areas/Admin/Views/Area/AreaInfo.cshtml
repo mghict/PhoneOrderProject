@@ -1,0 +1,80 @@
+﻿@model WebSites.Panles.Models.Area.AreaInfoModel
+@using System.Globalization;
+@{
+    ViewData["Title"] = "مشخصات : "+Model.AreaName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var lat=Model.CenterLatitude.ToString(CultureInfo.InvariantCulture);
+    var lng = Model.Centerlongitude.ToString(CultureInfo.InvariantCulture);
+
+    var mapSrc = $"https://api.neshan.org/v2/static?key=service.mwaZWX9hHJCtUX0VpZ4zSPC1gVMoORBKoud9rz2S&type=dreamy&zoom=15&center={lat},{lng}&width=1120&height=500&marker=red";
+}
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
+                    <div class="card card-body pd-20 pd-md-40 border shadow-none">
+                        <h5 class="card-title mg-b-20">@ViewBag.Title</h5>
+                        <hr class="bg-danger border-danger" />
+
+                        <input value="@Model.CenterLatitude" type="hidden" id="txtLat" />
+                        <input value="@Model.Centerlongitude" type="hidden" id="txtLng" />
+
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">نام : @Model.AreaName</label>
+                        </div>
+                        <div class="form-group">
+                            <label  class="control-label">نوع: @Model.AreaTypeName</label>
+                        </div>
+                        <div class="form-group">
+                            <label  class="control-label">شهر: @Model.CityName</label>
+                        </div>
+
+                        <div class="form-group form-check">
+                            @if (Model.Status)
+                            {
+                                <label value="Status" class="control-label">وضعیت: فعال</label>
+                            }
+                            else
+                            {
+                                <label value="Status" class="control-label">وضعیت: غیرفعال</label>
+                            }
+                        </div>
+
+                        <div class="form-group form-check">
+                            <label class="control-label">والد: @Model.ParentName</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-12 col-sm-12 col-lg-12" style="justify-content:center;justify-items:center;">
+                <div style="width:100%;height:400px;background: #eee; border: 2px solid #aaa;" id="map">
+                    <img src="@mapSrc"  style="width:100%; height:100%;" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+            <a href="/Admin/Area/Index" class="btn btn-primary">برگشت</a>
+        </div>
+
+    </div>
+</div>
+@section Scripts
+{
+
+}
+
+
+@section ScriptsTop
+{
+    <link href="https://static.neshan.org/sdk/openlayers/4.6.5/ol.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://static.neshan.org/sdk/openlayers/4.6.5/ol.js" type="text/javascript"></script>
+}
+

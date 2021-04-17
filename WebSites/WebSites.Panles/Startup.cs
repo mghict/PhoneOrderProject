@@ -62,6 +62,11 @@ namespace WebSites.Panles
             {
                 c.BaseAddress =new Uri(Configuration.GetValue<string>("ApiGatewayURL"));
             });
+            services.AddHttpClient("ApiMap", c =>
+            {
+                c.BaseAddress = new Uri(Configuration.GetValue<string>("ApiMapURL"));
+            });
+
             services.AddMemoryCache();
 
             services.AddSingleton<ICacheService, InMemoryCache>();
@@ -71,6 +76,8 @@ namespace WebSites.Panles
             //Class Dependency
             
             services.AddTransient<WebSites.Panles.Helper.ServiceCaller>();
+            services.AddTransient<WebSites.Panles.Services.Map.NeshanMapService>();
+
             services.AddScoped<Services.Customer.IGetCustomer, Services.Customer.GetCustomer>();
             services.AddScoped<Services.CustomerPhone.IGetCustomerPhone, Services.CustomerPhone.GetCustomerPhone>();
             services.AddScoped<Services.CustomerPhone.IGetPhoneByIdService, Services.CustomerPhone.GetPhoneByIdService>();

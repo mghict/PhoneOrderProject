@@ -508,6 +508,36 @@
         "Limit": 200
       }
     },
+    //Setting/{everythings} -> Get -> /Store/{everythings}
+    {
+      "DownstreamPathTemplate": "/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 10010
+        }
+      ],
+      "UpstreamPathTemplate": "/Setting/{everythings}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 200
+      }
+    },
     //loginUser/{everythings} -> Post -> /Login/{everythings}
     {
       "DownstreamPathTemplate": "/Login/{everythings}",

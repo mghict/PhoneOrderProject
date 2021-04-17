@@ -1,5 +1,6 @@
 ﻿using BehsamFramework.DapperDomain;
 using SettingManagment.Domain.IRepositories;
+using SettingManagment.Domain.IRepositories.Area;
 using SettingManagment.Domain.IRepositories.InActive;
 using SettingManagment.Domain.IRepositories.Store;
 using SettingManagment.Domain.IRepositories.TimeSheet;
@@ -44,5 +45,10 @@ namespace SettingManagment.Persistence
         private IInActiveRepository _InActiveRepository;
         public IInActiveRepository InActiveRepository =>
             _InActiveRepository = _InActiveRepository ?? new Repositories.InActive.InActiveRepository(IDbConnection);
+
+
+        private IAreaInfoRepository _AreaInfoRepository;
+        public IAreaInfoRepository AreaInfoRepository =>
+            _AreaInfoRepository = _AreaInfoRepository ?? new Repositories.Area.AreaInfoReposiroty(IDbConnection);
     }
 }

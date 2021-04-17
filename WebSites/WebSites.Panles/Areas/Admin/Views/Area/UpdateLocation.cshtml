@@ -1,0 +1,258 @@
+﻿@model WebSites.Panles.Models.Area.AreaInfoModel
+@using System.Globalization;
+@{
+    ViewData["Title"] = "ثبت موقعیت : " + Model.AreaName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var lat = Model.CenterLatitude.ToString(CultureInfo.InvariantCulture);
+    var lng = Model.Centerlongitude.ToString(CultureInfo.InvariantCulture);
+
+}
+
+@section ScriptsTop
+{
+    <link href="https://static.neshan.org/sdk/openlayers/4.6.5/ol.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://static.neshan.org/sdk/openlayers/4.6.5/ol.js" type="text/javascript"></script>
+
+}
+
+<div class="col col-12 col-md-12 col-sm-12 col-lx-12">
+    <div id="geo-marker" style="position: absolute;
+                                width:    50px;
+                                height:   50px;
+                                background: url(/marker-32.png) no-repeat 0 0;" />
+</div>
+
+<input value="@Model.CenterLatitude.ToString(CultureInfo.InvariantCulture)" type="hidden" id="txtLat" />
+<input value="@Model.Centerlongitude.ToString(CultureInfo.InvariantCulture)" type="hidden" id="txtLng" />
+
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+
+        <div class="card-body">
+            @if (Model != null)
+            {
+                <div class="row">
+                    <div class="col col-md-12 col-sm-12 col-lg-12">
+                        <div class="row">
+                            <div class="col col-md-4 col-sm-12 col-lg-4">
+                                <div class="col col-md-12 col-sm-12 col-lg-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="آدرس را وارد کنید" name="searchkey" id="searchkey">
+                                        <div class="input-group-append">
+                                            <a class="btn btn-light" href="#" onclick="searchAddress()">
+                                                <i class="ti-search"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-12 col-sm-12 col-lg-12">
+                                    <div style="width:100%;height:300px;overflow:auto;">
+                                        <ul id="searchDetails">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-md-8 col-sm-12 col-lg-8">
+                                <div id="map" style="width:100%;height:100%; border:solid 2px black;">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col col-md-4 col-sm-4 col-lg-4" style="justify-content:center;justify-items:center;">
+
+                        <form action="/Admin/Area/UpdateLocation" method="post" data-parsley-validate="">
+                            <input name="lat" type="hidden" id="txtLatModel" value="@Model.CenterLatitude.ToString(CultureInfo.InvariantCulture)" />
+                            <input name="lng" type="hidden" id="txtLngModel" value="@Model.Centerlongitude.ToString(CultureInfo.InvariantCulture)" />
+                            <input name="id" type="hidden" id="txtId" value="@Model.Id" />
+                            <div class="form-group">
+                                <input type="submit" value="ثبت مختصات" class="btn btn-danger btn-block" />
+                            </div>
+                        </form>
+
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <h6 class="text-danger">اطلاعات جهت ویرایش یافت نشد</h6>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a href="/Admin/Area/Index" class="btn btn-primary">برگشت</a>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+@section Scripts
+{
+    <script>
+
+        //$(document).ready(function () {
+        let lat = $('#txtLat').val();
+        let lng = $('#txtLng').val();
+        let mapZoom = $('#txtZoom').val();
+
+        if (lat == null || lat == "" || lat === null) {
+            lat = 32.6859773
+        }
+        if (lng == null || lng == "") {
+            lng = 56.366282;
+        }
+
+        if (parseFloat(lat) > 0 && parseFloat(lng) > 0) {
+            mapZoom = 18;
+        }
+        else {
+            mapZoom = 5;
+        }
+
+        //alert(lat + ',' + lng + ' : z' + mapZoom);
+
+        let currentPos = ol.proj.fromLonLat([parseFloat(lng), parseFloat(lat)]);
+
+        //alert(currentPos);
+
+        var myMap = new ol.Map({
+            target: 'map',
+            key: 'web.f4Vpn6cXKQtmWUZYkQQrZjWSuCuDg91LpV7vneDX',
+            maptype: 'neshan',
+            poi: true,
+            traffic: false,
+            view: new ol.View({
+                center: currentPos, //ol.proj.fromLonLat([parseFloat(lng), parseFloat(lat)]),
+                zoom: mapZoom
+            })
+        });
+
+        myMap.setMapType('neshan');
+
+        //alert('Map Create');
+
+        let markerEl = document.getElementById('geo-marker'),
+            marker = new ol.Overlay({
+                position: currentPos,
+                positioning: 'top-center',
+                offset: [0, 0],
+                element: markerEl,
+                stopEvent: false
+            });
+
+        //alert('Marker Create');
+
+        myMap.addOverlay(marker);
+
+        myMap.on('click', function (evt) {
+
+            var coord = evt.coordinate;
+
+            marker.setPosition(coord);
+
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+            var lon = lonlat[0];
+            var lat = lonlat[1];
+
+            $('#txtLatModel').val(lat);
+            $('#txtLngModel').val(lon);
+
+        });
+
+        //});
+
+
+        function searchAddress() {
+
+            var lat = $('#txtLat').val();
+            var lng = $('#txtLng').val();
+            var mapZoom = $('#txtZoom').val();
+
+            if (lat == null || lat == "" || lat === null) {
+                lat = 32.6859773
+            }
+            if (lng == null || lng == "") {
+                lng = 56.366282;
+            }
+            if (mapZoom == null || mapZoom == "") {
+                mapZoom = 5;
+            }
+
+            console.log(lat + ',' + lng + ' : z' + mapZoom);
+
+            var add = $('#searchkey').val();
+
+            if (add == null || add == "" || add === "") {
+                return;
+            }
+
+            $('#searchDetails').html('');
+
+            var model = {
+                'searchKey': add,
+                'lat': lat,
+                'lng': lng
+            };
+
+            $.ajax({
+                dataType: 'json',
+                type: 'Get',
+                url: '/Map/SearchMap',
+                data: model,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (res) {
+                    if (res.isSuccess) {
+                        let str = "";
+                        for (let i = 0; i < res.items.length; i++) {
+                            str += "<li>";
+                            str += "<a href=\"#\" onclick=\"setMap(\'" + res.items[i].y + "\',\'" + res.items[i].x + "\')\">";
+                            str += "<h7 class=\"text-dark\">" + res.items[i].title + "</h7>";
+                            str += "<p>" + res.items[i].address + "</p>";
+                            str += "<p>" + res.items[i].region + "</p>";
+                            str += "</a>";
+                            str += "</li>";
+                            str += "<hr class=\"text-danger bg-danger\" />";
+                        }
+
+                        $('#searchDetails').append(str);
+                    }
+
+
+                },
+                error: function (request, status, error) {
+                    //if run ajax with error
+                    console.error(request + '-' + status + '-' + error);
+                }
+            });
+        }
+
+        function setMap(latTmp, lngTmp) {
+
+            let pos = ol.proj.fromLonLat([parseFloat(lngTmp), parseFloat(latTmp)]);
+
+            marker.setPosition(pos);
+
+            $('#txtLatModel').val(latTmp);
+            $('#txtLngModel').val(lngTmp);
+        }
+
+    </script>
+}
+
+
+
+

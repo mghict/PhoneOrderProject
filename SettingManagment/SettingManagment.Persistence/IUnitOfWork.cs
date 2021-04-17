@@ -8,5 +8,6 @@
         Domain.IRepositories.TimeSheet.ITimeSheetRepository TimeSheetRepository { get; }
         Domain.IRepositories.InActive.IStoreInActiveRepository StoreInActiveRepository { get; }
         Domain.IRepositories.InActive.IInActiveRepository InActiveRepository { get; }
+        Domain.IRepositories.Area.IAreaInfoRepository AreaInfoRepository { get; }
     }
 }

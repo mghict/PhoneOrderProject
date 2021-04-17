@@ -21,5 +21,9 @@ namespace WebSites.Panles.Helper
         public static CancellationTokenSource Product = new CancellationTokenSource();
         public static CancellationTokenSource Page = new CancellationTokenSource();
         public static CancellationTokenSource User = new CancellationTokenSource();
+        public static CancellationTokenSource Area = new CancellationTokenSource();
+        public static CancellationTokenSource AreaType = new CancellationTokenSource();
+        public static CancellationTokenSource City = new CancellationTokenSource();
+        public static CancellationTokenSource Province = new CancellationTokenSource();
     }
 }

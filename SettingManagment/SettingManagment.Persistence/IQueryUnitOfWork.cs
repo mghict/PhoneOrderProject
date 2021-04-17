@@ -16,5 +16,8 @@ namespace SettingManagment.Persistence
         Domain.IRepositories.TimeSheet.ICustomeTimeSheetQueryRepository CustomeTimeSheetQueryRepository { get; }
         Domain.IRepositories.InActive.IInActiveQueryRepository InActiveQueryRepository { get; }
         Domain.IRepositories.InActive.IStoreInActiveQueryRepository StoreInActiveQueryRepository { get; }
+        Domain.IRepositories.Area.IAreaInfoQueryRepository AreaInfoQueryRepository { get; }
+        Domain.IRepositories.Area.IProvinceQueryRepository ProvinceQueryRepository { get; }
+        Domain.IRepositories.Area.ICityQueryRepository CityQueryRepository { get; }
     }
 }

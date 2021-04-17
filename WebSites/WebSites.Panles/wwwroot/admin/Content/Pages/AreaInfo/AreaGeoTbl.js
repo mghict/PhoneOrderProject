@@ -168,6 +168,7 @@ var marker;
 var areas = [];
 var polyganpath = null;
 var polyganpath2 = null;
+
 function initMap() {
     polyganpath = new google.maps.Polygon();
     var Hyderabad = new google.maps.LatLng(35.720331, 51.406613);
