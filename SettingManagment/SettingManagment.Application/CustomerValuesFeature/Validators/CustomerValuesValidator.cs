@@ -15,7 +15,7 @@ namespace SettingManagment.Application.CustomerValuesFeature.Validators
                 .NotEmpty()
                 .WithErrorCode("10")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
+                .NotNull()
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
                 .ExclusiveBetween(0,int.MaxValue)

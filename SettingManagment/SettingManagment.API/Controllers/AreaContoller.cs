@@ -482,5 +482,82 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+        #region CreateAreaGeo
+
+        [HttpPost("CreateAreaGeo")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<int>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<int>>>
+            CreateAreaGeoAsync([FromBody] Application.AreaFeature.Commands.CreateAreaGeoCommand command)
+        {
+
+            FluentResults.Result<int> result =
+                new FluentResults.Result<int>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetGeoByAreaId
+
+        [HttpPost("GetGeoByAreaId")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.AreaGeoTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.AreaGeoTbl>>>>
+            GetGeoByAreaIdAsync([FromBody] Application.AreaFeature.Commands.GetByAreaIdAreaGeoCommand command)
+        {
+
+
+            FluentResults.Result<List<Domain.Entities.AreaGeoTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.AreaGeoTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
     }
 }

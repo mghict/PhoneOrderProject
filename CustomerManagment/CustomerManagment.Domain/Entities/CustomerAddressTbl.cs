@@ -13,5 +13,8 @@ namespace CustomerManagment.Domain.Entities
         public double Longitude { get; set; }
         public int AreaId { get; set; }
         public byte Status { get; set; }
+
+        [Dapper.Contrib.Extensions.Write(false)]
+        public string AreaName { get; set; }
     }
 }

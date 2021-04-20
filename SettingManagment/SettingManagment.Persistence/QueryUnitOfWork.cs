@@ -64,5 +64,19 @@ namespace SettingManagment.Persistence
         private ICityQueryRepository _cityQueryRepository;
         public ICityQueryRepository CityQueryRepository =>
             _cityQueryRepository = _cityQueryRepository ?? new Repositories.Area.CityQueryRepository(IDbConnection);
+
+        private IAreaGeoQueryRepository _areaGeoQueryRepository;
+        public IAreaGeoQueryRepository AreaGeoQueryRepository =>
+            _areaGeoQueryRepository = _areaGeoQueryRepository ?? new Repositories.Area.AreaGeoQueryRepository(IDbConnection);
+
+
+        private IStoreShippingAreaQueryRepository _storeShippingAreaQueryRepository;
+        public IStoreShippingAreaQueryRepository StoreShippingAreaQueryRepository =>
+            _storeShippingAreaQueryRepository = _storeShippingAreaQueryRepository ?? new Repositories.Store.StoreShippingAreaQueryRepository(IDbConnection);
+
+
+        private IStoreShippingQueryRepository _storeShippingQueryRepository;
+        public IStoreShippingQueryRepository StoreShippingQueryRepository =>
+            _storeShippingQueryRepository = _storeShippingQueryRepository ?? new Repositories.Store.StoreShippingQueryRepository(IDbConnection);
     }
 }

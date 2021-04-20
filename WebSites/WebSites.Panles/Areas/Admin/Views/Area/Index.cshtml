@@ -89,10 +89,20 @@
                                        data-toggle="tooltip" data-placement="bottom" title="مشاهده اطلاعات">
                                         <i class="fa fa-info-circle text-primary m-2" aria-hidden="true"></i>
                                     </a>
+                                    
                                     <a href="/Admin/Area/UpdateLocation?areaId=@area.Id" class="d-inline"
-                                       data-toggle="tooltip" data-placement="bottom" title="ثبت مختصات">
+                                        data-toggle="tooltip" data-placement="bottom" title="ثبت نقطه مرکزی">
                                         <i class="fa fa-location-arrow text-purple m-2" aria-hidden="true"></i>
                                     </a>
+                                    
+                                    @if (area.AreaType == 2 && area.CenterLatitude>0)
+                                    {
+                                        <a href="/Admin/Area/UpdatePolygon?areaId=@area.Id" class="d-inline"
+                                           data-toggle="tooltip" data-placement="bottom" title="ثبت مختصات">
+                                            <i class="fa fa-podcast text-danger m-2" aria-hidden="true"></i>
+                                        </a>
+                                    }
+
                                     <a href="/Admin/Area/AreaChild?areaId=@area.Id" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="مشاهده فرزندان">
                                         <i class="fa fa-object-group text-dark m-2" aria-hidden="true"></i>

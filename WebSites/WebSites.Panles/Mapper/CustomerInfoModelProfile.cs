@@ -153,7 +153,7 @@ namespace WebSites.Panles.Mapper
             destination.AddressTypeStr = StaticValues.GetStatuses.FirstOrDefault(p => p.StatusId == source.AddressType && p.Subject.ToLower().Equals("CustomerAddressType".ToLower())).Name ?? "نامشخص";
             destination.AddressValue = source.AddressValue;
             destination.AreaId = source.AreaId;
-            destination.AreaIdStr = "";
+            destination.AreaName = source.AreaName;
             destination.Latitude = source.Latitude;
             destination.Longitude = source.Longitude;
             destination.Status = source.Status;

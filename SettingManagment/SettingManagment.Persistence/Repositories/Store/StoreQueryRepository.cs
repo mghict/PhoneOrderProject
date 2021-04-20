@@ -23,45 +23,14 @@ namespace SettingManagment.Persistence.Repositories.Store
 
         public async Task<StoreInfoListModel> GetStoreByPaginationAsync(int pageNumber, int pageSize, string search)
         {
-            var query = "Select APPROX_COUNT_DISTINCT(StoreCode) as StoreCount  FROM dbo.StoreInfoTbl ;";
+            var query = "exec dbo.GetStoreByPagination @Name,@PageNumber,@PageSize";
 
-            var builder = new SqlBuilder();
             
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                float storeId = 0;
-                System.Globalization.NumberStyles style = System.Globalization.NumberStyles.AllowDecimalPoint;
-                System.Globalization.CultureInfo info = System.Globalization.CultureInfo.InvariantCulture;
-                if (float.TryParse(search, style,info, out storeId))
-                {
-                    builder.Where($" (a.StoreName like '%{search}%' or Round(a.StoreCode,3)=Round({storeId.ToString(CultureInfo.InvariantCulture)},3) )");
-                }
-                else
-                {
-                    builder.Where($" a.StoreName like '%{search}%' ");
-                }
-
-            }
-
-            var qu = builder.AddTemplate("select a.[StoreCode] , a.[StoreName] , a.[StoreAddress], a.[StorePhone]"+
-            ", a.[Latitude] , a.[Longitude] , a.[AreaID], coalesce(b.AreaName,'') AreaName , coalesce( c.CityName,'')CityName ,coalesce( p.ProvinceName,'') ProvinceName  FROM " +
-            "[PhoneOrderDB].[dbo].[StoreInfoTbl] a " +
-            " left outer join " +
-            "[dbo].[AreaInfoTbl] b " +
-            "on   a.AreaID = b.ID " +
-            "left outer join " +
-            "[dbo].[CityTbl] c " +
-            "on b.CityId = c.Id " +
-            " left outer join [dbo].[ProvinceTbl] p  " +
-            " on p.Id = c.ProvinceId " +
-            "  /**where**/ order by a.StoreCode OFFSET @PageNumer ROWS FETCH NEXT @PageSize ROWS ONLY");
-            query += qu.RawSql;
-
             pageNumber = pageNumber - 1;
             var param = new
             {
-                @PageNumer = pageNumber <= 0 ? 0 : pageNumber,
+                @Name= search,
+                @PageNumber = pageNumber <= 0 ? 0 : pageNumber,
                 @PageSize = pageSize
             };
 

@@ -249,6 +249,8 @@ function initMap() {
 
                 polyganpath.setMap(map);
             });
+
+            //-------------
             areas.push(marker);
             var tp = [];
             var s = areas.length;

@@ -50,5 +50,19 @@ namespace SettingManagment.Persistence
         private IAreaInfoRepository _AreaInfoRepository;
         public IAreaInfoRepository AreaInfoRepository =>
             _AreaInfoRepository = _AreaInfoRepository ?? new Repositories.Area.AreaInfoReposiroty(IDbConnection);
+
+        private IAreaGeoRepository _areaGeoRepository;
+        public IAreaGeoRepository AreaGeoRepository =>
+            _areaGeoRepository = _areaGeoRepository ?? new Repositories.Area.AreaGeoRepository(IDbConnection);
+
+
+        private IStoreShippingAreaRepository _storeShippingAreaRepository;
+        public IStoreShippingAreaRepository StoreShippingAreaRepository =>
+            _storeShippingAreaRepository = _storeShippingAreaRepository ?? new Repositories.Store.StoreShippingAreaRepository(IDbConnection);
+
+
+        private IStoreShippingRepository _storeShippingRepository;
+        public IStoreShippingRepository StoreShippingRepository =>
+            _storeShippingRepository = _storeShippingRepository ?? new Repositories.Store.StoreShippingRepository(IDbConnection);
     }
 }

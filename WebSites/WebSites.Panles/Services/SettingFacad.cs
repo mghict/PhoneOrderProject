@@ -21,6 +21,7 @@ namespace WebSites.Panles.Services
         Store.IProductService ProductService { get; }
         Area.IAreaInfoService AreaInfoService { get; }
         Area.ICityAndProvinceService CityAndProvinceService { get; }
+        Store.IStoreShippingService StoreShippingService { get; }
     }
     public class SettingFacad :Base.ServiceBase, ISettingFacad
     {
@@ -58,5 +59,9 @@ namespace WebSites.Panles.Services
         private ICityAndProvinceService _cityAndProvinceService;
         public ICityAndProvinceService CityAndProvinceService =>
             _cityAndProvinceService= _cityAndProvinceService?? new Area.CityAndProvinceService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private IStoreShippingService _storeShippingService;
+        public IStoreShippingService StoreShippingService =>
+            _storeShippingService= _storeShippingService?? new Store.StoreShippingService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

@@ -1,0 +1,323 @@
+﻿@model WebSites.Panles.Models.Area.AreaGeoTbl;
+@{
+    ViewData["Title"] = "UpdatePolygon";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section ScriptsTop
+{
+
+}
+
+<input type="hidden" value="@ViewBag.AreaId" id="txtAreaId" />
+<input type="hidden" value="@ViewBag.LatCenter" id="txtLatCenter" />
+<input type="hidden" value="@ViewBag.LngCenter" id="txtLngCenter" />
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-12 col-md-12 col-sm-12 col-lg-12">
+                <div id="mapCanvasPoly" style="width:100%;height:400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-outline-danger btn-rounded m-2 text-danger" onclick="update()">ثبت مختصات جغرافیایی</a>
+        <a class="btn btn-outline-info btn-rounded   m-2 text-info" href="/Admin/Area/Index">برگشت</a>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY&language=fa">
+    </script>
+
+    <script>
+        var marker;
+        var areas = [];
+        var polyganpath = null;
+        var polyganpath2 = null;
+        var flag = true;
+        var editable = false;
+
+        $(document).ready(function () {
+            let myxml = loadAreaData();
+            initMap(myxml);
+        });
+
+        function loadAreaData() {
+            var mapxml = "";
+            var id = $('#txtAreaId').val();
+            var postData = {
+                'areaId': id
+            };
+
+            $.ajax({
+                //contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "POST",
+                url: "/Admin/Area/GetAreaGeo",
+                data: postData,
+                success: function (data) {
+                    if (data.items.length >= 0) {
+                        editable = true;
+                    }
+
+                    mapxml = "<subdivisions>";
+
+                    for (var i = 0; i < data.items.length; i++) {
+                        var item = data.items[i];
+                        if (i == 0) {
+                            mapxml += "<subdivision name=\'AreaGeo\'>";
+                            mapxml += "<coord lat=\'" + item.lat + "\' lng=\'" + item.lng + "\' />";
+                        }
+                        else {
+                            mapxml += "<coord lat=\'" + item.lat + "\' lng=\'" + item.lng + "\' />";
+                        }
+
+                    }
+
+                    mapxml += "</subdivision>";
+
+                    mapxml += "<subdivisions>";
+
+
+                },
+                error: function (request, status, error) {
+
+                },
+                complete: function () {
+
+                },
+                async: false
+            });
+
+            return mapxml;
+        }
+
+        function xmlParse(str) {
+            if (typeof ActiveXObject != 'undefined' && typeof GetObject != 'undefined') {
+                var doc = new ActiveXObject('Microsoft.XMLDOM');
+                doc.loadXML(str);
+                return doc;
+            }
+
+            if (typeof DOMParser != 'undefined') {
+                return (new DOMParser()).parseFromString(str, 'text/xml');
+            }
+            return createElement('div', null);
+        }
+
+        function initMap(myXml) {
+
+            var latCenter = $('#txtLatCenter').val();
+            var lngCenter = $('#txtLngCenter').val();
+
+            polyganpath = new google.maps.Polygon();
+
+            var Hyderabad = new google.maps.LatLng(parseFloat(latCenter), parseFloat(lngCenter));
+
+            var mapOptions = {
+                zoom: 11,
+                center: Hyderabad,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById('mapCanvasPoly'), mapOptions);
+
+            var arr = new Array();
+            var polygons = [];
+            var bounds = new google.maps.LatLngBounds();
+
+            if (!bounds.isEmpty) { map.fitBounds(bounds); }
+            //-------------------------------------------------------------
+
+            xmlString = myXml;
+            if (xmlString.length < 5) {
+                xmlString = '<subdivisions><subdivisions>'
+            }
+            xml = xmlParse(xmlString);
+            subdivision = xml.getElementsByTagName("subdivision");
+            var latlang;
+
+            for (var i = 0; i < subdivision.length; i++) {
+                var coordinates = xml.documentElement.getElementsByTagName("subdivision")[i].getElementsByTagName("coord");
+                for (var j = 0; j < coordinates.length; j++) {
+                    latlang = new google.maps.LatLng(parseFloat(coordinates[j].getAttribute("lat")), parseFloat(coordinates[j].getAttribute("lng")));
+                    marker = new google.maps.Marker({
+                        position: latlang,
+                        map: map,
+                        draggable: true
+                    });
+
+                    google.maps.event.addListener(marker, 'drag', function (event) {
+
+
+                        var tp = [];
+                        var s = areas.length;
+                        for (var i = 0; i < s; i++) {
+                            tp.push(areas[i].getPosition());
+                        }
+                        polyganpath.setOptions({
+                            path: tp,
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 3,
+                            fillColor: '#FF0000',
+                            fillOpacity: 0.35,
+
+
+                        });
+
+                        polyganpath.setMap(map);
+                    });
+                    areas.push(marker);
+                    var tp = [];
+                    var s = areas.length;
+                    for (var i = 0; i < s; i++) {
+                        var lat = areas[i].getPosition().lat();
+                        var lng = areas[i].getPosition().lng();
+                        tp.push(areas[i].getPosition());
+                    }
+                    polyganpath.setOptions({
+                        path: tp,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+
+                    });
+
+                    polyganpath.setMap(map);
+                }
+            }
+
+
+            //------------------------------------------------------------
+
+            google.maps.event.addListener(map, 'rightclick', function (event) {
+
+                if (areas.length > 0) {
+                    console.log(areas.length);
+                    var m = areas.pop();
+                    m.setMap(null);
+
+                    var tp = [];
+                    var s = areas.length;
+
+                    for (var i = 0; i < s; i++) {
+                        tp.push(areas[i].getPosition());
+                    }
+
+
+                    polyganpath.setOptions({
+                        path: tp,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+
+                    });
+                    polyganpath.setMap(map);
+                }
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map,
+                    draggable: true
+                });
+
+
+
+                google.maps.event.addListener(marker, 'drag', function (event) {
+
+
+                    var tp = [];
+                    var s = areas.length;
+                    for (var i = 0; i < s; i++) {
+                        tp.push(areas[i].getPosition());
+                    }
+                    polyganpath.setOptions({
+                        path: tp,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+
+
+                    });
+
+                    polyganpath.setMap(map);
+                });
+                areas.push(marker);
+                var tp = [];
+                var s = areas.length;
+                for (var i = 0; i < s; i++) {
+                    var lat = areas[i].getPosition().lat();
+                    var lng = areas[i].getPosition().lng();
+                    tp.push(areas[i].getPosition());
+                }
+                polyganpath.setOptions({
+                    path: tp,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 3,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+
+                });
+
+                polyganpath.setMap(map);
+
+            });
+
+        }
+
+        function update() {
+            var areaId = $('#txtAreaId').val();
+            var areaData = "";
+            polyganpath.getPath().forEach(function (latLng) {
+                areaData = areaData + (latLng.toString()) + ';';
+            });
+
+            var postData = {
+                'areaId': areaId,
+                'areaData': areaData
+            };
+
+            $.ajax({
+                //contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "POST",
+                url: "/Admin/Area/UpdatePolygon",
+                data: postData,
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        location.replace("/Admin/Area/Index");
+                    }
+                    else {
+                        swal.fire(
+                            'هشدار!',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
+
+                },
+                async: false
+            });
+        }
+    </script>
+}
+
+

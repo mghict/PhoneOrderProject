@@ -9,5 +9,8 @@
         Domain.IRepositories.InActive.IStoreInActiveRepository StoreInActiveRepository { get; }
         Domain.IRepositories.InActive.IInActiveRepository InActiveRepository { get; }
         Domain.IRepositories.Area.IAreaInfoRepository AreaInfoRepository { get; }
+        Domain.IRepositories.Area.IAreaGeoRepository AreaGeoRepository { get; }
+        Domain.IRepositories.Store.IStoreShippingAreaRepository StoreShippingAreaRepository { get; }
+        Domain.IRepositories.Store.IStoreShippingRepository StoreShippingRepository { get; }
     }
 }

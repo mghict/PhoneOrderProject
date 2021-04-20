@@ -19,5 +19,8 @@ namespace SettingManagment.Persistence
         Domain.IRepositories.Area.IAreaInfoQueryRepository AreaInfoQueryRepository { get; }
         Domain.IRepositories.Area.IProvinceQueryRepository ProvinceQueryRepository { get; }
         Domain.IRepositories.Area.ICityQueryRepository CityQueryRepository { get; }
+        Domain.IRepositories.Area.IAreaGeoQueryRepository AreaGeoQueryRepository { get; }
+        Domain.IRepositories.Store.IStoreShippingAreaQueryRepository StoreShippingAreaQueryRepository { get; }
+        Domain.IRepositories.Store.IStoreShippingQueryRepository StoreShippingQueryRepository { get; }
     }
 }

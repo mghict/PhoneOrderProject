@@ -1,6 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, LazZiya.TagHelpers
-@using System.Globalization; 
+@using System.Globalization;
 
 @model BehsamFramework.Models.StoreInfoListModel
 
@@ -13,108 +13,110 @@
     int.TryParse(Context.Request.Query["pagesize"], out PageSize);
 }
 
-    <div class="card ">
-        <div class="card-body">
-            <h6 class="card-title ">
-                @*<span class="fa fa-tab"></span>*@
-                لیست فروشگاهها
-            </h6>
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست فروشگاهها
+        </h6>
 
-            <br />
-            <form action="/Admin/Store/Index" method="get" class="form-search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="جستجو براساس کد فروشگاه و یا نام فروشگاه" name="searchkey">
-                    <div class="input-group-append">
-                        <button class="btn btn-light" type="submit">
-                            <i class="ti-search"></i>
-                        </button>
-                    </div>
+        <br />
+        <form action="/Admin/Store/Index" method="get" class="form-search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="جستجو براساس کد فروشگاه و یا نام فروشگاه" name="searchkey">
+                <div class="input-group-append">
+                    <button class="btn btn-light" type="submit">
+                        <i class="ti-search"></i>
+                    </button>
                 </div>
-            </form>
-            <br />
-            @*<p>
+            </div>
+        </form>
+        <br />
+        @*<p>
                 <a class="btn btn-danger btn-rounded" href="/CallCenter/Customer/Register">  ایجاد مشتری جدید  </a>
             </p>*@
-            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
-                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
-                    <thead>
-                        <tr>
-                            <th rowspan="1" colspan="1">کد فروشگاه</th>
-                            <th rowspan="1" colspan="1">نام فروشگاه</th>
-                            <th rowspan="1" colspan="1">آدرس</th>
-                            <th rowspan="1" colspan="1">تلفن</th>
-                            <th rowspan="1" colspan="1">نام منطقه</th>
-                            <th rowspan="1" colspan="1">شهر</th>
-                            <th rowspan="1" colspan="1">استان</th>
-                            <th rowspan="1" colspan="1">وضعیت</th>
-                            <th rowspan="1" colspan="1">عملیات</th>
-                        </tr>
-                    </thead>
+        <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+            <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="1">کد فروشگاه</th>
+                        <th rowspan="1" colspan="1">نام فروشگاه</th>
+                        <th rowspan="1" colspan="1">تلفن</th>
+                        <th rowspan="1" colspan="1">شهر</th>
+                        <th rowspan="1" colspan="1">استان</th>
+                        <th rowspan="1" colspan="1">وضعیت</th>
+                        <th rowspan="1" colspan="1">عملیات</th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                        @if (Model != null && Model.Stores != null)
+                <tbody>
+                    @if (Model != null && Model.Stores != null)
+                    {
+                        @foreach (var store in Model.Stores)
                         {
-                            @foreach (var store in Model.Stores)
-                            {
-                                <tr role="row">
-                                    <td>@store.StoreCode</td>
-                                    <td>@store.StoreName</td>
-                                    <td>@store.StoreAddress</td>
-                                    <td>@store.StorePhone</td>
-                                    <td>@store.AreaName</td>
-                                    <td>@store.City</td>
-                                    <td>@store.Region</td>
-                                    <td>@store.StatusStr</td>
-                                    <td>
-                                        @*<a href="/Admin/Store/StoreInActive?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
+                            <tr role="row">
+                                <td>@store.StoreCode</td>
+                                <td>@store.StoreName</td>
+                                <td>@store.StorePhone</td>
+                                <td>@store.CityName</td>
+                                <td>@store.Region</td>
+                                <td>@store.StatusStr</td>
+                                <td>
+                                    @*<a href="/Admin/Store/StoreInActive?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
                                            data-toggle="tooltip" data-placement="bottom" title="ثبت تعطیلی">
                                             <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
                                         </a>*@
-                                        <a href="/Admin/Product/StoreProductIndex?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
-                                           data-toggle="tooltip" data-placement="bottom" title="نمایش محصولات شعبه">
-                                            <i class="fa fa-credit-card  text-success " aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
+                                    <a href="/Admin/Product/StoreProductIndex?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="نمایش محصولات شعبه">
+                                        <i class="fa fa-credit-card  text-success " aria-hidden="true"></i>
+                                    </a>
+                                    <a href="/Admin/StoreShipping/StoreShipping?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="تعیین کرایه ثابت">
+                                        <i class="fa fa-motorcycle  text-pink" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="/Admin/StoreShipping/AreaShipping?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)&cityId=@store.CityId" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="تعیین مناطق جغرافیایی و کرایه">
+                                        <i class="fa fa-truck  text-info" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         }
-                    </tbody>
+                    }
+                </tbody>
 
-                    <tfoot>
-                        <tr>
-                            <th rowspan="1" colspan="1">کد فروشگاه</th>
-                            <th rowspan="1" colspan="1">نام فروشگاه</th>
-                            <th rowspan="1" colspan="1">آدرس</th>
-                            <th rowspan="1" colspan="1">تلفن</th>
-                            <th rowspan="1" colspan="1">نام منطقه</th>
-                            <th rowspan="1" colspan="1">شهر</th>
-                            <th rowspan="1" colspan="1">استان</th>
-                            <th rowspan="1" colspan="1">وضعیت</th>
-                            <th rowspan="1" colspan="1">عملیات</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                <tfoot>
+                    <tr>
+                        <th rowspan="1" colspan="1">کد فروشگاه</th>
+                        <th rowspan="1" colspan="1">نام فروشگاه</th>
+                        <th rowspan="1" colspan="1">تلفن</th>
+                        <th rowspan="1" colspan="1">شهر</th>
+                        <th rowspan="1" colspan="1">استان</th>
+                        <th rowspan="1" colspan="1">وضعیت</th>
+                        <th rowspan="1" colspan="1">عملیات</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <hr class="text-danger border-danger" />
+        <div class="pagination pagination-rounded float-left">
+            <nav aria-label="Page navigation example" class="mb-3">
+                <paging total-records="@Model.RowCount.ToInt()"
+                        page-no="@PageNumber==0?1:PageNumber"
+                        page-size="@PageSize==0?20:PageSize"
+                        show-prev-next="true"
+                        show-total-pages="false"
+                        show-total-records="false"
+                        show-page-size-nav="false"
+                        show-first-numbered-page="true"
+                        show-last-numbered-page="true"
+                        query-string-key-page-no="page"
+                        query-string-key-page-size="pagesize"
+                        query-string-value="@@(Request.QueryString.Value)"
+                        gap-size="2">
+                </paging>
+            </nav>
 
-            <div class="pagination pagination-rounded float-left">
-                <nav aria-label="Page navigation example" class="mb-3">
-                    <paging total-records="@Model.RowCount.ToInt()"
-                            page-no="@PageNumber==0?1:PageNumber"
-                            page-size="@PageSize==0?20:PageSize"
-                            show-prev-next="true"
-                            show-total-pages="false"
-                            show-total-records="false"
-                            show-page-size-nav="false"
-                            show-first-numbered-page="true"
-                            show-last-numbered-page="true"
-                            query-string-key-page-no="page"
-                            query-string-key-page-size="pagesize"
-                            query-string-value="@@(Request.QueryString.Value)"
-                            gap-size="2">
-                    </paging>
-                </nav>
-
-            </div>
         </div>
     </div>
+</div>
 

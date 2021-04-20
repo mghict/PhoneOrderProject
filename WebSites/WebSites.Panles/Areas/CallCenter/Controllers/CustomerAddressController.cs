@@ -18,11 +18,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
     {
         protected  IGetAddressByIdService GetAddressByIdService;
         protected IGetCustomerAddressService GetCustomerAddressService;
-
-        public CustomerAddressController(IGetAddressByIdService getAddressByIdService, IGetCustomerAddressService getCustomerAddressService, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        private Services.ISettingFacad _SettingFacad;
+        private Services.Map.NeshanMapService MapService;
+        public CustomerAddressController(Services.Map.NeshanMapService mapService,Services.ISettingFacad SettingFacad,IGetAddressByIdService getAddressByIdService, IGetCustomerAddressService getCustomerAddressService, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             GetAddressByIdService = getAddressByIdService;
             GetCustomerAddressService = getCustomerAddressService;
+            _SettingFacad = SettingFacad;
+            MapService = mapService;
         }
 
         [HttpGet]
@@ -81,29 +84,42 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         public async Task<IActionResult> Insert(long customerId)
         {
 
-            await FillViewBag();
+            var taskFill= FillViewBag();
+
+            
 
             CustomerAddressRegisterModel model =
                 new CustomerAddressRegisterModel()
                 {
-                    CustomerId= customerId,
-                    AreaId=1
+                    CustomerId= customerId
                 };
+
+            Task.WaitAll(taskFill);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(CustomerAddressRegisterModel model,string returnUrl)
+        public async Task<IActionResult> Insert(CustomerAddressRegisterModel model,string latStr,string lngStr,string returnUrl)
         {
             var fill= FillViewBag();
+
+            System.Globalization.NumberStyles style = System.Globalization.NumberStyles.AllowDecimalPoint;
+            System.Globalization.CultureInfo info = System.Globalization.CultureInfo.InvariantCulture;
+
+            float temp = 0.0f;
 
             try
             {
                 model.Status = 1;
-                model.AreaId = 1;
-                model.Latitude = 35.6943632;
-                model.Longitude = 51.4519638;
+
+                float.TryParse(latStr, style, info, out temp);
+                model.Latitude = temp;
+
+                float.TryParse(lngStr, style, info, out temp);
+                model.Longitude = temp;
+
+                model.AddressValue = model.AddressValue.Trim().Replace("  ","").Replace(Environment.NewLine," ");
 
                 if (ModelState.IsValid)
                 {
@@ -160,16 +176,24 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CustomerAddressUpdateModel model, string returnUrl)
+        public async Task<IActionResult> Update(CustomerAddressUpdateModel model, string latStr, string lngStr, string returnUrl)
         {
             var fill = FillViewBag();
 
+            System.Globalization.NumberStyles style = System.Globalization.NumberStyles.AllowDecimalPoint;
+            System.Globalization.CultureInfo info = System.Globalization.CultureInfo.InvariantCulture;
+
+            float temp = 0.0f;
+
             try
             {
-                model.Status = 1;
-                model.AreaId = 1;
-                model.Latitude = 35.6943632;
-                model.Longitude = 51.4519638;
+                float.TryParse(latStr, style, info, out temp);
+                model.Latitude = temp;
+
+                float.TryParse(lngStr, style, info, out temp);
+                model.Longitude = temp;
+
+                model.AddressValue = model.AddressValue.Trim().Replace("  ", "").Replace(Environment.NewLine, " ");
 
                 if (ModelState.IsValid)
                 {
@@ -226,7 +250,6 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
 
-
         //-----------------------------------------------------
         //-----------------------------------------------------
 
@@ -242,6 +265,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 ViewBag.AddressType = new SelectList(addressType, "StatusId", "Name");
 
                 ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
+
+                var province = _SettingFacad.CityAndProvinceService.GetAllProvinceAsync();
+                ViewBag.ProvinceList = new SelectList(province.Result, "Id", "ProvinceName");
             });
             
         }
@@ -342,6 +368,59 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         //-----------------------------------------------------
         //-----------------------------------------------------
 
-        
+        [HttpPost]
+        public async Task<IActionResult> GetCity(float id)
+        { 
+            var model = await _SettingFacad.CityAndProvinceService.GetAllCityByProvinceAsync(id);
+
+            var items = model.Select(s => new {
+                Id=s.Id,
+                Name=s.CityName
+            }).ToList();
+
+            return Json(new { Items=items });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetArea(int id)
+        {
+            var model = await _SettingFacad.AreaInfoService.GetByCityAsync(id, 2);
+
+            var items = model.Select(s => new {
+                Id = s.Id,
+                Name = s.AreaName,
+                s.CenterLatitude
+            }).ToList();
+
+            return Json(new { Items = items });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetGeo(int id)
+        {
+            var model = await _SettingFacad.AreaInfoService.GetByIdAsync(id);
+
+            var item = new
+            {
+                lat = model.CenterLatitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                lng = model.Centerlongitude.ToString(System.Globalization.CultureInfo.InvariantCulture)
+            };
+
+            return Json(new { Item = item });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetSearchResult(string searchKey)
+        {
+            var model = await MapService.GeocodingApi(searchKey);
+
+            var item = new
+            {
+                lat = model.Location.Y.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                lng = model.Location.X.ToString(System.Globalization.CultureInfo.InvariantCulture)
+            };
+
+            return Json(new { Item = item });
+        }
     }
 }

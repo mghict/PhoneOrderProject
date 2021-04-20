@@ -48,5 +48,31 @@ namespace WebSites.Panles.Controllers
                 }
             }
         }
+
+        public async Task<IActionResult> SearchAddress(string searchKey = "")
+        {
+            if (string.IsNullOrEmpty(searchKey))
+            {
+                return Json(new { IsSuccess = false, Message = "آدرس را وارد کنید" });
+            }
+            else
+            {
+                var item = await NeshanMapService.GeocodingApi(searchKey);
+                if (item != null || !item.Status.ToUpper().Contains("OK"))
+                {
+                    var addressItem = new
+                    {
+                        lat = item.Location.Y.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        lng = item.Location.X.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                    };
+
+                    return Json(new { IsSuccess = true, Item = addressItem });
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false, Message = "اطلاعات یافت نشد" });
+                }
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace WebSites.Panles.Models.CustomerAddress
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int AreaId { get; set; }
-        public string AreaIdStr { get; set; }
+        public string AreaName { get; set; }
         public byte Status { get; set; }
         public string StatusStr { get; set; }
     }

@@ -25,7 +25,8 @@ namespace SettingManagment.Domain.Entities
         public int AreaID { get; set; }
         public string AreaName { get; set; }
         public string Region { get; set; }
-        public string City { get; set; }
+        public string CityName { get; set; }
+        public int CityId { get; set; }
         public float Distance { get; set; }
     }
 }
