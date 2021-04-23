@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\BehsamFramework.Util\BehsamFramework.Util.csproj" />
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.MessageSender\Framework.MessageSender.csproj" />
     <ProjectReference Include="..\UserAuthorize.Application\UserAuthorize.Application.csproj" />
     <ProjectReference Include="..\UserAuthorize.Domain\UserAuthorize.Domain.csproj" />
     <ProjectReference Include="..\UserAuthorize.Persistence\UserAuthorize.Persistence.csproj" />

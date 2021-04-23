@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LogManager.Domain.IRepositories.ILogMessageRepository
 {
     public interface ILogMessageRepository:
-        BehsamFramework.DapperDomain.Base.IRepository<Entities.LogMessage>
+        BehsamFramework.DapperDomain.Base.IRepository<Entities.LogMessage,long>
     {
         
     }

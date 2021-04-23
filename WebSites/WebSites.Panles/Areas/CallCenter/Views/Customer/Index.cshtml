@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_Layout";
     int PageNumber = 1;
-    int PageSize = 10;
+    int PageSize = 20;
     int.TryParse(Context.Request.Query["page"], out PageNumber);
     int.TryParse(Context.Request.Query["pagesize"], out PageSize);
 }

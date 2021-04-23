@@ -91,18 +91,20 @@ namespace WebSites.Panles.Services.Authorize
 
             Models.UserModel user = new Models.UserModel()
             {
-                UserId=Convert.ToInt32( userId),
-                StoreId=store,
-                Name=name,
-                ApplicationId=Convert.ToInt32(appId),
-                PhoneNumber=phoneNumber,
-                Token=model.Token
+                UserId = Convert.ToInt32(userId),
+                StoreId = store,
+                Name = name,
+                ApplicationId = Convert.ToInt32(appId),
+                PhoneNumber = phoneNumber,
+                Token = model.Token,
+                UserIp = SetContext.HttpContext.Connection.RemoteIpAddress.ToString()
             };
             
             
             SetContext.HttpContext.Items["User"]=user ;
-            SetContext.HttpContext.Session.Set<Models.UserModel>("User", user);
             SetContext.HttpContext.Items["AuthorizeService"] = this;
+
+            SetContext.HttpContext.Session.Set<Models.UserModel>("User", user);
             SetContext.HttpContext.Session.Set<AuthorizeService>("AuthorizeService", this);
 
             SetContext.HttpContext.Session.Set<Models.UserModel>("User", user);

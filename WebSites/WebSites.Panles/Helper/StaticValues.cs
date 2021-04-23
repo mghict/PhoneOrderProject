@@ -18,13 +18,13 @@ namespace WebSites.Panles.Helper
         private ServiceCaller _serviceCaller;
         private IHttpClientFactory _clientFactory;
 
-        public StaticValues(ICacheService cacheService, IHttpClientFactory clientFactory)
+        public StaticValues(ICacheService cacheService, IHttpClientFactory clientFactory, ServiceCaller serviceCaller)
         {
 
             _clientFactory = clientFactory;
             _service = new ServiceCaller<CustomerListModel>(_clientFactory);
             _cacheService = cacheService;
-            _serviceCaller = new ServiceCaller(_clientFactory);
+            _serviceCaller = serviceCaller;//new ServiceCaller(_clientFactory);
         }
 
         public CustomerListModel CustomerListModel

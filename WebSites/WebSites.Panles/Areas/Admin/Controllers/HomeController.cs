@@ -24,7 +24,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         public HomeController(
             Services.Authorize.IAuthorizeService authorizeService,
             Hubs.IUserConnectionManager UserConnectionManager,
-            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             AuthorizeService = authorizeService;
             _userConnectionManager = UserConnectionManager;

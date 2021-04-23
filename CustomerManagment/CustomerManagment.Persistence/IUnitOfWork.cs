@@ -11,6 +11,7 @@ namespace CustomerManagment.Persistence
         Domain.IRepository.CustomerInfo.ICustomerRepository CustomerRepository { get; }
         Domain.IRepository.CustomerAddress.ICustomerAddressRepository CustomerAddressRepository { get; }
         Domain.IRepository.CustomerPhone.ICustomerPhoneRepository CustomerPhoneRepository { get; }
-
+        Domain.IRepository.CustomerAddress.IAreaGeoRepository AreaGeoRepository { get; }
+        Domain.IRepository.CustomerAddress.ICustomerAddressAreaInfoRepository CustomerAddressAreaInfoRepository { get; }
     }
 }

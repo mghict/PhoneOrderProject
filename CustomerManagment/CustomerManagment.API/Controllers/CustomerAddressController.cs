@@ -10,7 +10,7 @@ namespace CustomerManagment.API.Controllers
     public class CustomerAddressController :
         Base.ControllerBase
     {
-        public CustomerAddressController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public CustomerAddressController(IMediator mediator, IInternalLogger _logger) : base(mediator, _logger)
         {
         }
 
@@ -48,6 +48,17 @@ namespace CustomerManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    
+                    Application.CustomerAddressFeature.Commands.DefineCustomerAddressAreaCommand defineCommand =
+                        new Application.CustomerAddressFeature.Commands.DefineCustomerAddressAreaCommand
+                        {
+                            CustomerAddressId = result.Value,
+                            Lat = command.Latitude,
+                            Lng = command.Longitude
+                        };
+
+                    var resp = await Mediator.Send(defineCommand);
+
                     return Ok(value: result);
                 }
                 else
@@ -223,6 +234,16 @@ namespace CustomerManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    Application.CustomerAddressFeature.Commands.DefineCustomerAddressAreaCommand defineCommand =
+                        new Application.CustomerAddressFeature.Commands.DefineCustomerAddressAreaCommand
+                        {
+                            CustomerAddressId = command.Id,
+                            Lat = command.Latitude,
+                            Lng = command.Longitude
+                        };
+
+                    var resp = await Mediator.Send(defineCommand);
+
                     return Ok(value: result);
                 }
                 else

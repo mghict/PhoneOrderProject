@@ -17,7 +17,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
     {
         private Services.CustomerPhone.IGetCustomerPhone GetCustomerPhone;
         private Services.CustomerPhone.IGetPhoneByIdService GetPhoneByIdService;
-        public CustomerPhoneController(Services.CustomerPhone.IGetPhoneByIdService getPhoneByIdService,Services.CustomerPhone.IGetCustomerPhone getCustomerPhone,IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        public CustomerPhoneController(Services.CustomerPhone.IGetPhoneByIdService getPhoneByIdService,Services.CustomerPhone.IGetCustomerPhone getCustomerPhone,IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             GetCustomerPhone = getCustomerPhone;
             GetPhoneByIdService = getPhoneByIdService;

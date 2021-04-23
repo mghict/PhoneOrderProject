@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.MessageSender\Framework.MessageSender.csproj" />
     <ProjectReference Include="..\CustomerManagment.Application\CustomerManagment.Application.csproj" />
   </ItemGroup>
 

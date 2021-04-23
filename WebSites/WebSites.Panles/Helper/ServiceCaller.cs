@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace WebSites.Panles.Helper
@@ -34,6 +35,21 @@ namespace WebSites.Panles.Helper
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
                 }
+                
+                //try
+                //{
+                //    var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
+                //    if (user != null)
+                //    {
+                //        client.DefaultRequestHeaders.Add("Name", user.Name);
+                //        client.DefaultRequestHeaders.Add("Id", user.UserId.ToString());
+                //        client.DefaultRequestHeaders.Add("IP", user.UserIp);
+                //    }
+                //}
+                //catch
+                //{
+
+                //}
             });
             
         }
@@ -131,9 +147,12 @@ namespace WebSites.Panles.Helper
     {
         private string Token { get; set; }
         private HttpClient client { get; set; }
-        public ServiceCaller(IHttpClientFactory _clientFactory)
+        private IHttpContextAccessor MyContext;
+
+        public ServiceCaller(IHttpClientFactory _clientFactory, IHttpContextAccessor myContext)
         {
             client = _clientFactory.CreateClient("ApiGateway");
+            MyContext = myContext;
         }
 
         private void InitialClient()
@@ -145,6 +164,22 @@ namespace WebSites.Panles.Helper
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
             }
+
+            try
+            {
+                var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
+                if(user!=null)
+                {
+                    client.DefaultRequestHeaders.Add("Name", user.Name);
+                    client.DefaultRequestHeaders.Add("Id", user.UserId.ToString());
+                    client.DefaultRequestHeaders.Add("IP", user.UserIp);
+                }
+            }
+            catch
+            {
+
+            }
+            
         }
 
         public void SetToken(string tokenValue)

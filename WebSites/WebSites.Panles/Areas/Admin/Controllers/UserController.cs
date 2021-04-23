@@ -14,7 +14,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         private Services.IUserFacad _userFacad;
-        public UserController(Services.IUserFacad UserFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        public UserController(Services.IUserFacad UserFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             _userFacad = UserFacad;
         }

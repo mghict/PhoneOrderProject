@@ -18,7 +18,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         private Services.ISettingFacad _settingFacad;
         public InActiveController(
             Services.ISettingFacad SettingFacad,
-            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper,ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             _settingFacad = SettingFacad;
         }

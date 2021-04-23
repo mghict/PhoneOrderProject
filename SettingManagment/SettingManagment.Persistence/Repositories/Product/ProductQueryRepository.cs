@@ -103,15 +103,15 @@ namespace SettingManagment.Persistence.Repositories.Product
 
         public async Task<ProductsModel> GetProducts(float storeId, string searchKey = "", float catId = 0,int pageNumber=0,int pageSize=20)
         {
-            var query = " exec dbo.GetProducts @StoreId,@ProdName,@CatId,@PageNumber,@PageSize ";
+            var query = " exec dbo.GetProducts @StoreId,@CatId,@ProdName,@PageNumber,@PageSize ";
 
             var param = new
             {
                 @StoreId = storeId,
                 @CatId = catId,
+                @ProdName = string.IsNullOrEmpty(searchKey) ? "" : searchKey.Trim(),
                 @PageNumber = pageNumber,
-                @PageSize = pageSize,
-                @ProdName=searchKey
+                @PageSize = pageSize                
             };
 
             ProductsModel lst = new ProductsModel();

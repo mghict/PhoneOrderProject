@@ -16,7 +16,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         private readonly Services.Store.IGetStoreInfoPaginationService storeInfoPaginationService;
         public StoreController(
             Services.Store.IGetStoreInfoPaginationService StoreInfoPaginationService,
-            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             storeInfoPaginationService = StoreInfoPaginationService;
         }

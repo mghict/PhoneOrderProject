@@ -13,7 +13,7 @@ namespace CustomerManagment.API.Controllers
     public class CustomerController:
         Base.ControllerBase
     {
-        public CustomerController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public CustomerController(IMediator mediator, IInternalLogger _logger) : base(mediator, _logger)
         {
         }
 

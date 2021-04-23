@@ -51,7 +51,7 @@ namespace WebSites.Panles.Services.Store
                 model = await ServiceCaller.PostDataWithValue<List<StoreOrderModel>>("Setting/StoreOrder", Command);
 
 
-                if (model == null || model.Value == null || model.IsFailed)
+                if (model == null || model.Value == null || model.IsFailed || model.Value.Count==0)
                 {
                     throw new Exception("اطلاعات یافت نشد");
                 }

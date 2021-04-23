@@ -18,36 +18,31 @@
                 @foreach (var item in Model)
                 {
                     <div class="col col-sm-12 col-md-6 col-xl-4 col-lg-4" tabindex="1">
-                        <div class="card">
-                            <div class="card-header " style="background-color:#dbdbd9;">
-                                <h6 class="tx-18 mg-t-2 mg-b-2 mg-l-auto">@item.StoreName</h6>
-                            </div>
-                            <hr />
-                            <div class="card-body">
-                                <div class="w-100">
-                                    <p style="height:100px;">@item.StoreAddress</p>
-                                    <p class="text-info float-left">@item.Distance km</p>
-                                    <p><small class="text-muted text-danger">@item.Region --> @item.CityName --> @item.AreaName</small></p>
+                        <div class="card ">
+                            @*<div class="shadow bg-white rounded">*@
+                                <div class="card-header" style="background-color:#e61c4e;">
+                                    <h6 class="tx-18 mg-t-2 mg-b-2 mg-l-auto">@item.StoreName</h6>
                                 </div>
+                                <div class="card-body" style="background-color:#edf4ff;">
+                                    <div class="w-100 ">
+                                        <p style="height:60px;overflow:auto;">@item.StoreAddress</p>
+                                        <hr class="bg-danger border-danger" />
+                                        <p><small class="text-muted ">منطقه آدرس مشتری : @item.AreaName</small></p>
+                                        <p class="text-primary ">زمان تقریبی : <span class="text-pink"> @item.TimeDistanceText </span></p>
+                                        <p class="text-primary ">فاصله تقریبی : <span class="text-pink">@item.UnitDistanceText (@item.UnitDistanceValue.ToString("#,#") متر)</span></p>
 
-                            </div>
-                            <div class="card-footer w-100">
-                                @*<a class="btn btn-danger btn-block " data-toggle="tooltip"
-                                       asp-area="CallCenter"
-                                       asp-controller="Order"
-                                       asp-action="ShowProductList"
-                                       asp-route-startTime="@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)"
-                                       asp-route-endTime="@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)"
-                                       asp-route-customerId="@ViewBag.CustomerId"
-                                       asp-route-address="@ViewBag.AddressId"
-                                       asp-route-storeId="@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                    </div>
+                                    <hr class="bg-danger border-danger" />
+                                    <p class="text-primary ">کرایه : <span class="text-pink">@item.ShippingPrice ریال</span></p>
+                                    <a class="btn btn-outline-danger btn-block " data-toggle="tooltip" style="color:black;"
+                                       href="/CallCenter/Order/ShowProductList?sT=@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)&eT=@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)&cId=@ViewBag.CustomerId&add=@ViewBag.AddressId&sId=@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)&shipp=@item.ShippingPrice">
                                         انتخاب
-                                    </a>*@
-                                <a class="btn btn-danger btn-block " data-toggle="tooltip"
-                                   href="/CallCenter/Order/ShowProductList?startTime=@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)&endTime=@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)&customerId=@ViewBag.CustomerId&address=@ViewBag.AddressId&storeId=@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)">
-                                    انتخاب
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
+                                @*<div class="card-footer w-100" style="background-color:#d1ddf0;">
+                                    
+                                </div>*@
+                            @*</div>*@
                         </div>
                     </div>
                 }

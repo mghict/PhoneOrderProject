@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
+    <ProjectReference Include="..\LogManager.Domain\LogManager.Domain.csproj" />
+    <ProjectReference Include="..\LogManager.Persistence\LogManager.Persistence.csproj" />
   </ItemGroup>
 
 

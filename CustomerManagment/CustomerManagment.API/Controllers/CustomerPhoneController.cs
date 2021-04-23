@@ -10,7 +10,7 @@ namespace CustomerManagment.API.Controllers
     public class CustomerPhoneController :
         Base.ControllerBase
     {
-        public CustomerPhoneController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public CustomerPhoneController(IMediator mediator, IInternalLogger _logger) : base(mediator, _logger)
         {
         }
 

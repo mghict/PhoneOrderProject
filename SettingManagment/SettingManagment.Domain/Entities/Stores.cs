@@ -28,5 +28,8 @@ namespace SettingManagment.Domain.Entities
         public string CityName { get; set; }
         public int CityId { get; set; }
         public float Distance { get; set; }
+        public float sourceLatitude { get; set; }
+        public float sourceLongitude { get; set; }
+        public int ShippingPrice { get; set; }
     }
 }

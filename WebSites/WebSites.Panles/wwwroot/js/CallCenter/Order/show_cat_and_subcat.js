@@ -27,17 +27,21 @@ function ShowSubCat(id) {
         });
 }
 
-function ShowProduct(id) {
+function ShowProduct(id,pageNum,pageSize) {
 
     var storeId = $("#txtStoreId").val();
-
+    var search = $("#txtSearch").val();
+    
     if (storeId == null || storeId.trim() == "") {
         return;
     }
 
     var postData = {
         'catId': id,
-        'storeId': storeId
+        'storeId': storeId,
+        'pageNumber': pageNum,
+        'pageSize': pageSize,
+        'searchKey': search
     };
 
     $.ajax(
@@ -49,6 +53,7 @@ function ShowProduct(id) {
                 showBehsamLoading();
             },
             success: function (result, status, err) {
+                $('#CategoryId').val(id);
                 $('#ProductList').html(result);
             },
             error: function (request, status, error) {
@@ -153,13 +158,14 @@ function showCartDetails() {
         });
 }
 
-function addCart(pid, count, uPrice, name) {
+function addCart(pid, count, uPrice, name,tax) {
 
     let storeId = $('#txtStoreId').val();
     let customerId = $('#CustomerId').val();
     let addId = $('#AddressId').val();
     let sTime = $('#StartTime').val();
     let eTime = $('#EndTime').val();
+    let ship = $('#txtShipping').val();
 
     var postData = {
         'storeId': storeId,
@@ -170,7 +176,9 @@ function addCart(pid, count, uPrice, name) {
         'startTime': sTime,
         'endTime': eTime, 
         'unitPrice': uPrice,
-        'productName':name
+        'productName': name,
+        'tax': tax,
+        'shipping':ship
     };
 
     $.ajax(

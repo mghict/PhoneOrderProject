@@ -20,7 +20,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         protected IGetCustomerAddressService GetCustomerAddressService;
         private Services.ISettingFacad _SettingFacad;
         private Services.Map.NeshanMapService MapService;
-        public CustomerAddressController(Services.Map.NeshanMapService mapService,Services.ISettingFacad SettingFacad,IGetAddressByIdService getAddressByIdService, IGetCustomerAddressService getCustomerAddressService, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        public CustomerAddressController(Services.Map.NeshanMapService mapService,Services.ISettingFacad SettingFacad,IGetAddressByIdService getAddressByIdService, IGetCustomerAddressService getCustomerAddressService, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             GetAddressByIdService = getAddressByIdService;
             GetCustomerAddressService = getCustomerAddressService;
@@ -192,7 +192,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 float.TryParse(lngStr, style, info, out temp);
                 model.Longitude = temp;
-
+                model.Status = 1;
                 model.AddressValue = model.AddressValue.Trim().Replace("  ", "").Replace(Environment.NewLine, " ");
 
                 if (ModelState.IsValid)
@@ -224,7 +224,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                     fill.Wait();
                     ViewBag.ReturnUrl = returnUrl;
 
-                    return View("Insert", model);
+                    return View("Update", model);
                 }
 
             }
@@ -235,7 +235,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 fill.Wait();
                 ViewBag.ReturnUrl = returnUrl;
 
-                return View("Insert", model);
+                return View("Update", model);
             }
 
 
@@ -388,8 +388,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
             var items = model.Select(s => new {
                 Id = s.Id,
-                Name = s.AreaName,
-                s.CenterLatitude
+                Name = s.AreaName
             }).ToList();
 
             return Json(new { Items = items });

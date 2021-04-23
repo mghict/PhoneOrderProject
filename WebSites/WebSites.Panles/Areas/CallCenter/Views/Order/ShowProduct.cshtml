@@ -1,67 +1,182 @@
-﻿@model List<BehsamFramework.Models.ProductShowModel>
+﻿@model BehsamFramework.Models.ProductsModel
 @using System.Globalization;
+
+
 @{
     Layout = null;
+    int pageNumber = ViewBag.PageNumber;
+    int pageSize = ViewBag.PageSize;
+    string search = ViewBag.SearchKey;
 }
 
-
-
-@if (Model != null && Model.Count > 0)
-{
-    @foreach (var item in Model)
-    {
-        string subcatId = "product" + item.Id;
-        string txtCountP = "txtCount" + item.Id;
-
-        <div class="col-md-6 col-lg-6 col-xl-4  col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="pro-img-box">
-                        @*<div class="d-flex product-sale">
-                                <div class="badge bg-pink">جدید</div>
-                                <i class="mdi mdi-heart-outline ml-auto wishlist"></i>
-                            </div>*@
-                        @*<img class="w-auto h-auto" src="/admin/Content/assets/img/ecommerce/product.jpg" alt="تصویر محصول">*@
-                        <a href="#" class="adtocart ">
-                            <i class="las la-shopping-cart text-light" id="productImg-@item.Id"></i>
-                        </a>
-                    </div>
-                    <div class="text-center pt-3">
-                        <h3 class="h6 mb-2 mt-4 font-weight-bold text-uppercase">@item.DisplayName</h3>
-                        <span class="tx-15 ml-auto">
-                            <i class="ion ion-md-star text-warning font-weight-normal ml-1"></i>
-                            <span class="text-warning font-weight-normal tx-14 ml-1">@item.BrandName</span>
-                        </span>
-                        <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
-                            @item.UnitPrice.ToString("#,#")
-
-                        </h4>
-                    </div>
-                    <hr />
-                    <div class="form-group tx-12">
-                        <div class="row" style="justify-content:center;">
-                            <a class="btn btn-light btn-sm  ml-1" href="#" onclick="addProductCount('@txtCountP')"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
-                            <input type="text" value="1" class="text-center" style="width:35px;" id="@txtCountP" />
-                            <a class="btn btn-light btn-sm  mr-1" href="#" onclick="delProductCount('@txtCountP')"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                            <a href="#" class="btn btn-danger mr-4"
-                               onclick="addCart('@item.Id',
-                                            $('#@txtCountP').val(),
-                                            '@item.UnitPrice',
-                                            '@item.ProductName.ToString(CultureInfo.InvariantCulture)');">
-                                <i class="fa fa-shopping-cart "></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @*<div class="card-footer">
-
-
-                    </div>*@
+<div class="card w-100">
+    <div class="card-body w-100">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="جستجو" name="searchkey" id="txtSearch" value="@search">
+            <div class="input-group-append">
+                <button class="btn btn-light" type="submit" onclick="goSearch('@pageSize')">
+                    <i class="ti-search"></i>
+                </button>
             </div>
         </div>
+        <hr class="border-danger bg-danger" />
+        <div class="row w-100">
+            @if (Model != null && Model.Products != null && Model.Products.Count > 0)
+            {
+                @foreach (var item in Model.Products)
+                {
+                    string subcatId = "product" + item.Id;
+                    string txtCountP = "txtCount" + item.Id;
+
+                    <div class="col-md-6 col-lg-4 col-xl-4  col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="pro-img-box">
+                                    @*<div class="d-flex product-sale">
+                                        <div class="badge bg-pink">جدید</div>
+                                        <i class="mdi mdi-heart-outline ml-auto wishlist"></i>
+                                    </div>*@
+                                    @*<img class="w-auto h-auto" src="/admin/Content/assets/img/ecommerce/product.jpg" alt="تصویر محصول">*@
+                                    <a href="#" class="adtocart ">
+                                        <i class="las la-shopping-cart text-light" id="productImg-@item.Id"></i>
+                                    </a>
+                                </div>
+                                <div class="text-center pt-3">
+                                    <h3 class="h6 mb-2 mt-4 font-weight-bold text-uppercase">@item.DisplayName</h3>
+                                    <span class="tx-15 ml-auto">
+                                        <i class="ion ion-md-star text-warning font-weight-normal ml-1"></i>
+                                        <span class="text-warning font-weight-normal tx-14 ml-1">@item.BrandName</span>
+                                    </span><br />
+                                    <span class="tx-15 ml-auto">
+                                        <i class="ion ion-md-star text-purple font-weight-normal ml-1"></i>
+                                        <span class="text-purple font-weight-normal tx-14 ml-1">@item.CategoryName</span>
+                                    </span>
+                                    <h4 class="h5 mb-0 mt-2 text-center font-weight-bold text-danger">
+                                        @item.UnitPrice.ToString("#,#")
+
+                                    </h4>
+                                </div>
+                                <hr />
+                                <div class="form-group tx-12">
+                                    <div class="row" style="justify-content:center;">
+                                        <a class="btn btn-light btn-sm  ml-1" href="#" onclick="addProductCount('@txtCountP')">
+                                            @*<i class="fa fa-angle-up" aria-hidden="true"></i>*@
+                                            <span class="text-primary align-items-center justify-content-center">+</span>
+                                        </a>
+                                        <input type="text" value="1" class="text-center" style="width:35px;" id="@txtCountP" />
+                                        <a class="btn btn-light btn-sm  mr-1" href="#" onclick="delProductCount('@txtCountP')">
+                                            @*<i class="fa fa-angle-down" aria-hidden="true"></i>*@
+                                            <span class="text-primary align-items-center justify-content-center">-</span>
+                                        </a>
+                                        <a href="#" class="btn btn-danger mr-4"
+                                           onclick="addCart('@item.Id',
+                                            $('#@txtCountP').val(),
+                                            '@item.UnitPrice',
+                                            '@item.ProductName.ToString(CultureInfo.InvariantCulture)',
+                                            '@item.TaxPrice')">
+                                            <i class="fa fa-shopping-cart "></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h6 class="text-danger">محصول برای نمایش وجود ندارد</h6>
+            }
+        </div>
+    </div>
+    <hr class="bg-danger border-danger" />
+    <div class="card-footer">
+        <div class="float-left">
+            @{
+                int PageP = pageNumber - 1;
+            }
+            <a class="btn btn-outline-primary" onclick="goToPage('@PageP', '@pageSize')">
+                <i class="fa fa-backward text-purple" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="float-right">
+            @{ 
+                int PageN = pageNumber + 1;
+            }
+            <a class="btn btn-outline-primary" onclick="goToPage('@PageN', '@pageSize')"><i class="fa fa-forward text-purple" aria-hidden="true"></i></a>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        @*<div class="pagination pagination-rounded float-left">
+            <nav aria-label="Page navigation example" class="mb-3">
+                <paging total-records="@Convert.ToInt32(Model.RowCount)"
+                        page-no="@PageNumber==0?1:PageNumber"
+                        page-size="@PageSize==0?21:PageSize"
+                        show-prev-next="true"
+                        show-total-pages="false"
+                        show-total-records="false"
+                        show-page-size-nav="false"
+                        show-first-numbered-page="true"
+                        show-last-numbered-page="true"
+                        query-string-key-page-no="page"
+                        query-string-key-page-size="pagesize"
+                        query-string-value="@@(Request.QueryString.Value)"
+                        gap-size="2"
+                        ajax="false"
+                        ajax-update="#ProductList"
+                        ajax-url="?handler=ShowProduct('@ViewBag.storeId')">
+                </paging>
+            </nav>
+
+        </div>*@
+    </div>
+</div>
+
+<script>
+    function goToPage(pageNum, pageSize) {
+        var storeId = $("#txtStoreId").val();
+        var search = $("#txtSearch").val();
+        var id = $('#CategoryId').val();
+
+        if (storeId == null || storeId.trim() == "") {
+            return;
+        }
+
+        var postData = {
+            'catId': id,
+            'storeId': storeId,
+            'pageNumber': pageNum,
+            'pageSize': pageSize,
+            'searchKey': search
+        };
+
+        $.ajax(
+            {
+                url: '/CallCenter/Order/ShowProduct',
+                type: 'post',
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                success: function (result, status, err) {
+                    $('#ProductList').html(result);
+                },
+                error: function (request, status, error) {
+                    console.log(request);
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                }
+            });
     }
-}
-else
-{
-    <h6 class="text-danger">محصول برای نمایش وجود ندارد</h6>
-}
+
+    function goSearch(pageSize) {
+        ShowProduct(0, 0, pageSize);
+    }
+
+</script>
+

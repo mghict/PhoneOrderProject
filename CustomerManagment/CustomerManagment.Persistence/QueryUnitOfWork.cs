@@ -34,5 +34,13 @@ namespace CustomerManagment.Persistence
 
         public ICustomerPhoneQueryRepository CustomerPhoneRepository =>
             _customerPhoneRepository = _customerPhoneRepository ?? new CustomerPhoneQueryRepository(IDbConnection);
+
+        private IAreaGeoQueryRepository _areaGeoQueryRepository;
+        public IAreaGeoQueryRepository AreaGeoQueryRepository =>
+            _areaGeoQueryRepository = _areaGeoQueryRepository ?? new AreaGeoQueryRepository(IDbConnection);
+
+        private ICustomerAddressAreaInfoQueryRepository _customerAddressAreaInfoQueryRepository;
+        public ICustomerAddressAreaInfoQueryRepository CustomerAddressAreaInfoQueryRepository =>
+            _customerAddressAreaInfoQueryRepository = _customerAddressAreaInfoQueryRepository ?? new Repositories.CustomerAddress.CustomerAddressAreaQueryRepository(IDbConnection);
     }
 }

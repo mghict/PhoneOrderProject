@@ -36,6 +36,15 @@ namespace SettingManagment.Application.CustomerValuesFeature.CommandsHandler
                     {
                         throw new Exception("اطلاعات یافت نشد");
                     }
+                    if (entity.Count == 1)
+                    {
+                        var ent = entity[0];
+                        if(ent.StoreCode<=0.99f)
+                        {
+                            throw new Exception("اطلاعات یافت نشد");
+                        }
+                        
+                    }
 
                     var resultValue = Mapper.Map < List<BehsamFramework.Models.StoreOrderModel>>(entity);
 
@@ -45,7 +54,7 @@ namespace SettingManagment.Application.CustomerValuesFeature.CommandsHandler
             catch(Exception ex)
             {
                 result.WithError(ex.Message);
-                result.WithValue(new List<BehsamFramework.Models.StoreOrderModel>());
+                //result.WithValue(new List<BehsamFramework.Models.StoreOrderModel>());
             }
 
             return result;

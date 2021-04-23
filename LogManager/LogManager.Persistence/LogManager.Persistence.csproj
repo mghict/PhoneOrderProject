@@ -4,4 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BehsamFramework.Util\BehsamFramework.Util.csproj" />
+    <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
+    <ProjectReference Include="..\LogManager.Domain\LogManager.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

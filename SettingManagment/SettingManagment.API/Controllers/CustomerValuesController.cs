@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BehsamFreamwork.Logger;
+using Framework.MessageSender;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SettingManagment.Application.CustomerValuesFeature.Commands;
@@ -11,9 +12,10 @@ namespace SettingManagment.API.Controllers
 {
     public class CustomerValuesController:Base.ControllerBase
     {
-        public CustomerValuesController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public CustomerValuesController(IMediator mediator, InternalLogger _logger, SendMessages logData) : base(mediator, _logger, logData)
         {
         }
+
 
         #region GetCustomerGroup
 

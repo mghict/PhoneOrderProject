@@ -31,13 +31,13 @@ namespace CustomerManagment.Application.CustomerAddressFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
-            RuleFor(current => current.Status)
-                .NotEmpty()
-                .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotEmpty()
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+            //RuleFor(current => current.Status)
+            //    .NotEmpty()
+            //    .WithErrorCode("10")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+            //    .NotEmpty()
+            //    .WithErrorCode("11")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
             RuleFor(current => current.AddressType)
                 .NotEmpty()

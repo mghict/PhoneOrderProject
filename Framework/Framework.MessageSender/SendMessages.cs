@@ -50,23 +50,23 @@ namespace Framework.MessageSender
             _model.QueueBindNoWait(_messageDetails.QueueName,_messageDetails.ExchangeName,_messageDetails.QueueName,null);
         }
 
-        public  async Task SendToQueueByBus<T>(T input)
-        {
-            var bus = Bus.Factory.CreateUsingRabbitMq(sb =>
-            {
-                sb.Host("rabbitmq://localhost");
-                sb.ReceiveEndpoint(_messageDetails.QueueName, ep =>
-                {
-                    //ep.Handler<T>(context =>
-                    //{
-                    //    return Console.Out.WriteLineAsync(context);
-                    //});
-                });
-            });
+        //public  async Task SendToQueueByBus<T>(T input)
+        //{
+        //    var bus = Bus.Factory.CreateUsingRabbitMq(sb =>
+        //    {
+        //        sb.Host("rabbitmq://localhost");
+        //        sb.ReceiveEndpoint(_messageDetails.QueueName, ep =>
+        //        {
+        //            //ep.Handler<T>(context =>
+        //            //{
+        //            //    return Console.Out.WriteLineAsync(context);
+        //            //});
+        //        });
+        //    });
 
-            await bus.StartAsync();
-            await bus.Publish(input);
-            await bus.StopAsync();
-        }
+        //    await bus.StartAsync();
+        //    await bus.Publish(input);
+        //    await bus.StopAsync();
+        //}
     }
 }

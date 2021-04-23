@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BehsamFreamwork.Logger;
+using Framework.MessageSender;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,10 @@ namespace SettingManagment.API.Controllers
     [ApiController]
     public class StoreShippingController : Base.ControllerBase
     {
-        public StoreShippingController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public StoreShippingController(IMediator mediator, InternalLogger _logger, SendMessages logData) : base(mediator, _logger, logData)
         {
         }
+
 
         #region Create
 
@@ -45,6 +47,8 @@ namespace SettingManagment.API.Controllers
 
             if (result.IsSuccess)
             {
+                SendDataForLog(command, "AreaInfoTbl", "Create", result.Value).Start();
+
                 return Ok(result);
             }
             else
@@ -122,6 +126,7 @@ namespace SettingManagment.API.Controllers
 
             if (result.IsSuccess)
             {
+                SendDataForLog(command, "AreaInfoTbl", "Update", command.Id);
                 return Ok(result);
             }
             else

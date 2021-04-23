@@ -21,5 +21,12 @@ namespace BehsamFramework.Models
         public int CityId { get; set; }
         public float Distance { get; set; }
         public string StatusStr { get; set; }
+        public float sourceLatitude { get; set; }
+        public float sourceLongitude { get; set; }
+        public int TimeDistanceValue { get; set; }
+        public string TimeDistanceText { get; set; }
+        public int UnitDistanceValue { get; set; }
+        public string UnitDistanceText { get; set; }
+        public int ShippingPrice { get; set; }
     }
 }

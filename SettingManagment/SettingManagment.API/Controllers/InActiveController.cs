@@ -1,4 +1,5 @@
 ﻿using BehsamFreamwork.Logger;
+using Framework.MessageSender;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,9 +12,10 @@ namespace SettingManagment.API.Controllers
     public class InActiveController :
         Base.ControllerBase
     {
-        public InActiveController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public InActiveController(IMediator mediator, InternalLogger _logger, SendMessages logData) : base(mediator, _logger, logData)
         {
         }
+
 
         #region GetById
 

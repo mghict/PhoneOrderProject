@@ -16,11 +16,12 @@ namespace WebSites.Panles.Services.Base
         protected IHttpClientFactory ClientFactory;
         protected AutoMapper.IMapper Mapper;
 
-        public ServiceBase(ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper)
+        public ServiceBase(
+            ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper)
         {
             CacheService = cacheService;
             ClientFactory = clientFactory;
-            ServiceCaller = new ServiceCaller(ClientFactory);
+            ServiceCaller = serviceCaller;// new ServiceCaller(ClientFactory);
             Mapper = mapper;
         }
     }

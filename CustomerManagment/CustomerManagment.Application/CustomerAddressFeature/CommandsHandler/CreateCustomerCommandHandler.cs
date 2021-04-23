@@ -19,13 +19,11 @@ namespace CustomerManagment.Application.CustomerAddressFeature.CommandsHandler
     {
         protected AutoMapper.IMapper Mapper { get; }
         protected Persistence.IUnitOfWork UnitOfWork { get; }
-
         public CreateCustomerAddressCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             Mapper = mapper;
             UnitOfWork = unitOfWork;
         }
-
 
         public async Task<Result<long>> Handle(CreateCustomerAddressCommand request, CancellationToken cancellationToken)
         {
@@ -55,7 +53,6 @@ namespace CustomerManagment.Application.CustomerAddressFeature.CommandsHandler
                 // **************************************************
 
                 // **************************************************
-
 
                 result.WithSuccess
                     (successMessage: BehsamFramework.Resources.Messages.SuccessInsert);

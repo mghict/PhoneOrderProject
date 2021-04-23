@@ -12,8 +12,8 @@ namespace CustomerManagment.API.Controllers.Base
     [Produces(System.Net.Mime.MediaTypeNames.Application.Json)]
     public class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
     {
-        protected InternalLogger logger;
-        public ControllerBase(MediatR.IMediator mediator, InternalLogger _logger)
+        protected IInternalLogger logger;
+        public ControllerBase(MediatR.IMediator mediator, IInternalLogger _logger)
         {
             Mediator = mediator;
             logger = _logger;

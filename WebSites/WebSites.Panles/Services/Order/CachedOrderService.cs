@@ -12,11 +12,10 @@ namespace WebSites.Panles.Services.Order
     public interface ICachedOrderService 
     {
 
-        int AddItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, float unitPrice, int count,string name);
-        bool UpdateItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, int count);
+        int AddItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, float unitPrice, int count,string name,int shipping,int tax);
+        bool UpdateItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, int count,int shipping);
         bool DeleteItem(float storeId, long customerId, int productId);
-        Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime);
-
+        Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime,int shipping);
         Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId);
 
 
@@ -27,21 +26,21 @@ namespace WebSites.Panles.Services.Order
         {
         }
 
-        public int AddItem(float storeId,long customerId,long addressId,TimeSpan startTime,TimeSpan endTime,int productId,float unitPrice,int count,string name)
+        public int AddItem(float storeId,long customerId,long addressId,TimeSpan startTime,TimeSpan endTime,int productId,float unitPrice,int count,string name,int shipping,int tax=9)
         {
             try
             {
-                var request = CreateRequest(storeId, customerId, addressId, startTime, endTime);
+                var request = CreateRequest(storeId, customerId, addressId, startTime, endTime,shipping);
 
                 int price = Convert.ToInt32(unitPrice, CultureInfo.InvariantCulture);
-                int taxPrice = price * 10 / 100;
+                int taxPrice = price * tax / 100;
 
                 var sItem = request.Items?.FirstOrDefault(p => p.ProductId == productId);
                 if (sItem != null)
                 {
                     sItem.Quantity += count;
-                    sItem.UnitPrice += price;
-                    sItem.TaxPrice = sItem.UnitPrice * 10 / 100;
+                    sItem.UnitPrice = price;
+                    sItem.TaxPrice = sItem.Quantity * sItem.UnitPrice * tax/100;
                 }
                 else
                 {
@@ -74,13 +73,14 @@ namespace WebSites.Panles.Services.Order
                 return 0;
             }
         }
-        public bool UpdateItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId,int count)
+        public bool UpdateItem(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId,int count,int shipping)
         {
             try
             {
-                var request = CreateRequest(storeId, customerId, addressId, startTime, endTime);
-
+                var request = CreateRequest(storeId, customerId, addressId, startTime, endTime,shipping);
+                
                 var item = request.Items.FirstOrDefault(p => p.ProductId == productId);
+
                 if (item != null)
                 {
                     item.Quantity = count;
@@ -118,41 +118,43 @@ namespace WebSites.Panles.Services.Order
                 return false;
             }
         }
-        public Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime)
+        public Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime,int Shipping)
         {
             DateTime dt = DateTime.Now;
+            string key = "R->" + customerId.ToString() + "->" + storeId.ToString("#.##", CultureInfo.InvariantCulture);
 
-            Models.Order.CachedOrderInfo request = new Models.Order.CachedOrderInfo()
+            var request = CacheService.Get< Models.Order.CachedOrderInfo>(key);
+
+            if (request == null)
             {
-                AddressID = addressId,
-                CustomerId = customerId,
-                StoreID = storeId,
-                StartTime = startTime,
-                EndTime = endTime,
-                OrderDate = dt,
-                OrderTime = dt.TimeOfDay,
-                OrderCode =Convert.ToInt32( BehsamFramework.Utility.GenerateUniqueId.GenerateGuid())
-            };
-            
-            string key ="R->"+customerId.ToString()+"->" + storeId.ToString("#.##", CultureInfo.InvariantCulture);
 
-            request = CacheService.GetOrSet(
+                request = new Models.Order.CachedOrderInfo()
+                {
+                    AddressID = addressId,
+                    CustomerId = customerId,
+                    StoreID = storeId,
+                    StartTime = startTime,
+                    EndTime = endTime,
+                    OrderDate = dt,
+                    OrderTime = dt.TimeOfDay,
+                    OrderCode = Convert.ToInt32(BehsamFramework.Utility.GenerateUniqueId.GenerateGuid()),
+                    ShippingPrice = Shipping
+                };
+            }
+
+            request.ShippingPrice = Shipping;
+
+            CacheService.GetOrSet(
                 request,
                 key,
-                TimeSpan.FromMinutes(20),
-                TimeSpan.FromMinutes(20),
+                TimeSpan.FromHours(1),
+                TimeSpan.FromMinutes(45),
                 Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
                 TokenCachClass.CachedOrderToken);
 
-            request.AddressID = addressId;
-            request.StoreID = storeId;
-            request.StartTime = startTime;
-            request.EndTime = endTime;
-            request.OrderDate = dt;
-            request.OrderTime = dt.TimeOfDay;
-
             return request;
         }
+
         public Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId)
         {
             string key = "R->" + customerId.ToString() + "->" + storeId.ToString();
@@ -178,7 +180,7 @@ namespace WebSites.Panles.Services.Order
             request.DiscountPrice = items.Select(p=> p.DiscountPrice ).Sum();
             request.TaxPrice = items.Select(p => p.Quantity * p.TaxPrice).Sum();
             request.TotalPrice = total;
-            request.ShippingPrice = 10;
+            //request.ShippingPrice = 10;
             request.FinalPrice = request.TotalPrice+ request.TaxPrice + request.ShippingPrice- request.DiscountPrice;
 
             string key = "R->" + request.CustomerId.ToString() + "->" + request.StoreID.ToString();
@@ -192,8 +194,6 @@ namespace WebSites.Panles.Services.Order
                 TokenCachClass.CachedOrderToken);
 
         }
-
-        
 
     }
 }

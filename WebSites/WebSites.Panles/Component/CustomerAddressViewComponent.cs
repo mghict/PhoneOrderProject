@@ -22,12 +22,14 @@ namespace WebSites.Panles.Component
 
         protected StaticValues staticValues;
 
-        public CustomerAddressViewComponent(IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues StaticValues) //: base(memoryCache, _clientFactory, _cacheService, StaticValues)
+        public CustomerAddressViewComponent(
+            ServiceCaller ServiceCaller,
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues StaticValues) //: base(memoryCache, _clientFactory, _cacheService, StaticValues)
         {
             staticValues = StaticValues;
             _memoryCache = memoryCache;
             ClientFactory = _clientFactory;
-            serviceCaller = new ServiceCaller(ClientFactory);
+            serviceCaller = ServiceCaller; //new ServiceCaller(ClientFactory);
             CacheService = _cacheService;
         }
        

@@ -13,6 +13,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
 		<ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
+		<ProjectReference Include="..\..\Framework\Framework.MessageSender\Framework.MessageSender.csproj" />
 		<ProjectReference Include="..\StoreManagment.Application\StoreManagment.Application.csproj" />
 	</ItemGroup>
 	

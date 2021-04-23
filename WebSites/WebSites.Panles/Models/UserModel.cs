@@ -13,5 +13,6 @@ namespace WebSites.Panles.Models
         public string PhoneNumber { get; set; }
         public int ApplicationId { get; set; }
         public string Token { get; set; }
+        public string UserIp { get; set; }
     }
 }

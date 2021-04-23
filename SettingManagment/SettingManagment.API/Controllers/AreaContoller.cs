@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BehsamFreamwork.Logger;
+using Framework.MessageSender;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,10 @@ namespace SettingManagment.API.Controllers
 {
     public class AreaController : Base.ControllerBase
     {
-        public AreaController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public AreaController(IMediator mediator, InternalLogger _logger, SendMessages logData) : base(mediator, _logger, logData)
         {
         }
+
 
         #region Create
 

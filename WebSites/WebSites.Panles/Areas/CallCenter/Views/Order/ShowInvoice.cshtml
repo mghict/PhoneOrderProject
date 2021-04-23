@@ -103,8 +103,8 @@
             </div>
             <div class="col-xl-12 col-md-12">
                 <a class="btn btn-info m-2" href="/CallCenter/Order/OrderRegister?customerId=@ViewBag.CustomerId&storeId=@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)">ادامه خرید</a>
-
-                <a class="btn btn-success m-2"  onclick="RegisterOrderFinal('@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)','@ViewBag.CustomerId')">تایید و ثبت سفارش</a>
+                @*<a class="btn btn-info m-2" href="@Context.Request.Headers["Referer"].ToString()">ادامه خرید</a>*@
+                <a class="btn btn-success m-2" onclick="RegisterOrderFinal('@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)','@ViewBag.CustomerId')">تایید و ثبت سفارش</a>
             </div>
         </div>
     }

@@ -18,7 +18,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
     {
         private readonly Services.IOrderFacad _OrderFacad;
 
-        public ReportController(Services.IOrderFacad OrderFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        public ReportController(Services.IOrderFacad OrderFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             _OrderFacad = OrderFacad;
         }

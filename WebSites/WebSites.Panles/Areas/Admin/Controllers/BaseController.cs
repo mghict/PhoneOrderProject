@@ -21,12 +21,14 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         protected StaticValues StaticValues;
 
         protected AutoMapper.IMapper Mapper;
-        public BaseController(IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, AutoMapper.IMapper mapper) : base()
+        public BaseController(
+            ServiceCaller serviceCaller,
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, AutoMapper.IMapper mapper) : base()
         {
             StaticValues = staticValues;
             _memoryCache = memoryCache;
             ClientFactory = _clientFactory;
-            ServiceCaller = new ServiceCaller(ClientFactory);
+            ServiceCaller = serviceCaller; // new ServiceCaller(ClientFactory);
             CacheService = _cacheService;
             Mapper = mapper;
         }

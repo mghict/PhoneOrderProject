@@ -14,7 +14,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
     public class AreaController : BaseController
     {
         private Services.ISettingFacad _settingFacad;
-        public AreaController(Services.ISettingFacad SettingFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+        public AreaController(Services.ISettingFacad SettingFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             _settingFacad = SettingFacad;
         }

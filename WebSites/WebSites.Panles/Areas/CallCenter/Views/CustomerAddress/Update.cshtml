@@ -25,7 +25,9 @@
                 <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                 <input value="@Model.Latitude.ToString(CultureInfo.InvariantCulture)" type="hidden" id="txtLat" name="latStr" />
                 <input value="@Model.Longitude.ToString(CultureInfo.InvariantCulture)" type="hidden" id="txtLng" name="lngStr" />
-
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="AreaId" type="hidden" />
+                <input asp-for="Status" type="hidden" />
 
                 <div class="row">
                     <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
@@ -46,6 +48,7 @@
                                 </select>
 
                             </div>
+
                             <div class="form-group">
                                 <label class="control-label">شهر</label>
                                 <select name="city" id="cmbCity" class="form-control select2" required onchange="getArea()">

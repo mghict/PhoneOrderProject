@@ -2,15 +2,17 @@
 @{
     ViewData["Title"] = "ShowProductList";
     Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
-
+    var urlBack = Context.Request.Path + Context.Request.QueryString;
 }
+@*<input type="text" value="@urlBack" id="txtUrlProduct" maxlength="750"/>*@
 
 <input type="hidden" value="@ViewBag.CustomerId?.ToString(CultureInfo.InvariantCulture)" id="CustomerId" />
 <input type="hidden" value="@ViewBag.AddressId?.ToString(CultureInfo.InvariantCulture)" id="AddressId" />
 <input type="hidden" value="@ViewBag.StartTime?.ToString("c",CultureInfo.InvariantCulture)" id="StartTime" />
 <input type="hidden" value="@ViewBag.EndTime?.ToString("c",CultureInfo.InvariantCulture)" id="EndTime" />
-<input type="hidden" value="@ViewBag.StoreId?.ToString(CultureInfo.InvariantCulture)" id="txtStoreId" />
-<input type="hidden" id="CategoryId" />
+<input type="hidden" value="@ViewBag.StoreId" id="txtStoreId" />
+<input type="hidden" id="CategoryId" value="0" />
+<input type="hidden" value="@ViewBag.Shipping" id="txtShipping" />
 
 
 <div class="row">
@@ -19,18 +21,8 @@
     </div>
 
     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12">
-        <div class="card">
-            <div class="card-body p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="جستجو کردن ...">
-                    <span class="input-group-append">
-                        <button class="btn btn-primary" type="button">جستجو کردن</button>
-                    </span>
-                </div>
-            </div>
-        </div>
         <div class="row row-sm" id="ProductList">
-
+            @*<partial name="ShowProduct" />*@
         </div>
     </div>
 </div>
@@ -55,11 +47,11 @@
                         },
                         success: function (result, status, err) {
                             $('#showCategory').html(result);
-                            
+
                         },
                         error: function (request, status, error) {
                             console.log(request);
-                            
+
                         },
                         complete: function () {
                             hideBehsamLoading();
@@ -70,6 +62,10 @@
             ShowCat();
 
             showCartDetails();
+
+            ShowProduct();
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-ajax-unobtrusive@3.2.6/dist/jquery.unobtrusive-ajax.min.js"></script>
 }

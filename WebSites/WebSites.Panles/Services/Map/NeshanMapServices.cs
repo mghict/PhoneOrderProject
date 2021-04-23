@@ -63,6 +63,40 @@ namespace WebSites.Panles.Services.Map
             return result;
         }
 
+        public async Task<Models.Map.DistanceMatrixModel> DistanceMatrixApi(List<Models.Map.Location> source, List<Models.Map.Location> distination)
+        {
+            if(source==null || distination==null || source.Count==0 || distination.Count==0)
+            {
+                return new Models.Map.DistanceMatrixModel();
+            }
+            string sourceStr="", distinationStr="";
+
+            foreach (var item in source)
+            {
+                if(!string.IsNullOrEmpty(sourceStr))
+                {
+                    sourceStr += "|";
+                }
+                sourceStr += $"{item.X.ToString(CultureInfo.InvariantCulture)},{item.Y.ToString(CultureInfo.InvariantCulture)}";
+            }
+
+            foreach (var item in distination)
+            {
+                if (!string.IsNullOrEmpty(distinationStr))
+                {
+                    distinationStr += "|";
+                }
+                distinationStr += $"{item.X.ToString(CultureInfo.InvariantCulture)},{item.Y.ToString(CultureInfo.InvariantCulture)}";
+            }
+
+            string method = $"v1/distance-matrix?origins={sourceStr}&destinations={distinationStr}";
+
+            var result = await CallerRestClientMethods<Models.Map.DistanceMatrixModel>(method);
+
+            return result;
+
+        }
+
         //--------------------------------------------------------------------
         //--------------------------------------------------------------------
         private async Task<T> CallerClientMethods<T>(string mothodsName)

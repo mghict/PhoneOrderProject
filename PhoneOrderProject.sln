@@ -175,19 +175,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AccessManagment", "AccessMa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{182BB2B4-5165-4E93-A112-9804564C1E2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessManagment.Domain", "AccessManagment\AccessManagment.Domain\AccessManagment.Domain.csproj", "{4285A8EE-8936-4EE8-A12A-E596FF8D4561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessManagment.Domain", "AccessManagment\AccessManagment.Domain\AccessManagment.Domain.csproj", "{4285A8EE-8936-4EE8-A12A-E596FF8D4561}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{DDFC45B4-8117-4BED-8638-0E188A14AD84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessManagment.Persistence", "AccessManagment\AccessManagment.Persistence\AccessManagment.Persistence.csproj", "{F1D3804F-3201-4166-BA83-48891F985534}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessManagment.Persistence", "AccessManagment\AccessManagment.Persistence\AccessManagment.Persistence.csproj", "{F1D3804F-3201-4166-BA83-48891F985534}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{EF3B492D-62EB-4883-9652-40F1017A0A91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessManagment.API", "AccessManagment\AccessManagment.API\AccessManagment.API.csproj", "{76A28EA3-0EBE-49D0-861B-CB4340DDBC97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessManagment.API", "AccessManagment\AccessManagment.API\AccessManagment.API.csproj", "{76A28EA3-0EBE-49D0-861B-CB4340DDBC97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{A4F1A7F7-9505-48AE-8D17-2F1C56C6FB71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessManagment.Application", "AccessManagment\AccessManagment.Application\AccessManagment.Application.csproj", "{7B109848-A85C-45DF-BAAA-4E4309C3EBE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessManagment.Application", "AccessManagment\AccessManagment.Application\AccessManagment.Application.csproj", "{7B109848-A85C-45DF-BAAA-4E4309C3EBE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

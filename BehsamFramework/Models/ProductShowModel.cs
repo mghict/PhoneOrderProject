@@ -19,7 +19,7 @@ namespace BehsamFramework.Models
         public int MeasureType { get; set; }
         public string MeasureTypeStr { get; set; }
         public byte Status { get; set; }
-        public byte StatusStr { get; set; }
+        public string StatusStr { get; set; }
         public int Quantity { get; set; }
 
     }

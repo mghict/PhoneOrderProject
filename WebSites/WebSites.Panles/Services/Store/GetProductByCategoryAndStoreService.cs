@@ -80,7 +80,7 @@ namespace WebSites.Panles.Services.Store
 
     public interface IGetProductsService
     {
-        Task<BehsamFramework.Models.ProductsModel> Execute( decimal storeId, decimal categoryId=0,int pageNumber=0,int pageSize=20);
+        Task<BehsamFramework.Models.ProductsModel> Execute( decimal storeId, decimal categoryId=0,int pageNumber=0,int pageSize=20, string searchKey = "");
     }
 
     public class GetProductsService : Base.ServiceBase, IGetProductsService
@@ -89,9 +89,9 @@ namespace WebSites.Panles.Services.Store
         {
         }
 
-        public async Task<ProductsModel> Execute(decimal storeId, decimal categoryId = 0, int pageNumber = 0, int pageSize = 20)
+        public async Task<ProductsModel> Execute(decimal storeId, decimal categoryId = 0, int pageNumber = 0, int pageSize = 20, string searchKey = "")
         {
-            ProductsModel ret = await GetService(storeId,categoryId,pageNumber,pageSize);
+            ProductsModel ret = await GetService(storeId,categoryId,pageNumber,pageSize,searchKey);
 
             if (ret == null)
             {
@@ -102,7 +102,7 @@ namespace WebSites.Panles.Services.Store
                 };
             }
 
-            string key = $"GetProducts-{categoryId}-{storeId}-{pageNumber}-{pageSize}";
+            string key = $"GetProducts-{categoryId}-{storeId}-{pageNumber}-{pageSize}-{searchKey}";
 
             ret = await CacheService.GetOrSetAsync(
                 ret,
@@ -116,7 +116,7 @@ namespace WebSites.Panles.Services.Store
             return ret;
         }
         
-        private async Task<ProductsModel> GetService(decimal storeId, decimal categoryId = 0, int pageNumber = 0, int pageSize = 20)
+        private async Task<ProductsModel> GetService(decimal storeId, decimal categoryId = 0, int pageNumber = 0, int pageSize = 20,string searchKey="")
         {
             ProductsModel result = new ProductsModel();
 
@@ -125,7 +125,8 @@ namespace WebSites.Panles.Services.Store
                 CategoryId = categoryId,
                 StoreId = storeId,
                 PageNumber=pageNumber,
-                PageSize=pageSize
+                PageSize=pageSize,
+                SearchKey=searchKey
             };
 
             FluentResult<BehsamFramework.Models.ProductsModel> model =

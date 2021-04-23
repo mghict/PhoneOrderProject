@@ -32,6 +32,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         private Services.CustomerPhone.IGetCustomerPhone GetCustomerPhone;
         private Services.CustomerAddress.IGetCustomerAddressService GetCustomerAddressService;
         public CustomerController(
+                                  ServiceCaller ServiceCaller,
                                   Services.Authorize.IAuthorizeService authorizeService,
                                   AutoMapper.IMapper mapper,
                                   IMemoryCache memoryCache, 
@@ -47,7 +48,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             ClientFactory = _clientFactory;
             Service = new ServiceCaller<CustomerListModel>(ClientFactory);
             ServiceInsert = new ServiceCaller<long>(ClientFactory);
-            serviceCaller = new ServiceCaller(ClientFactory);
+            serviceCaller = ServiceCaller;//new ServiceCaller(ClientFactory);
             CacheService = _cacheService;
             Mapper = mapper;
             GetCustomer = _getCustomer;
