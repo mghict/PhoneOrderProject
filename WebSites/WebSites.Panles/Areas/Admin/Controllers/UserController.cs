@@ -144,6 +144,54 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             }
         }
 
+        public async Task<IActionResult> ResetPass()
+        {
+            var item = new Models.Authorize.UserInfoModel();
+
+            var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+            if (user != null)
+            {
+                var userId = user.UserId;
+                item = await _userFacad.UserService.GetByIdAsync(userId);
+            }
+
+           
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPass(Models.Authorize.UserInfoModel usr)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (usr.Password != usr.PasswordConfirm || string.IsNullOrEmpty(usr.Password))
+                    {
+                        throw new Exception("رمزعبور و تایید آن مشابه نیستند");
+                    }
+
+                    var ret = await _userFacad.UserService.ResetUserAsync(usr);
+                    if (ret.IsFailed)
+                    {
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("ResetPass", usr);
+                    }
+
+                    return Redirect("/Admin/Home/Index");
+                }
+                else
+                {
+                    return View("ResetPass", usr);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("ResetPass", usr);
+            }
+        }
         //---------------------------------------------
         //---------------------------------------------
 

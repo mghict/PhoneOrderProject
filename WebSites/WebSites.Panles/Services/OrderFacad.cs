@@ -24,6 +24,7 @@ namespace WebSites.Panles.Services
         Reports.IReportsService ReportsService { get; }
         Store.IGetProductsService ProductsService { get;}
         Store.ICategoryService CategoryService { get; }
+        Order.IOrderService OrderService { get; }
     }
 
     public class OrderFacad :Base.ServiceBase, IOrderFacad
@@ -72,5 +73,9 @@ namespace WebSites.Panles.Services
         private ICategoryService _CategoryService;
         public ICategoryService CategoryService =>
             _CategoryService= _CategoryService ?? new Store.CategoryService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+        private IOrderService _OrderService;
+        public IOrderService OrderService =>
+            _OrderService= _OrderService?? new Order.OrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

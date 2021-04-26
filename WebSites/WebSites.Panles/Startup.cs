@@ -155,6 +155,11 @@ namespace WebSites.Panles
                     pattern: "CallCenter/{controller=Login}/{action=Login}/{id?}"
                 );
 
+                endpoints.MapAreaControllerRoute(
+                    name: "Stores",
+                    areaName: "Stores",
+                    pattern: "Stores/{controller=Home}/{action=Index}/{id?}"
+                );
 
 
                 endpoints.MapDefaultControllerRoute(); 

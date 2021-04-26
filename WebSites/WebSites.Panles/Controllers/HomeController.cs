@@ -51,24 +51,7 @@ namespace WebSites.Panles.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetLocation()
-        {
-            var rest = await NeshanMapService.GeocodingApi("تهران، خیابان شهید مدنی، خیابان بخشی فرد، کوچه علیرضا محمدی پلاک 11");
-            return Json(rest);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetRLocation()
-        {
-            var res = await NeshanMapService.GeocodingApi("تهران، خیابان شهید مدنی، خیابان بخشی فرد، کوچه علیرضا محمدی پلاک 11");
-
-            var lat = res.Location.Y;
-            var lng = res.Location.X;
-
-            var rest = await NeshanMapService.ReverseGeocodingApi(lat, lng);
-            return Json(rest);
-        }
+        
     }
     
 }

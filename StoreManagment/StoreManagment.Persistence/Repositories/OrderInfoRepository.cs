@@ -20,6 +20,31 @@ namespace StoreManagment.Persistence.Repositories
         {
         }
 
+        public async Task<bool> ChangeOrderStatus(long orderCode, byte status, string reason)
+        {
+            var query = "exec dbo.OrderChangeStatus @OrderCode,@Status,@Reason";
+            var param = new
+            {
+                @OrderCode= orderCode,
+                @Status= status,
+                @Reason= reason
+            };
+
+            bool response = false;
+
+            try
+            {
+                await db.ExecuteAsync(query, param);
+                response = true;
+            }
+            catch(Exception ex)
+            {
+                response = false;
+            }
+
+            return response;
+        }
+
         public async Task RegisterOrderAsync(OrderInfo entity)
         {
 

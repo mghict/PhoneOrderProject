@@ -24,9 +24,10 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\CallCenter\Controllers\NewFolder\" />
     <Folder Include="Areas\CallCenter\Data\" />
     <Folder Include="Areas\CallCenter\Models\" />
+    <Folder Include="Areas\Stores\Data\" />
+    <Folder Include="Areas\Stores\Models\" />
     <Folder Include="wwwroot\admin\Content\assets\img\demo\" />
     <Folder Include="wwwroot\admin\Content\assets\img\photos\" />
     <Folder Include="wwwroot\js\Common\" />

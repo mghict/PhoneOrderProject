@@ -49,20 +49,20 @@ namespace SettingManagment.API.Controllers.Base
         [NonAction]
         protected async Task SendDataForLog<T>(T data,string actionName, string entityName,long entityId)
         {
-            Framework.MessageSender.LogMessage<T> logMessage = new Framework.MessageSender.LogMessage<T>()
+            Framework.MessageSender.LogMessage logMessage = new Framework.MessageSender.LogMessage()
             {
                 CreateDate = System.DateTime.Now,
                 Action = actionName,
                 Entity=entityName,
-                Data=data,
+                Data=data.ToJsonString(),
                 IP=HttpContext.Request.Headers["IP"].ToString()??HttpContext.Connection.RemoteIpAddress.ToString(),
                 UserId= Convert.ToInt32(HttpContext.Request.Headers["Id"].ToString()??"0"),
                 UserName= HttpContext.Request.Headers["Name"].ToString(),
                 Id=entityId
             };
 
-            var task=loggerData.SendToQueue(logMessage);
-            task.Start();
+            await loggerData.SendToQueue(logMessage);
+            return;
         }
     }
 }

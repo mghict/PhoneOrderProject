@@ -17,12 +17,7 @@ namespace BehsamFreamwork.Logger
         public string ActionName { get; set; }
         public DateTime CreateDate { get; set; }
         public string Body { get; set; }
-
-
-        //public LogMessage()
-        //{
-                
-        //}
+        public string Status { get; set; }
 
         public LogMessage(string controllrName, string methodName, string userName, object body)
         {
@@ -34,8 +29,21 @@ namespace BehsamFreamwork.Logger
             ActionName = "";
             Body = body.ToJsonString();
             CreateDate = System.DateTime.Now;
+            Status = "";
         }
-        public LogMessage(string controllrName, string methodName, string userName, object body, string ip="", int userId=0, string actionName="")
+        public LogMessage(string controllrName, string methodName, string userName, object body,string status="")
+        {
+            ControllrName = controllrName;
+            MethodName = methodName;
+            UserName = userName;
+            IP = "";
+            UserId = 0;
+            ActionName = "";
+            Body = body.ToJsonString();
+            CreateDate = System.DateTime.Now;
+            Status = status;
+        }
+        public LogMessage(string controllrName, string methodName, string userName, object body, string ip="", int userId=0, string actionName="", string status="")
         {
             ControllrName = controllrName;
             MethodName = methodName;
@@ -45,6 +53,7 @@ namespace BehsamFreamwork.Logger
             ActionName = actionName;
             Body = body.ToJsonString();
             CreateDate = System.DateTime.Now;
+            Status = status;
         }
 
         public string ToSerialize()

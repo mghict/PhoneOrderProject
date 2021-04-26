@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AccessManagment.Application.User.CommandsHandler
 {
+
     public class GetByIdUserCommandHandler :
         MediatR.IRequestHandler<Commands.GetByIdUserCommand, FluentResults.Result<Domain.Entities.UserInfoTbl>>
     {
@@ -24,7 +25,7 @@ namespace AccessManagment.Application.User.CommandsHandler
 
         public async Task<Result<Domain.Entities.UserInfoTbl>> Handle(GetByIdUserCommand request, CancellationToken cancellationToken)
         {
-            Result<Domain.Entities.UserInfoTbl> result = 
+            Result<Domain.Entities.UserInfoTbl> result =
                 new Result<Domain.Entities.UserInfoTbl>();
 
             result.WithValue(new Domain.Entities.UserInfoTbl());

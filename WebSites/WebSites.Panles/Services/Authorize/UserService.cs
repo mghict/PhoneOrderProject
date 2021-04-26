@@ -10,7 +10,7 @@ namespace WebSites.Panles.Services.Authorize
 {
     public interface IUserService
     {
-        Task<FluentResult> CreateAsync(Models.Authorize.UserRegisterModel model);
+        Task<FluentResult<int>> CreateAsync(Models.Authorize.UserRegisterModel model);
         Task<FluentResult> UpdateAsync(Models.Authorize.UserInfoModel model);
         Task<FluentResult> DeleteAsync(int id);
         Task<Models.Authorize.UserInfoModel> GetByIdAsync(int id);
@@ -18,11 +18,13 @@ namespace WebSites.Panles.Services.Authorize
         Task<FluentResult> ResetAdminAsync(Models.Authorize.UserInfoModel model);
         Task<FluentResult> ResetUserAsync(Models.Authorize.UserInfoModel model);
         Task<Models.Authorize.UserModel> GetAllSearchAsync(string searchKey = "", int pageNumber = 0, int pageSize = 20);
+        Task<Models.Authorize.UserModel> GetAllSearchByAppIdAndStoreIdAsync(int appId, float storeId = 0, string searchKey = "", int pageNumber = 0, int pageSize = 20);
         Task<List<Models.Authorize.UserRoleModel>> GetByUserId(int userId);
         Task<List<Models.Authorize.UserRoleModel>> GetByRoleId(int roleId);
         Task<FluentResult> DeleteRoleAsync(int id);
         Task<FluentResult> CreateRoleAsync(Models.Authorize.UserRoleModel model);
 
+        Task<Models.Authorize.UserInfoModel> GetByUserNameAsync(long userName);
     }
 
     public class UserService : Base.ServiceBase, IUserService
@@ -83,9 +85,9 @@ namespace WebSites.Panles.Services.Authorize
             return ret;
         }
 
-        public async Task<FluentResult> CreateAsync(Models.Authorize.UserRegisterModel model)
+        public async Task<FluentResult<int>> CreateAsync(Models.Authorize.UserRegisterModel model)
         {
-            FluentResult ret = new FluentResult();
+            FluentResult<int> ret = new FluentResult<int>();
 
             var command = new
             {
@@ -99,7 +101,7 @@ namespace WebSites.Panles.Services.Authorize
 
             try
             {
-                ret = await ServiceCaller.PostDataWithoutValue("Users/User/Create", command);
+                ret = await ServiceCaller.PostDataWithValue<int>("Users/User/Create", command);
                 if (ret != null && ret.IsSuccess)
                 {
                     await CacheService.ClearTokenAsync(TokenCachClass.User);
@@ -107,7 +109,7 @@ namespace WebSites.Panles.Services.Authorize
             }
             catch (Exception ex)
             {
-                ret = new FluentResult();
+                ret = new FluentResult<int>();
                 ret.WithSuccess(ex.Message);
             }
 
@@ -211,9 +213,61 @@ namespace WebSites.Panles.Services.Authorize
 
             ret = await CacheService.GetAsync<Models.Authorize.UserInfoModel>(key);
 
-            if (ret == null)
+            if (ret == null || ret.Id<=0)
             {
                 ret = await getById(id);
+                await CacheService.RemoveAndSetAsync(
+                        ret,
+                        key,
+                        TimeSpan.FromMinutes(10),
+                        TimeSpan.FromMinutes(5),
+                        Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                        TokenCachClass.User);
+            }
+
+            return ret;
+        }
+
+        private async Task<Models.Authorize.UserInfoModel> getByUserName(long userName)
+        {
+            FluentResult<Models.Authorize.UserInfoModel> ret =
+                new FluentResult<Models.Authorize.UserInfoModel>();
+
+            var command = new
+            {
+                UserName = userName
+            };
+
+            try
+            {
+                ret = await ServiceCaller.PostDataWithValue<Models.Authorize.UserInfoModel>("Users/User/GetByUserName", command);
+                if (ret == null || ret.IsFailed)
+                {
+                    ret.WithValue(new Models.Authorize.UserInfoModel());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ret.WithValue(new Models.Authorize.UserInfoModel());
+                ret.WithSuccess(ex.Message);
+            }
+
+            return ret.Value;
+        }
+
+        public async Task<Models.Authorize.UserInfoModel> GetByUserNameAsync(long userName)
+        {
+            string key = $"UserInfo-ByUserName-{userName}";
+
+            Models.Authorize.UserInfoModel ret =
+                new Models.Authorize.UserInfoModel();
+
+            ret = await CacheService.GetAsync<Models.Authorize.UserInfoModel>(key);
+
+            if (ret == null)
+            {
+                ret = await getByUserName(userName);
                 await CacheService.RemoveAndSetAsync(
                         ret,
                         key,
@@ -336,7 +390,63 @@ namespace WebSites.Panles.Services.Authorize
             return ret;
         }
 
+        private async Task<Models.Authorize.UserModel> getAllSearchByAppIdAndStoreId(int appId,float storeId=0, string searchKey = "", int pageNumber = 0, int pageSize = 20)
+        {
+            FluentResult<Models.Authorize.UserModel> ret =
+                new FluentResult<Models.Authorize.UserModel>();
 
+            var command = new
+            {
+                ApplicationId=appId,
+                StoreId=storeId,
+                SearchKey = searchKey,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+
+
+            try
+            {
+                ret = await ServiceCaller.PostDataWithValue<Models.Authorize.UserModel>("Users/User/GetAllBySearchAppIdAndStoreId", command);
+
+                if (ret == null || ret.IsFailed || ret.Value == null || ret.Value.RowCount == 0 || ret.Value.Users == null || ret.Value.Users.Count == 0)
+                {
+                    throw new Exception("اطلاعات جود ندارد");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ret.WithValue(new Models.Authorize.UserModel());
+                ret.WithSuccess(ex.Message);
+            }
+
+            return ret.Value;
+        }
+        public async Task<Models.Authorize.UserModel> GetAllSearchByAppIdAndStoreIdAsync(int appId, float storeId = 0, string searchKey = "", int pageNumber = 0, int pageSize = 20)
+        {
+            string key = $"UserInfo-All-{appId}-{storeId}-{searchKey}-{pageNumber}-{pageSize}";
+
+            Models.Authorize.UserModel ret =
+                new Models.Authorize.UserModel();
+
+            ret = await CacheService.GetAsync<Models.Authorize.UserModel>(key);
+
+            if (ret == null)
+            {
+                ret = await getAllSearchByAppIdAndStoreId(appId,storeId,searchKey, pageNumber, pageSize);
+                await CacheService.RemoveAndSetAsync(
+                        ret,
+                        key,
+                        TimeSpan.FromMinutes(10),
+                        TimeSpan.FromMinutes(5),
+                        Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                        TokenCachClass.User);
+            }
+
+            return ret;
+        }
         //----------------------------
         public async Task<FluentResult> CreateRoleAsync(Models.Authorize.UserRoleModel model)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BehsamFreamwork.Logger;
+using Framework.MessageSender;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,10 @@ namespace StoreManagment.API.Controllers
 {
     public class OrderController : Base.ControllerBase
     {
-        public OrderController(IMediator mediator, InternalLogger _logger) : base(mediator, _logger)
+        public OrderController(IMediator mediator, InternalLogger _logger, SendMessages _logData) : base(mediator, _logger, _logData)
         {
         }
+
 
         #region Create
 
@@ -258,6 +260,58 @@ namespace StoreManagment.API.Controllers
             {
                 result.WithError(ex.Message);
 
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region ChangeOrderStatus
+
+        [HttpPost("ChangeOrderStatus")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            ChangeOrderStatusAsync([FromBody] Application.OrderInfoFeature.Commands.ChangeOrderStatusCommand command)
+        {
+            FluentResults.Result result =
+                new FluentResults.Result();
+
+            string action = ControllerContext.ActionDescriptor.ActionName;
+
+            try
+            {
+                await SendForLog(command,LogLevel.Information, action, "Input");
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    await SendDataForLog(command, action, "CustomerPreOrderInfoTbl", command.OrderCode);
+                    
+                    await SendForLog(command, LogLevel.Information, action, "Result is success");
+
+                    
+                    return Ok(value: result);
+                }
+                else
+                {
+                    await SendForLog(command, LogLevel.Error, action, "Result Has error:"+ string.Join(",", result.Errors));
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                await SendForLog(command, LogLevel.Error, action, "Exception error:" + ex.Message);
                 return BadRequest(error: result);
             }
 

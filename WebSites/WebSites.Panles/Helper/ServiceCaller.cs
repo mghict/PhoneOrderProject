@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace WebSites.Panles.Helper
 {
@@ -35,7 +36,7 @@ namespace WebSites.Panles.Helper
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
                 }
-                
+
                 //try
                 //{
                 //    var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
@@ -170,9 +171,13 @@ namespace WebSites.Panles.Helper
                 var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
                 if(user!=null)
                 {
-                    client.DefaultRequestHeaders.Add("Name", user.Name);
-                    client.DefaultRequestHeaders.Add("Id", user.UserId.ToString());
-                    client.DefaultRequestHeaders.Add("IP", user.UserIp);
+
+                    var userName = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(user.PhoneNumber));
+
+                    
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("Name", userName);
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("Id", user.UserId.ToString());
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("IP", user.UserIp.Trim()=="::1"?"127.0.0.1": user.UserIp.Trim());
                 }
             }
             catch
@@ -222,7 +227,7 @@ namespace WebSites.Panles.Helper
 
             return resultList;
         }
-        public async Task<FluentResult<T>> PostDataWithValue<T>(string methodName, object input) where T :class
+        public async Task<FluentResult<T>> PostDataWithValue<T>(string methodName, object input) //where T :class
         {
             FluentResult<T> returnValue = new FluentResult<T>();
             //T returnValue;

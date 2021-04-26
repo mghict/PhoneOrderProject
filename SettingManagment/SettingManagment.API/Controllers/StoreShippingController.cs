@@ -47,7 +47,7 @@ namespace SettingManagment.API.Controllers
 
             if (result.IsSuccess)
             {
-                SendDataForLog(command, "AreaInfoTbl", "Create", result.Value).Start();
+                SendDataForLog(command, "Create", "AreaInfoTbl", result.Value).Start();
 
                 return Ok(result);
             }
@@ -126,7 +126,7 @@ namespace SettingManagment.API.Controllers
 
             if (result.IsSuccess)
             {
-                SendDataForLog(command, "AreaInfoTbl", "Update", command.Id);
+                SendDataForLog(command, "Update", "AreaInfoTbl", command.Id).Start();
                 return Ok(result);
             }
             else

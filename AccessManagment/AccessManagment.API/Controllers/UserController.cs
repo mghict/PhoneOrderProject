@@ -22,18 +22,18 @@ namespace AccessManagment.API.Controllers
 
         [HttpPost("Create")]
         [ProducesResponseType
-        (type: typeof(FluentResults.Result),
+        (type: typeof(FluentResults.Result<int>),
             statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType
         (type: typeof(FluentResults.Result),
             statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
 
         public async
-            Task<ActionResult<FluentResults.Result>>
+            Task<ActionResult<FluentResults.Result<int>>>
             CreateAsync([FromBody] AccessManagment.Application.User.Commands.CreateUserCommand command)
         {
-            FluentResults.Result result =
-                new FluentResults.Result();
+            FluentResults.Result<int> result =
+                new FluentResults.Result<int>();
             try
             {
 
@@ -186,6 +186,48 @@ namespace AccessManagment.API.Controllers
 
         #endregion
 
+        #region GetByUserName
+
+        [HttpPost("GetByUserName")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.UserInfoTbl>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.UserInfoTbl>>>
+            GetByUserNameAsync([FromBody] AccessManagment.Application.User.Commands.GetByUserNameCommand command)
+        {
+            FluentResults.Result<Domain.Entities.UserInfoTbl> result =
+                new FluentResults.Result<Domain.Entities.UserInfoTbl>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
         #region GetAll
 
         [HttpPost("GetAll")]
@@ -241,6 +283,48 @@ namespace AccessManagment.API.Controllers
         public async
             Task<ActionResult<FluentResults.Result<Domain.Entities.UserModel>>>
             GetAllBySearchAsync([FromBody] AccessManagment.Application.User.Commands.GetAllUserSearchCommand command)
+        {
+            FluentResults.Result<Domain.Entities.UserModel> result =
+                new FluentResults.Result<Domain.Entities.UserModel>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region GetAllBySearchAppIdAndStoreId
+
+        [HttpPost("GetAllBySearchAppIdAndStoreId")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.UserModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.UserModel>>>
+            GetAllBySearchAppIdAndStoreIdAsync([FromBody] AccessManagment.Application.User.Commands.GetAllUserByAppIdAndStoreIdAndSearchCommand command)
         {
             FluentResults.Result<Domain.Entities.UserModel> result =
                 new FluentResults.Result<Domain.Entities.UserModel>();

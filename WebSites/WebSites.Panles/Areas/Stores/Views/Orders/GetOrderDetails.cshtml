@@ -1,0 +1,245 @@
+﻿@model WebSites.Panles.Models.Reports.GetOrderInfoWithItems
+@{
+    ViewData["Title"] = "GetOrderDetails";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card ">
+    <div class="card-body">
+        @if (Model != null)
+        {
+            @if (Model.OrderInfo != null)
+            {
+                <div class="col col-12 col-md-12 col-sm-12 m-2">
+                    <div class="row">
+                        <div class="col col-12 col-md-12 col-sm-12 border-bottom">
+                            فروشگاه: @Model.OrderInfo.StoreName
+                        </div>
+                        <div class="col col-8 col-md-8 col-sm-12 col-lg-6">
+                            خریدار: @Model.OrderInfo.CustomerName
+                        </div>
+                        <div class="col col-4 col-md-4 col-sm-12 col-lg-6 ">
+                            <label class="border-right text-left">شماره سفارش: @Model.OrderInfo.OrderCode</label><br />
+                            <label class="border-right text-left">تاریخ سفارش: @Model.OrderInfo.OrderDate.ToPersianDate()</label><br />
+                            <label class="border-right text-left">ساعت سفارش: @Model.OrderInfo.OrderTime</label>
+                        </div>
+                        <div class="col col-8 col-md-8 col-sm-12 col-lg-6">
+                            <label class="text-wrap">آدرس: @Model.OrderInfo.AddressValue</label>
+                        </div>
+                        <div class="col col-4 col-md-4 col-sm-12 col-lg-6 ">
+                            <label class="text-wrap border-right  text-left">بازه زمانی تحویل: @Model.OrderInfo.StartTime-@Model.OrderInfo.EndTime</label>
+
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.OrderItems != null)
+            {
+                <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                    <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                        <thead>
+                            <tr>
+                                <th rowspan="1" colspan="1">#</th>
+                                <th rowspan="1" colspan="1">محصول</th>
+                                <th rowspan="1" colspan="1">برند</th>
+                                <th rowspan="1" colspan="1">دسته بندی محصول</th>
+                                <th rowspan="1" colspan="1">تعداد</th>
+                                <th rowspan="1" colspan="1">فی</th>
+                                <th rowspan="1" colspan="1">تخفیف</th>
+                                <th rowspan="1" colspan="1">مالیات</th>
+                                <th rowspan="1" colspan="1">جمع کل</th>
+                                <th rowspan="1" colspan="1">وضعیت</th>
+                                <th rowspan="1" colspan="1">توضیحات</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.OrderItems.Count > 0)
+                            {
+                                int row = 0;
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    string count = item.Quantity > 0 ? item.Quantity.ToString("#,#") : "0";
+                                    var sum = (item.Quantity * item.UnitPrice) + item.TaxPrice - item.DiscountPrice;
+                                    row++;
+
+                                    <tr role="row">
+                                        <td>@row</td>
+                                        <td>@item.DisplayName</td>
+                                        <td>@item.BrandName</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>@count</td>
+                                        <td>@item.UnitPrice.ToString("#,#")</td>
+                                        <td>@item.DiscountPrice.ToString("#,#")</td>
+                                        <td>@item.TaxPrice.ToString("#,#")</td>
+                                        <td>@sum.ToString("#,#")</td>
+                                        <td>@item.StatusName</td>
+                                        <td>@item.Description</td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8" class="text-left">تعداد کالا</td>
+                                <td colspan="3" class="text-right">@Model.OrderItems.Select(p => p.Quantity).Sum().ToString("#,#")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-left">جمع کالا</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.TotalPrice.ToString("#,#")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-left">جمع تخفیف</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.DiscountPrice.ToString("#,#")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-left">جمع مالیات</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.TaxPrice.ToString("#,#")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-left">کرایه حمل</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.ShippingPrice.ToString("#,#")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="text-left">مبلغ قابل پرداخت</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.FinalPrice.ToString("#,#")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات برای نمایش وجود ندارد</h6>
+        }
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-outline-primary" href="/Stores/Orders/GetNewOrder">بازگشت</a>
+        @if (Model != null && Model.OrderInfo != null)
+        {
+            <a class="btn btn-outline-success" onclick="acceptOrder('@Model.OrderInfo.OrderCode')">تایید سفارش</a>
+            <a class="btn btn-outline-warning" onclick="cancelOrder('@Model.OrderInfo.OrderCode')"><span class="text-danger">لغو سفارش</span></a>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function acceptOrder(id) {
+            swal.fire({
+                title: 'تایید',
+                text: "آیا از تایید سفارش مطمئن هستید؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله، تایید شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'orderCode': id,
+                    };
+
+                    $.ajax({
+                        //contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "/Stores/Orders/StoreAccept",
+                        data: postData,
+                        beforeSend: function () {
+                            showBehsamLoading();
+                        },
+                        complete: function () {
+                            hideBehsamLoading();
+                        },
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire(
+                                    'موفق!',
+                                    'با موفقیت انجام شد',
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.replace("/Stores/Orders/GetNewOrder");
+                                });
+                            }
+                            else {
+                                swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function (request, status, error) {
+                            hideBehsamLoading();
+                        }
+
+                    });
+
+                }
+            });
+        }
+
+        function cancelOrder(id) {
+            swal.fire({
+                title: 'لغو',
+                text: "آیا از لغو سفارش مطمئن هستید؟ در صورت لغو سفارش دوباره باید ثبت شود",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله، لغو شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'orderCode': id,
+                    };
+
+                    $.ajax({
+                        //contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "/Stores/Orders/StoreCancel",
+                        data: postData,
+                        beforeSend: function () {
+                            showBehsamLoading();
+                        },
+                        complete: function () {
+                            hideBehsamLoading();
+                        },
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire(
+                                    'موفق!',
+                                    'با موفقیت انجام شد',
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.replace("/Stores/Orders/GetNewOrder");
+                                });
+                            }
+                            else {
+                                swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function (request, status, error) {
+                            hideBehsamLoading();
+                        }
+
+                    });
+
+                }
+            });
+        }
+
+    </script>
+}

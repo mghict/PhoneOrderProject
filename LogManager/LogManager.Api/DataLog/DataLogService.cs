@@ -23,14 +23,14 @@ namespace LogManager.Api.DataLog
         private Persistence.IUnitOfWork unitOfWork;
         private ILogger<DataLogService> _logger;
 
-        public DataLogService(ILogger<DataLogService> logger,IConfiguration configuration, Persistence.IUnitOfWork UnitOfWork)
+        public DataLogService(ILogger<DataLogService> logger, IConfiguration configuration, Persistence.IUnitOfWork UnitOfWork)
         {
             _logger = logger;
             SetInjection(configuration);
-            unitOfWork= UnitOfWork;
+            unitOfWork = UnitOfWork;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             CreateConnection();
 
@@ -42,29 +42,32 @@ namespace LogManager.Api.DataLog
 
             _model.BasicConsume(queueName, false, consumer);
 
-            return;//Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private void Consumer_Received(object sender, BasicDeliverEventArgs e)
         {
             var content = Encoding.UTF8.GetString(e.Body.ToArray());
-            var logData = JsonConvert.DeserializeObject<Domain.Entities.LogMessage>(content);
 
-            if(logData!=null)
+            try
             {
-                try
+                var logData = JsonConvert.DeserializeObject<Domain.Entities.LogMessage>(content);
+
+                if (logData != null)
                 {
+
                     unitOfWork.LogMessageRepository.Insert(logData);
 
                     _model.BasicAck(e.DeliveryTag, false);
-                }
-                catch(Exception ex)
-                {
-                    _logger.LogInformation("Data Logger has an error :=>" + ex.Message);
+
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Data Logger has an error :=>" + ex.Message);
+            }
 
-            
+
         }
 
         //------------------------------------------------------
@@ -119,6 +122,6 @@ namespace LogManager.Api.DataLog
                     .Value;
         }
 
-        
+
     }
 }

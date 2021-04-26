@@ -18,7 +18,7 @@ namespace StoreManagment
 			//===============================================
 			//***********************************************
 
-			services.AddSingleton<BehsamFreamwork.Logger.IInternalLogger, BehsamFreamwork.Logger.InternalLogger>(c =>
+			services.AddTransient<BehsamFreamwork.Logger.IInternalLogger, BehsamFreamwork.Logger.InternalLogger>(c =>
 			{
 
 				string host = "", port = "", user = "", pass = "", exchange = "", queue = "";
@@ -55,7 +55,7 @@ namespace StoreManagment
 				return new BehsamFreamwork.Logger.InternalLogger(exchange, queue, user, pass, host, System.Convert.ToInt32(port));
 			});
 
-			services.AddSingleton<BehsamFreamwork.Logger.InternalLogger>(c =>
+			services.AddTransient<BehsamFreamwork.Logger.InternalLogger>(c =>
 			{
 
 				string host, port, user, pass, exchange, queue;
@@ -92,7 +92,7 @@ namespace StoreManagment
 				return new BehsamFreamwork.Logger.InternalLogger(exchange, queue, user, pass, host, System.Convert.ToInt32(port));
 			});
 
-			services.AddSingleton<Framework.MessageSender.IMessageDetails, Framework.MessageSender.MessageDetails>(c =>
+			services.AddTransient<Framework.MessageSender.IMessageDetails, Framework.MessageSender.MessageDetails>(c =>
 			{
 				string host, port, user, pass, exchange, queue;
 
@@ -129,7 +129,7 @@ namespace StoreManagment
 				return new Framework.MessageSender.MessageDetails(queue, exchange, user, pass, host, System.Convert.ToInt32(port));
 			});
 
-			services.AddSingleton<Framework.MessageSender.SendMessages>();
+			services.AddTransient<Framework.MessageSender.SendMessages>();
 
 			// **************************************************
 			// **************************************************

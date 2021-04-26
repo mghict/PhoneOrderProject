@@ -34,20 +34,24 @@ namespace Framework.MessageSender
 
         private  void CreateConnection()
         {
-            _connectionFactory = new ConnectionFactory()
+            if (Connection == null)
             {
-                HostName = _messageDetails.HostName,
-                Password = _messageDetails.Pass,
-                UserName = _messageDetails.UserName,
-                Port = _messageDetails.Port
-            };
+                _connectionFactory = new ConnectionFactory()
+                {
+                    HostName = _messageDetails.HostName,
+                    Password = _messageDetails.Pass,
+                    UserName = _messageDetails.UserName,
+                    Port = _messageDetails.Port
+                };
 
-            Connection = _connectionFactory.CreateConnection();
-            _model = Connection.CreateModel();
-            _model.QueueDeclare(_messageDetails.QueueName, true, false, false, null);
-            _model.ExchangeDeclare(_messageDetails.ExchangeName,ExchangeType.Direct,true,false,null);
 
-            _model.QueueBindNoWait(_messageDetails.QueueName,_messageDetails.ExchangeName,_messageDetails.QueueName,null);
+                Connection = _connectionFactory.CreateConnection();
+                _model = Connection.CreateModel();
+                _model.QueueDeclare(_messageDetails.QueueName, true, false, false, null);
+                _model.ExchangeDeclare(_messageDetails.ExchangeName, ExchangeType.Direct);
+
+                _model.QueueBindNoWait(_messageDetails.QueueName, _messageDetails.ExchangeName, _messageDetails.QueueName, null);
+            }
         }
 
         //public  async Task SendToQueueByBus<T>(T input)

@@ -22,15 +22,20 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         private Services.Authorize.IAuthorizeService AuthorizeService;
         private readonly Hubs.IUserConnectionManager _userConnectionManager;
+        
+        private Services.IUserFacad _userFacad;
 
         private readonly ServiceCaller<Token> Service;
         private readonly IHttpContextAccessor ContextAccessor;
 
-        public LoginController(IHttpClientFactory _clientFactory,
+        public LoginController(
+            Services.IUserFacad UserFacad,
+            IHttpClientFactory _clientFactory,
             Services.Authorize.IAuthorizeService authorizeService,
             Hubs.IUserConnectionManager UserConnectionManager,
             IHttpContextAccessor contextAccessor)
         {
+            _userFacad = UserFacad;
             Service = new ServiceCaller<Token>(_clientFactory);
             AuthorizeService = authorizeService;
             _userConnectionManager = UserConnectionManager;
@@ -139,6 +144,55 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             }
 
             return Json(new { IsSuccess = false });
+        }
+
+        public async Task<IActionResult> ResetPass()
+        {
+            var item = new Models.Authorize.UserInfoModel();
+
+            var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+            if (user != null)
+            {
+                var userId = user.UserId;
+                item = await _userFacad.UserService.GetByIdAsync(userId);
+            }
+
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPass(Models.Authorize.UserInfoModel usr)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (usr.Password != usr.PasswordConfirm || string.IsNullOrEmpty(usr.Password))
+                    {
+                        throw new Exception("رمزعبور و تایید آن مشابه نیستند");
+                    }
+
+                    var ret = await _userFacad.UserService.ResetUserAsync(usr);
+                    if (ret.IsFailed)
+                    {
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("ResetPass", usr);
+                    }
+
+                    return Redirect("/CallCenter/Home/Index");
+                }
+                else
+                {
+                    return View("ResetPass", usr);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("ResetPass", usr);
+            }
         }
     }
 }

@@ -10,5 +10,6 @@ namespace StoreManagment.Domain.IRepositories
         BehsamFramework.DapperDomain.Base.IRepository<Entities.OrderInfo,long>
     {
         Task RegisterOrderAsync(Entities.OrderInfo entity);
+        Task<bool> ChangeOrderStatus(long orderCode,byte status,string reason);
     }
 }
