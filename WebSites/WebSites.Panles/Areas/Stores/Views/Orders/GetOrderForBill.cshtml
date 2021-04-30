@@ -1,0 +1,104 @@
+﻿@model List<WebSites.Panles.Models.Reports.GetSummeryOrderStatusDetailsByDate>;
+
+@{
+    ViewData["Title"] = "GetOrderForBill";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+
+    int rowNumber = 0;
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست سفارشات جهت عملیات صندوق و صدور فاکتور نهایی
+        </h6>
+
+        <br />
+        <form action="/Stores/Orders/GetNewOrder" method="get" class="form-search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="جستجو" name="searchkey">
+                <div class="input-group-append">
+                    <button class="btn btn-light" type="submit">
+                        <i class="ti-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <br />
+        <a href="#" class="btn btn-outline-danger m-2" onclick="reloadPage()" >
+            <i class="fa fa-spinner text-danger ml-2" aria-hidden="true"></i>
+            بروزرسانی اطلاعات
+        </a>
+        <br/>
+        <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+            @if (Model != null && Model.Count > 0)
+            {
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">#</th>
+                            <th rowspan="1" colspan="1">شماره سفارش</th>
+                            <th rowspan="1" colspan="1">مشتری</th>
+                            <th rowspan="1" colspan="1">تاریخ</th>
+                            <th rowspan="1" colspan="1">وضعیت</th>
+                            <th rowspan="1" colspan="1">تعداد</th>
+                            <th rowspan="1" colspan="1">جمع کل</th>
+                            <th rowspan="1" colspan="1">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            var count = item.OrderCount > 0 ? item.OrderCount.ToString("#,#") : "0";
+                            rowNumber++;
+
+                            <tr role="row" id="txt-@item.OrderCode">
+                                <td>@rowNumber</td>
+                                <td>@item.OrderCode</td>
+                                <td>@item.CustomerName</td>
+                                <td>@item.OrderDate.ToPersianDate()</td>
+                                <td>@item.OrderStatusStr</td>
+                                <td>@count</td>
+                                <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td>
+                                    <a href="/Stores/Orders/GetOrderDetails?orderCode=@item.OrderCode" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات سفارش">
+                                        <i class="fa fa-credit-card  text-primary m-2" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a href="#" class="d-inline" onclick="hideRow('txt-@item.OrderCode')"
+                                       data-toggle="tooltip" data-placement="bottom" title="عدم نمایش موقت اطلاعات">
+                                        <i class="fa fa-caret-square-down text-danger m-2" aria-hidden="true"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h5 class="text-danger">اطلاعات برای نمایش وجود ندارد</h5>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+
+        function hideRow(id) {
+            $('#' + id).fadeOut();
+        }
+
+        function reloadPage() {
+            window.location.reload();
+        }
+    </script>
+}

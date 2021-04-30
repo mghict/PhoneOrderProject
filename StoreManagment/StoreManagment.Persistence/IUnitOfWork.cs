@@ -12,5 +12,6 @@ namespace StoreManagment.Persistence
         Domain.IRepositories.IOrderInfoRepository OrderInfoRepository { get; }
         Domain.IRepositories.IOrderItemsRepository OrderItemsRepository { get; }
         Domain.IRepositories.IOrderDetailRepository OrderDetailRepository { get; }
+        Domain.IRepositories.IOrderUserActiveRepository UserActiveRepository { get; }
     }
 }

@@ -6,5 +6,6 @@
         Domain.IQueryRepositories.IOrderInfoQueryRepository OrderInfoQueryRepository { get; }
         Domain.IQueryRepositories.IOrderItemsQueryRepository OrderItemsQueryRepository { get; }
         Domain.IQueryRepositories.IOrderDetailQueryRepository OrderDetailQueryRepository { get; }
+        Domain.IQueryRepositories.IOrderUserActiveQueryRepository UserActiveQueryRepository { get; }
     }
 }

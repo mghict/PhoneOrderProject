@@ -19,7 +19,7 @@ namespace WebSites.Panles.Helper
     }
     public class ServiceCaller<T> //: IServiceCaller<T>
     {
-        private  string Token { get; set; }
+        private string Token { get; set; }
         private HttpClient client { get; set; }
         public ServiceCaller(IHttpClientFactory _clientFactory)
         {
@@ -28,14 +28,14 @@ namespace WebSites.Panles.Helper
 
         private async Task InitialClient()
         {
-            await Task.Run( () =>
-            {
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                if (!string.IsNullOrEmpty(Token))
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
-                }
+            await Task.Run(() =>
+           {
+               client.DefaultRequestHeaders.Clear();
+               client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+               if (!string.IsNullOrEmpty(Token))
+               {
+                   client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
+               }
 
                 //try
                 //{
@@ -52,7 +52,7 @@ namespace WebSites.Panles.Helper
 
                 //}
             });
-            
+
         }
 
         public void SetToken(string tokenValue)
@@ -69,7 +69,7 @@ namespace WebSites.Panles.Helper
 
             try
             {
-                 resultList = await client.GetFromJsonAsync<FluentResult<T>>(methodName);
+                resultList = await client.GetFromJsonAsync<FluentResult<T>>(methodName);
 
                 //var respons = await result.Content.ReadAsStringAsync();
                 //var resulttmp = JsonConvert.DeserializeObject<FluentResult<T>>(respons);
@@ -84,17 +84,17 @@ namespace WebSites.Panles.Helper
         }
         public async Task<T> GetDataWithValueAggregate(string methodName)
         {
-            T resultList ;
+            T resultList;
 
             await InitialClient();
 
-        
+
             resultList = await client.GetFromJsonAsync<T>(methodName);
 
 
             return resultList;
         }
-        public  async Task<FluentResult<T>> PostDataWithValue(string methodName,object input)
+        public async Task<FluentResult<T>> PostDataWithValue(string methodName, object input)
         {
             FluentResult<T> resultList = new FluentResult<T>();
 
@@ -102,12 +102,12 @@ namespace WebSites.Panles.Helper
 
             try
             {
-                var result = await client.PostAsJsonAsync(methodName,input);
+                var result = await client.PostAsJsonAsync(methodName, input);
                 //if(result.IsSuccessStatusCode)
                 //{
-               
+
                 var respons = await result.Content.ReadAsStringAsync();
-                var resulttmp =JsonConvert.DeserializeObject<FluentResult<T>>(respons);
+                var resulttmp = JsonConvert.DeserializeObject<FluentResult<T>>(respons);
                 return resulttmp;
                 //}
             }
@@ -117,7 +117,7 @@ namespace WebSites.Panles.Helper
                 return resultList;
             }
 
-            
+
         }
         public async Task<FluentResults.Result> PostDataWithoutValue(string methodName, object input)
         {
@@ -161,6 +161,7 @@ namespace WebSites.Panles.Helper
 
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
             if (!string.IsNullOrEmpty(Token))
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
@@ -169,22 +170,22 @@ namespace WebSites.Panles.Helper
             try
             {
                 var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
-                if(user!=null)
+                if (user != null)
                 {
 
                     var userName = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(user.PhoneNumber));
 
-                    
+
                     client.DefaultRequestHeaders.TryAddWithoutValidation("Name", userName);
                     client.DefaultRequestHeaders.TryAddWithoutValidation("Id", user.UserId.ToString());
-                    client.DefaultRequestHeaders.TryAddWithoutValidation("IP", user.UserIp.Trim()=="::1"?"127.0.0.1": user.UserIp.Trim());
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("IP", user.UserIp.Trim() == "::1" ? "127.0.0.1" : user.UserIp.Trim());
                 }
             }
             catch
             {
 
             }
-            
+
         }
 
         public void SetToken(string tokenValue)
@@ -197,15 +198,27 @@ namespace WebSites.Panles.Helper
         {
             FluentResult<T> resultList = new FluentResult<T>();
 
-             InitialClient();
+            InitialClient();
 
             try
             {
-                
-                var result= await client.GetAsync(methodName);
-                if(result.IsSuccessStatusCode)
+
+                var result = await client.GetAsync(methodName);
+                if (result.IsSuccessStatusCode)
                 {
-                    resultList =await result.Content.ReadAsAsync<FluentResult<T>>();
+                    resultList = await result.Content.ReadAsAsync<FluentResult<T>>();
+                }
+                else
+                {
+                    var resultListError = await result.Content.ReadAsAsync<FluentResult>();
+                    resultList = new FluentResult<T>()
+                    {
+                        Errors = resultListError.Errors,
+                        IsFailed = resultListError.IsFailed,
+                        IsSuccess = resultListError.IsSuccess,
+                        Successes = resultListError.Successes,
+                        Value = default(T)
+                    };
                 }
             }
             catch (Exception ex)
@@ -219,7 +232,7 @@ namespace WebSites.Panles.Helper
         {
             T resultList;
 
-             InitialClient();
+            InitialClient();
 
 
             resultList = await client.GetFromJsonAsync<T>(methodName);
@@ -237,33 +250,44 @@ namespace WebSites.Panles.Helper
             try
             {
                 var result = await client.PostAsJsonAsync(methodName, input);
-
-                var respons = await result.Content.ReadAsStringAsync();
-                returnValue = JsonConvert.DeserializeObject<FluentResult<T>>(respons);
-                return returnValue;
+                if (result.IsSuccessStatusCode)
+                {
+                    var respons = await result.Content.ReadAsStringAsync();
+                    returnValue = JsonConvert.DeserializeObject<FluentResult<T>>(respons);
+                }
+                else
+                {
+                    var resultListError = await result.Content.ReadAsAsync<FluentResult>();
+                    returnValue = new FluentResult<T>()
+                    {
+                        Errors = resultListError.Errors,
+                        IsFailed = resultListError.IsFailed,
+                        IsSuccess = resultListError.IsSuccess,
+                        Successes = resultListError.Successes,
+                        Value = default(T)
+                    };
+                }
             }
             catch (Exception ex)
             {
-                return returnValue.WithError(ex.Message);
+                returnValue.WithError(ex.Message);
             }
-
+            return returnValue;
 
         }
         public async Task<FluentResult> PostDataWithoutValue(string methodName, object input)
         {
             FluentResult resultList = new FluentResult();
 
-             InitialClient();
+            InitialClient();
 
             try
             {
                 var result = await client.PostAsJsonAsync(methodName, input);
-                //if(result.IsSuccessStatusCode)
-                //{
 
                 var respons = await result.Content.ReadAsStringAsync();
                 resultList = JsonConvert.DeserializeObject<FluentResult>(respons);
-                //}
+
             }
             catch (Exception ex)
             {

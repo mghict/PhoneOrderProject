@@ -25,6 +25,7 @@ namespace WebSites.Panles.Services
         Store.IGetProductsService ProductsService { get;}
         Store.ICategoryService CategoryService { get; }
         Order.IOrderService OrderService { get; }
+        Order.IOrderUserActive OrderUserActive { get; }
     }
 
     public class OrderFacad :Base.ServiceBase, IOrderFacad
@@ -77,5 +78,10 @@ namespace WebSites.Panles.Services
         private IOrderService _OrderService;
         public IOrderService OrderService =>
             _OrderService= _OrderService?? new Order.OrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
+
+
+        private IOrderUserActive _OrderUserActive;
+        public IOrderUserActive OrderUserActive =>
+            _OrderUserActive= _OrderUserActive?? new Order.OrderUserActive(CacheService, ServiceCaller, ClientFactory, Mapper);
     }
 }

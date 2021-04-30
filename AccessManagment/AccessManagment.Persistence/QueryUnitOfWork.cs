@@ -3,6 +3,7 @@ using AccessManagment.Domain.IRepositories.IPageInfo;
 using AccessManagment.Domain.IRepositories.IRoleInfo;
 using AccessManagment.Domain.IRepositories.IRolePageAccess;
 using AccessManagment.Domain.IRepositories.IUser;
+using AccessManagment.Domain.IRepositories.IUserActive;
 using AccessManagment.Domain.IRepositories.IUserRole;
 using BehsamFramework.DapperDomain;
 
@@ -41,6 +42,11 @@ namespace AccessManagment.Persistence
         private IUserRoleQueryRepository _userRoleQueryRepository;
         public IUserRoleQueryRepository UserRoleQueryRepository =>
             _userRoleQueryRepository= _userRoleQueryRepository ?? new Repositories.UserRole.UserRoleQueryRepository(IDbConnection);
+
+
+        private IUserActiveQueryRepository _UserActiveQueryRepository;
+        public IUserActiveQueryRepository UserActiveQueryRepository =>
+            _UserActiveQueryRepository= _UserActiveQueryRepository ?? new Repositories.UserActive.UserActiveQueryRepository(IDbConnection);
     }
 }
 

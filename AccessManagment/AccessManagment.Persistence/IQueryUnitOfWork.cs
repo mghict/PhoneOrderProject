@@ -8,6 +8,7 @@
         Domain.IRepositories.IRolePageAccess.IRolePageAccessQueryRepository RolePageAccessQueryRepository { get; }
         Domain.IRepositories.IUser.IUserQueryRepository UserQueryRepository { get; }
         Domain.IRepositories.IUserRole.IUserRoleQueryRepository UserRoleQueryRepository { get; }
+        Domain.IRepositories.IUserActive.IUserActiveQueryRepository UserActiveQueryRepository { get; }
 
     }
 }

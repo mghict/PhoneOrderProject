@@ -40,7 +40,7 @@ namespace WebSites.Panles.Areas.Stores.Controllers
             
         }
 
-        public async Task<IActionResult> SafirUsers(string searchKey = "", int pageNumber = 0,int pageSize=20)
+        public async Task<IActionResult> SafirUsers(string searchKey = "", int page = 0,int pageSize=20)
         {
             var model = new Models.Authorize.UserModel()
             {
@@ -58,12 +58,12 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                 float.TryParse(user.StoreId, style, info, out sId);
 
-                model = await _userFacad.UserService.GetAllSearchByAppIdAndStoreIdAsync(5, sId,searchKey,pageNumber,pageSize);
+                model = await _userFacad.UserService.GetAllSearchByAppIdAndStoreIdAsync(5, sId,searchKey,page,pageSize);
             }
             
             return View(model);
         }
-        public async Task<IActionResult> JourChinUsers(string searchKey = "", int pageNumber = 0, int pageSize = 20)
+        public async Task<IActionResult> JourChinUsers(string searchKey = "", int page = 0, int pageSize = 20)
         {
             var model = new Models.Authorize.UserModel()
             {
@@ -82,7 +82,7 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                 float.TryParse(user.StoreId, style, info, out sId);
 
-                model = await _userFacad.UserService.GetAllSearchByAppIdAndStoreIdAsync(4, sId, searchKey, pageNumber, pageSize);
+                model = await _userFacad.UserService.GetAllSearchByAppIdAndStoreIdAsync(4, sId, searchKey, page, pageSize);
 
             }
 

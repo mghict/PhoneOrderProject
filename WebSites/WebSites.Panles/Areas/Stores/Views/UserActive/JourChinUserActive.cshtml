@@ -1,0 +1,293 @@
+﻿@model WebSites.Panles.Models.Authorize.UserModel
+
+@{
+    ViewData["Title"] = "JourChinUserActive";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+
+    int PageNumber = 1;
+    int PageSize = 20;
+    int.TryParse(Context.Request.Query["page"], out PageNumber);
+    int.TryParse(Context.Request.Query["pagesize"], out PageSize);
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست کاربران جورچین
+        </h6>
+
+        <br />
+        <form action="/Stores/UserActive/SafirUserActive" method="get" class="form-search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="جستجو براساس نام کاربر/نام کاربری" name="searchkey">
+                <div class="input-group-append">
+                    <button class="btn btn-light" type="submit">
+                        <i class="ti-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <br />
+        <hr class="text-danger bg-danger" />
+
+        <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+            <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="1">#</th>
+                        <th rowspan="1" colspan="1">مشخصات کاربر</th>
+                        <th rowspan="1" colspan="1">نام کاربری</th>
+                        <th rowspan="1" colspan="1">فروشگاه</th>
+                        <th rowspan="1" colspan="1">وضعیت</th>
+                        <th rowspan="1" colspan="1">عملیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Users != null)
+                    {
+                        var row = ((PageNumber <= 0 ? 1 : PageNumber) - 1) * (PageSize == 0 ? 20 : PageSize) + 1;
+
+
+                        @foreach (var usr in Model.Users)
+                        {
+                            <tr role="row">
+                                <td>@row </td>
+                                <td>@usr.Name</td>
+                                <td>@usr.UserName</td>
+                                <td>@usr.StoreName</td>
+                                <td>@usr.ActiveStatusDesription</td>
+                                <td>
+                                    <a href="#" onclick="ChangeUser('@usr.Id','@usr.ActiveStatus','0');" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="فعال نمودن کاربر">
+                                        <i class="fa fa-check-square text-success mr-2 fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#" onclick="ChangeUser('@usr.Id','@usr.ActiveStatus','1');" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="خاتمه فعالیت">
+                                        <i class="fa fa-window-close text-danger mr-2 fa-2x" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            row++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination pagination-rounded float-left">
+            <nav aria-label="Page navigation example" class="mb-3">
+                <paging total-records="@Model.RowCount.ToInt()"
+                        page-no="@PageNumber==0?1:PageNumber"
+                        page-size="@PageSize==0?20:PageSize"
+                        show-prev-next="true"
+                        show-total-pages="false"
+                        show-total-records="false"
+                        show-page-size-nav="false"
+                        show-first-numbered-page="true"
+                        show-last-numbered-page="true"
+                        query-string-key-page-no="page"
+                        query-string-key-page-size="pagesize"
+                        query-string-value="@@(Request.QueryString.Value)"
+                        gap-size="2">
+                </paging>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function ChangeUser(id, userStatus, status) {
+            //-----------------------------
+            var sts = parseInt(status);
+            //-----------------------------
+
+            if (status == 0) {
+                ActiveUser(id, userStatus);
+            }
+            else if (status == 1) {
+                DeActiveUser(id, userStatus);
+            }
+        }
+
+        function ActiveUser(id, userStatus) {
+            var postData = {
+                'userId': id,
+                'status': 2
+            };
+            //-----------------------------
+            var sts = parseInt(userStatus);
+            //-----------------------------
+            if (sts == 3) {
+                swal.fire({
+                    title: 'فعال کردن کاربر',
+                    text: "برای کاربر خاتمه زده شده است، آیا مطمئن هستید؟",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#7cacbe',
+                    confirmButtonText: 'بله، فعال شود',
+                    cancelButtonText: 'خیر'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            dataType: 'json',
+                            type: "POST",
+                            url: "/Stores/UserActive/ChangeUser",
+                            data: postData,
+                            beforeSend: function () {
+                                showBehsamLoading();
+                            },
+                            complete: function () {
+                                hideBehsamLoading();
+                            },
+                            success: function (data) {
+                                if (data.isSuccess == true) {
+                                    swal.fire(
+                                        'موفق!',
+                                        'با موفقیت انجام شد',
+                                        'success'
+                                    ).then(function (isConfirm) {
+                                        location.reload();
+                                    });
+                                }
+                                else {
+                                    swal.fire(
+                                        'هشدار!',
+                                        data.message,
+                                        'warning'
+                                    );
+                                }
+                            },
+                            error: function (request, status, error) {
+                                hideBehsamLoading();
+                            }
+
+                        });
+
+                    }
+                });
+            }
+            else if (sts < 3) {
+                swal.fire({
+                    title: 'فعال کردن کاربر',
+                    text: "آیا از فعال کردن کاربر مطمئن هستید؟",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#7cacbe',
+                    confirmButtonText: 'بله، فعال شود',
+                    cancelButtonText: 'خیر'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            dataType: 'json',
+                            type: "POST",
+                            url: "/Stores/UserActive/ChangeUser",
+                            data: postData,
+                            beforeSend: function () {
+                                showBehsamLoading();
+                            },
+                            complete: function () {
+                                hideBehsamLoading();
+                            },
+                            success: function (data) {
+                                if (data.isSuccess == true) {
+                                    swal.fire(
+                                        'موفق!',
+                                        'با موفقیت انجام شد',
+                                        'success'
+                                    ).then(function (isConfirm) {
+                                        location.reload();
+                                    });
+                                }
+                                else {
+                                    swal.fire(
+                                        'هشدار!',
+                                        data.message,
+                                        'warning'
+                                    );
+                                }
+                            },
+                            error: function (request, status, error) {
+                                hideBehsamLoading();
+                            }
+
+                        });
+
+                    }
+                });
+            }
+        }
+
+        function DeActiveUser(id, userStatus) {
+            var postData = {
+                'userId': id,
+                'status': 3
+            };
+            //-----------------------------
+            var sts = parseInt(userStatus);
+            //-----------------------------
+            if (sts == 3) {
+                return;
+            }
+            if (sts < 3) {
+                swal.fire({
+                    title: 'خاتمه فعالیت',
+                    text: "آیا از اعلام خاتمه فعالیت برای کاربر مطمئن هستید؟",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#7cacbe',
+                    confirmButtonText: 'بله',
+                    cancelButtonText: 'خیر'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            //contentType: 'application/x-www-form-urlencoded',
+                            dataType: 'json',
+                            type: "POST",
+                            url: "/Stores/UserActive/ChangeUser",
+                            data: postData,
+                            beforeSend: function () {
+                                showBehsamLoading();
+                            },
+                            complete: function () {
+                                hideBehsamLoading();
+                            },
+                            success: function (data) {
+                                if (data.isSuccess == true) {
+                                    swal.fire(
+                                        'موفق!',
+                                        'با موفقیت انجام شد',
+                                        'success'
+                                    ).then(function (isConfirm) {
+                                        location.reload();
+                                    });
+                                }
+                                else {
+                                    swal.fire(
+                                        'هشدار!',
+                                        data.message,
+                                        'warning'
+                                    );
+                                }
+                            },
+                            error: function (request, status, error) {
+                                hideBehsamLoading();
+                            }
+
+                        });
+
+                    }
+                });
+            }
+        }
+    </script>
+
+}

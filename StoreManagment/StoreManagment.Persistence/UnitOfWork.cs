@@ -24,5 +24,9 @@ namespace StoreManagment.Persistence
         private IOrderDetailRepository _OrderDetailRepository;
         public IOrderDetailRepository OrderDetailRepository =>
             _OrderDetailRepository = _OrderDetailRepository ?? new Repositories.OrderDetailRepository(IDbConnection);
+
+        private IOrderUserActiveRepository _UserActiveRepository;
+        public IOrderUserActiveRepository UserActiveRepository =>
+            _UserActiveRepository = _UserActiveRepository ?? new Repositories.OrderUserActivityRepository(IDbConnection);
     }
 }

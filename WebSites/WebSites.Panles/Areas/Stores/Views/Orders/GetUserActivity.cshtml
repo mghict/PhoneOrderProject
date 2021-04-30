@@ -1,0 +1,56 @@
+﻿@model List<WebSites.Panles.Models.Order.CustomerPreOrderUserActiveSummery>
+@{
+    Layout = null;
+}
+
+<div class="card">
+    <h6 class="mt-2"> خلاصه فعالیت کاربر در روز جاری</h6>
+    <hr class="border-danger"/>
+    <div class="card-body">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">#</th>
+                            <th rowspan="1" colspan="1">فعالیت</th>
+                            <th rowspan="1" colspan="1">تعداد</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            var row = 1;
+
+
+                            @foreach (var usr in Model)
+                            {
+                                <tr role="row">
+                                    <td>@row </td>
+                                    <td>@usr.StatusDescription</td>
+                                    <td>@usr.StatusCount</td>
+                                </tr>
+
+                                row++;
+                            }
+                        }
+                    </tbody>
+                    <tfoot>
+
+                        <tr>
+                            <th rowspan="1" colspan="2"><span class="float-left">جمع کل : </span></th>
+                            <th rowspan="1" colspan="1">@Model.Select(s => s.StatusCount).Sum().ToString("#,#")</th>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات وجود ندارد</h6>
+        }
+    </div>
+</div>
