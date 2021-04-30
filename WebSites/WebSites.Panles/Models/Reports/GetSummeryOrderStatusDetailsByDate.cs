@@ -15,5 +15,7 @@ namespace WebSites.Panles.Models.Reports
         public long TotalPrice { get; set; }
         public long ShippingPrice { get; set; }
         public long FinalPrice { get; set; }
+        public string UserDescription { get; set; }
+        public string OrderTime { get; set; }
     }
 }

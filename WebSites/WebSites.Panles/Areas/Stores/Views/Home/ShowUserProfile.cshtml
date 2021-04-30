@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+
+@model WebSites.Panles.Models.UserModel
+
+    <div class="container align-middle">
+        @if (Model != null)
+        {
+            <h6 class="mt-5">
+                    <i class="fa fa-user-circle text-danger ml-2" aria-hidden="true"></i>مشخصات: @Model.Name</h6>
+            <hr />
+            <h6><i class="fa fa-phone text-danger ml-2" aria-hidden="true"></i>شماره تلفن: @Model.PhoneNumber</h6>
+            <hr />
+            <h6><i class="fa fa-code-branch text-danger ml-2" aria-hidden="true"></i>کد فروشگاه: @Model.StoreId</h6>
+            <br/>
+            <br/>
+            <hr class="bg-danger border-danger"/>
+            <a href="/Admin/User/ResetPass" class="btn btn-block btn-danger">
+                تغییر رمز عبور
+            </a>
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات کاربر یافت نشد</h6>
+        }
+    </div>

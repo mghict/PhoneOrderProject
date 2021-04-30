@@ -52,8 +52,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                               p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }
@@ -171,8 +173,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                                 p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }
@@ -283,8 +287,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                                 p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }
@@ -299,6 +305,7 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
             return View(model);
         }
+
         public async Task<IActionResult> GetAcceptJourChinOrderDetails(long orderCode)
         {
             var model = new Models.Reports.GetOrderInfoWithItems();
@@ -380,8 +387,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                                 p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }
@@ -418,8 +427,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                                 p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }
@@ -528,8 +539,10 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                     if (!string.IsNullOrEmpty(searchkey) && model != null && model.Count > 0)
                     {
-                        model = model.Where(p => p.CustomerName.Contains(searchkey) ||
-                                                 p.OrderCode.Contains(searchkey)).ToList();
+                        model = model.Where(p => p.CustomerName.Trim().Contains(searchkey) ||
+                                                 p.OrderCode.Trim().Contains(searchkey) ||
+                                                 p.UserDescription.Trim().Contains(searchkey) ||
+                                                 p.OrderTime.Trim().Contains(searchkey)).ToList();
                     }
                 }
             }

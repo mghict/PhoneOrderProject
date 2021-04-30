@@ -142,7 +142,7 @@ namespace StoreManagment.API.Controllers
 
         #endregion
 
-        #region GetSummeryOrderStatusByDate
+        #region GetSummeryOrderStatusDetailsByDate
 
         [HttpPost("GetSummeryOrderStatusDetailsByDate")]
         [ProducesResponseType

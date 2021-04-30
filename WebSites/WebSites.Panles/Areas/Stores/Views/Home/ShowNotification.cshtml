@@ -1,0 +1,89 @@
+﻿@{
+    Layout = null;
+}
+
+@model List<WebSites.Panles.Models.NotificationMessage>
+@using BehsamFramework.Util;
+@using BehsamFramework.Utility;
+
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="menu-header-content bg-primary text-right">
+        <div class="d-flex">
+            <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">پیام ها</h6>
+        </div>
+        <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">
+            @string.Format("شما {0} پیام خوانده نشده دارید", Model.Count.ToString("#,#"))
+        </p>
+        <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">
+            پیغامهای شما با کلیک حذف می شود
+        </p>
+    </div>
+    <div class="main-notification-list Notification-scroll">
+        @foreach (var item in Model)
+        {
+            string notId = "notif" + item.Id;
+            <a class="d-flex p-3 border-bottom" href="#" onclick="DeleteNotification('@item.Id')" id="@notId">
+
+                @if (item.messageType == 1)
+                {
+                    <div class="notifyimg">
+                        <i class="fa fa-envelope-open text-info" aria-hidden="true"></i>
+                    </div>
+                }
+                else if (item.messageType == 2)
+                {
+                    <div class="notifyimg ">
+                        <i class="fa fa-envelope-open text-success" aria-hidden="true"></i>
+                    </div>
+                }
+                else if (item.messageType == 3)
+                {
+                    <div class="notifyimg ">
+                        <i class="fa fa-envelope-open text-warning" aria-hidden="true"></i>
+                    </div>
+                }
+                else if (item.messageType == 4)
+                {
+                    <div class="notifyimg">
+                        <i class="fa fa-envelope-open text-danger" aria-hidden="true"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="notifyimg">
+                        <i class="fa fa-envelope-open text-gray fa-2x" aria-hidden="true"></i>
+                    </div>
+                }
+
+                <div class="mr-3 bg-error">
+                    <h5 class="notification-label mb-1 border-bottom">@item.messageHead</h5>
+                    <div class="notification-subtext">
+                        @item.messageBody <br />
+                        @item.CreateDate.GetPersianFullDateTime()
+                    </div>
+                </div>
+
+                <div class="mr-auto">
+                    <i class="las la-angle-left text-left text-muted"></i>
+                </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div class="menu-header-content bg-primary text-right">
+        <div class="d-flex">
+            <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">پیام ها</h6>
+        </div>
+        <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">شما درحال حاضر پیامی ندارید</p>
+    </div>
+    <div class="main-notification-list Notification-scroll">
+
+    </div>
+
+}
+
+<script src="~/js/Admin/deletenotification.js"></script>

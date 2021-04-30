@@ -26,11 +26,11 @@
             </div>
         </form>
         <br />
-        <a href="#" class="btn btn-outline-danger m-2" onclick="reloadPage()" >
+        <a href="#" class="btn btn-outline-danger m-2" onclick="reloadPage()">
             <i class="fa fa-spinner text-danger ml-2" aria-hidden="true"></i>
             بروزرسانی اطلاعات
         </a>
-        <br/>
+        <hr />
         <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
             @if (Model != null && Model.Count > 0)
             {
@@ -40,10 +40,12 @@
                             <th rowspan="1" colspan="1">#</th>
                             <th rowspan="1" colspan="1">شماره سفارش</th>
                             <th rowspan="1" colspan="1">مشتری</th>
+                            <th rowspan="1" colspan="1">نام جورچین</th>
                             <th rowspan="1" colspan="1">تاریخ</th>
                             <th rowspan="1" colspan="1">وضعیت</th>
                             <th rowspan="1" colspan="1">تعداد</th>
                             <th rowspan="1" colspan="1">جمع کل</th>
+                            <th rowspan="1" colspan="1">ساعت تحویل</th>
                             <th rowspan="1" colspan="1">عملیات</th>
                         </tr>
                     </thead>
@@ -59,10 +61,12 @@
                                 <td>@rowNumber</td>
                                 <td>@item.OrderCode</td>
                                 <td>@item.CustomerName</td>
+                                <td>@item.UserDescription</td>
                                 <td>@item.OrderDate.ToPersianDate()</td>
                                 <td>@item.OrderStatusStr</td>
                                 <td>@count</td>
                                 <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td class="tx-14 text-danger font-weight-bold font-italic">@item.OrderTime</td>
                                 <td>
                                     <a href="/Stores/Orders/GetOrderDetails?orderCode=@item.OrderCode" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات سفارش">

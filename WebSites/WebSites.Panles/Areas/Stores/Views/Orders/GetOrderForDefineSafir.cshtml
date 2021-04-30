@@ -39,6 +39,7 @@
                             <th rowspan="1" colspan="1">وضعیت</th>
                             <th rowspan="1" colspan="1">تعداد</th>
                             <th rowspan="1" colspan="1">جمع کل</th>
+                            <th rowspan="1" colspan="1">ساعت تحویل</th>
                             <th rowspan="1" colspan="1">عملیات</th>
                         </tr>
                     </thead>
@@ -58,6 +59,7 @@
                                 <td>@item.OrderStatusStr</td>
                                 <td>@count</td>
                                 <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td class="tx-14 text-danger font-weight-bold font-italic">@item.OrderTime</td>
                                 <td>
                                     <a href="/Stores/Orders/GetOrderForDefineSafirDetails?orderCode=@item.OrderCode" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات سفارش">
