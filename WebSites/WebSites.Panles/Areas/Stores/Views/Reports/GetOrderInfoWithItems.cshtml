@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "GetOrderInfoWithItems";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+    var orderCode = ViewBag.OrderCode!=null ? ( ViewBag.OrderCode>0 ? ViewBag.OrderCode.ToString() : "") : "";
+}
+
+    <div class="card">
+        <div class="card-header">
+            <h6>اطلاعات سفارش</h6>
+        </div>
+        <div class="card-body">
+            <div class="row row-sm">
+                <div class="col col-md-12 col-sm-12 col-lg-12">
+
+                    <div class="input-group col-md-5 mb-2">
+                        <input id="txtOrderCode" class="form-control" placeholder="شماره فاکتور را وارد کنید" type="text"
+                               value="@orderCode">
+                    </div>
+
+                    <input type="button" class="btn btn-outline-danger btn-rounded" value=" نمایش اطلاعات " onclick="callSearch()" />
+
+                </div>
+            </div>
+            <hr />
+            <div class="col col-md-12 col-sm-12 col-lg-12" id="divDetails">
+
+            </div>
+        </div>
+    </div>
+
+@section Scripts
+{
+    <script>
+
+        function callSearch() {
+
+            $('#divDetails').html('');
+
+            var orderCode = $("#txtOrderCode").val();
+
+            if (orderCode == null || orderCode.trim() == "" || orderCode.trim() == "0") {
+                toastr.error('مقدار جستجو یافت نشد');
+                return;
+            }
+
+            var postData = {
+                'orderCode': orderCode
+            };
+
+            $.ajax(
+                {
+                    url: '/Stores/Reports/GetOrderInfoWithItemsPost',
+                    type: 'post',
+                    data: postData,
+                    beforeSend: function () {
+                        showBehsamLoading();
+                    },
+                    success: function (result, status, err) {
+                        $('#divDetails').html(result);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request);
+                    },
+                    complete: function () {
+                        hideBehsamLoading();
+                    }
+                });
+
+        }
+
+        $(document).ready(function () {
+            callSearch();
+        });
+
+    </script>
+}
+

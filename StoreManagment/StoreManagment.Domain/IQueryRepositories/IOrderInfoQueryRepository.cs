@@ -14,5 +14,7 @@ namespace StoreManagment.Domain.IQueryRepositories
         Task<List<Entities.GetSummeryOrderStatusDetailsByDate>> getSummeryOrderStatusDetailsByDate(float storeId, DateTime startDate, DateTime endDate,int status);
         Task<List<Entities.GetOrderDetailsByUserId>> getOrderDetailsByUserId(DateTime startDate, DateTime endDate, float storeId = 0.0f, int userId = 0);
         Task<Entities.GetOrderInfoWithItems> getOrderInfoWithItems(long OrderCode);
+        Task<List<Entities.GetSummeryOrdersByDateAndStore>> getSummeryOrdersByDateAndStore(DateTime orderDate,float storeId);
+        Task<List<Entities.GetDetailsOrdersByDateAndStore>> getDetailsOrdersByDateAndStore(DateTime orderDate,float storeId ,string orderTime);
     }
 }

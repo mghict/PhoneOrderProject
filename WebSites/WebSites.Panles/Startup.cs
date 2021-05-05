@@ -89,7 +89,7 @@ namespace WebSites.Panles
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
             services.AddScoped<Services.ISettingFacad, Services.SettingFacad>();
             services.AddScoped<Services.IUserFacad, Services.UserFacad>();
-
+            services.AddScoped<Services.IReportFacad, Services.ReportFacad>();
 
 
             services.AddTransient<Services.Authorize.IAuthorizeService, Services.Authorize.AuthorizeService>();

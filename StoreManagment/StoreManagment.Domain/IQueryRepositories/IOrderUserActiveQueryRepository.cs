@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace StoreManagment.Domain.IQueryRepositories
 {
@@ -8,5 +9,7 @@ namespace StoreManagment.Domain.IQueryRepositories
     {
         Task<List<Domain.Entities.CustomerPreOrderUserActive>> GetOrderUserActivityDetailsinCurrentDate(int userId);
         Task<List<Domain.Entities.CustomerPreOrderUserActiveSummery>> GetOrderUserActivitySummeryinCurrentDate(int userId);
+        Task<List<Domain.Entities.CustomerPreOrderUserActiveSummery>> GetOrderUserActivitySummeryInDate(DateTime orderDate,float storeId=0,int userId=0,int roleId=0);
+        Task<List<Domain.Entities.CustomerPreOrderUserActive>> GetOrderUserActivityDetailsInDate(DateTime orderDate, float storeId = 0, int userId = 0);
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace StoreManagment.Persistence.QueryRepositories
 {
@@ -36,6 +37,42 @@ namespace StoreManagment.Persistence.QueryRepositories
             var param = new
             {
                 @UserId = userId
+            };
+
+            var result = await db.QueryAsync<CustomerPreOrderUserActiveSummery>(query, param);
+
+            return result.ToList();
+        }
+
+
+        //-------------------------------------------
+        //-------------------------------------------
+        public async Task<List<CustomerPreOrderUserActive>> GetOrderUserActivityDetailsInDate(DateTime orderDate, float storeId = 0, int userId = 0)
+        {
+            var query = " exec dbo.[Report_GetUserActivityDetailsInDate] @UserId,@OrderDate,@StoreId";
+
+            var param = new
+            {
+                @UserId = userId,
+                @StoreId = storeId,
+                @OrderDate = orderDate
+            };
+
+            var result = await db.QueryAsync<CustomerPreOrderUserActive>(query, param);
+
+            return result.ToList();
+        }
+
+        public async Task<List<CustomerPreOrderUserActiveSummery>> GetOrderUserActivitySummeryInDate(DateTime orderDate, float storeId = 0, int userId = 0, int roleId = 0)
+        {
+            var query = " exec dbo.[Report_GetUserActivitySummeryInDate] @StoreId,@OrderDate,@UserId,@RoleId";
+
+            var param = new
+            {
+                @UserId = userId,
+                @StoreId = storeId,
+                @OrderDate = orderDate,
+                @RoleId=roleId
             };
 
             var result = await db.QueryAsync<CustomerPreOrderUserActiveSummery>(query, param);

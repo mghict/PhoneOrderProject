@@ -269,5 +269,92 @@ namespace StoreManagment.API.Controllers
         }
 
         #endregion
+
+        //------------------------------------
+        //------------------------------------
+
+        #region GetUserActivityDetailsInDate
+
+        [HttpPost("GetUserActivityDetailsInDate")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActive>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActive>>>>
+            GetUserActivityDetailsInDateAsync([FromBody] Application.OrderUserActiveFeature.Commands.GetUserActivityDetailsInDateCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActive>> result =
+                new FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActive>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region GetUserActivitySummeryInDate
+
+        [HttpPost("GetUserActivitySummeryInDate")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>>>>
+            GetUserActivitySummeryInDateAsync([FromBody] Application.OrderUserActiveFeature.Commands.GetUserActivitySummeryInDateCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>> result =
+                new FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
     }
 }

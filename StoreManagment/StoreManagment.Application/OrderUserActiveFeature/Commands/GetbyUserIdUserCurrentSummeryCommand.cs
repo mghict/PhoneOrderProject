@@ -7,4 +7,7 @@ namespace StoreManagment.Application.OrderUserActiveFeature.Commands
     {
         public int UserId { get; set; }
     }
+
+
+   
 }

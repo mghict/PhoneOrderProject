@@ -28,6 +28,8 @@ namespace BillManagement.Persistence.Repositories
 
                 var orderId = await db.QueryFirstOrDefaultAsync<long>(query, paramOrder);
 
+                int discountPrice = 0, taxPrice = 0, totalPrice = 0, finalPrice = 0;
+
                 if (orderId > 0)
                 {
 
@@ -53,9 +55,21 @@ namespace BillManagement.Persistence.Repositories
                             };
 
                             await db.ExecuteAsync(query, paramDetails, transaction);
+
+                            discountPrice += item.DiscountPrice;
+                            taxPrice += item.TaxPrice;
+                            totalPrice += (item.Quantity * item.UnitPrice);
                         }
 
-                        query = "update CustomerPreOrderInfoTbl set OrderState=12 where ID=@id";
+                        finalPrice += totalPrice + taxPrice - discountPrice;
+
+                        query = "update CustomerPreOrderInfoTbl " +
+                                "set OrderState=12 ,"+
+                                    "TotalPrice=@TotalPrice ," +
+                                    "DiscountPrice=@DiscountPrice ," +
+                                    "TaxPrice=@TaxPrice ," +
+                                    "FinalPrice=@FinalPrice+ShippingPrice" +
+                                "where ID=@id";
                         var paramMaster = new
                         {
                             @id = orderId

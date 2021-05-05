@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace BillManagement.Application.BillFeature.Validators
 {
-    class GetOrderDetailValidator : AbstractValidator<Commands.GetOrderDetailCommand>
+    public class GetOrderDetailValidator : AbstractValidator<Commands.GetOrderDetailCommand>
     {
         public GetOrderDetailValidator() : base()
         {

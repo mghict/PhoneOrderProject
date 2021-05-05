@@ -6,5 +6,6 @@
         public int Status { get; set; }
         public string StatusDescription { get; set; }
         public int StatusCount { get; set; }
+        public string FullName { get; set; }
     }
 }

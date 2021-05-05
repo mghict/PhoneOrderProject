@@ -1,0 +1,55 @@
+﻿@model List<WebSites.Panles.Models.Reports.GetDetailsOrdersByDateAndStore>
+
+@{
+    Layout = null;
+}
+
+
+<div class="card ">
+    <div class="card-body">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">شماره سفارش</th>
+                            <th rowspan="1" colspan="1">تاریخ ثبت</th>
+                            <th rowspan="1" colspan="1">زمان ثبت</th>
+                            <th rowspan="1" colspan="1">زمان ارسال</th>
+                            <th rowspan="1" colspan="1">وضعیت</th>
+                            <th rowspan="1" colspan="1">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr role="row">
+                                <td>@item.OrderCode</td>
+                                <td>@item.OrderDate.ToPersianDate()</td>
+                                <td>@item.OrderTime.ToString()</td>
+                                <td>@item.OrderSendTime</td>
+                                <td>@item.StatusDescription</td>
+                                <td>
+                                    <a href="/Stores/Reports/GetOrderInfoWithItems?orderCode=@item.OrderCode" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات">
+                                        <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات برای نمایش وجود ندارد</h6>
+        }
+    </div>
+
+</div>

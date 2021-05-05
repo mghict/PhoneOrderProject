@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "GetSummeryOrderStatusDetailsByDate";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+}
+
+<input type="hidden" value="@ViewBag.StartDate" id="txtStartDate" />
+<input type="hidden" value="@ViewBag.EndDate" id="txtEndDate" />
+<input type="hidden" value="@ViewBag.StoreId" id="txtStoreId" />
+<input type="hidden" value="@ViewBag.Status" id="txtStatus" />
+
+<div class="card ">
+    <div class="card-header">
+        <h5>لیست سفارشات</h5>
+    </div>
+    <div class="card-body">
+        <div class="col col-md-12 col-sm-12 col-lg-12" id="divProfile">
+
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <a class="btn btn-primary" href="/Stores/Reports/GetSummeryOrderStatusByDate?startDate=@ViewBag.StartDate&endDate=@ViewBag.EndDate">بازگشت</a>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function callSearch() {
+
+            $('#divProfile').html('');
+
+            var sDate = $("#txtStartDate").val();
+            var eDate = $("#txtEndDate").val();
+            var sId = $("#txtStoreId").val();
+            var status = $("#txtStatus").val();
+
+            if (sDate == null || sDate.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            if (eDate == null || eDate.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            if (sId == null || sId.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            if (status == null || status.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+            var postData = {
+                'startDate': sDate,
+                'endDate': eDate,
+                'storeId': sId,
+                'status':status
+            };
+
+            $.ajax(
+                {
+                    url: '/Stores/Reports/GetSummeryOrderStatusDetailsByDatePost',
+                    type: 'post',
+                    data: postData,
+                    beforeSend: function () {
+                        showBehsamLoading();
+                    },
+                    success: function (result, status, err) {
+                        $('#divProfile').html(result);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request);
+                    },
+                    complete: function () {
+                        hideBehsamLoading();
+                    }
+                });
+
+        }
+
+        $(document).ready(function () {
+            callSearch();
+        });
+
+    </script>
+}
+

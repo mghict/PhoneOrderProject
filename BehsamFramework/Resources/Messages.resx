@@ -158,6 +158,9 @@
   <data name="SuccessInsert" xml:space="preserve">
     <value>{0} با موفقیت انجام شد</value>
   </data>
+  <data name="TokenNotValid" xml:space="preserve">
+    <value>توکن ارسالی صحیح نمی باشد</value>
+  </data>
   <data name="UserNamePassNotFound" xml:space="preserve">
     <value>نام کاربری/رمزعبور صحیح نمی باشد</value>
   </data>

@@ -81,6 +81,7 @@ function delProductCount(id) {
     }
 
     $(elem).val(count);
+    $(elem).focus();
 }
 
 function addProductCount(id) {
@@ -95,6 +96,7 @@ function addProductCount(id) {
     }
 
     $(elem).val(count);
+    $(elem).focus();
 }
 
 function showCart() {

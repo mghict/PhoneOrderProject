@@ -1,69 +1,65 @@
 {
   "Routes": [
+    //OrderBill/{everythings} -> Post -> /Store/{everythings}
     {
-      "DownstreamPathTemplate": "/customer/{id}",
-      "DoenstreamSchema": "http",
+      "DownstreamPathTemplate": "/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Post",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 10001
-        },
-        {
-          "Host": "localhost",
-          "Port": 10003
+          "Port": 10050
         }
       ],
-      "UpstreamPathTemplate": "/c/{id}",
-      "UpstreamHttpMethod": [ "Get" ],
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+      "UpstreamPathTemplate": "/Order/{everythings}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 1
       },
-      //"UpstreamHost": "somedomain.com",
-      //"Priority": 0,
-      //"FileCacheOptions": {
-      //    "TtlSeconds": 15,
-      //    "Region": "somename"
-      //},
       "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 1000,
-        "TimeoutValue": 5000
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
       },
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "1s",
         "PeriodTimespan": 1,
-        "Limit": 5
-      },
-
-      "Key": "Customer-id"
+        "Limit": 200
+      }
     },
+    //OrderBill/{everythings} -> Get -> /Store/{everythings}
     {
-      "DownstreamPathTemplate": "/weatherForecast",
-      "DoenstreamSchema": "http",
+      "DownstreamPathTemplate": "/{everythings}",
+      "DownstreamScheme": "http",
+      "DownstreamHttpMethod": "Get",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 10002
+          "Port": 10050
         }
       ],
-      "UpstreamPathTemplate": "/w",
+      "UpstreamPathTemplate": "/Order/{everythings}",
       "UpstreamHttpMethod": [ "Get" ],
-      "Key": "Order-id"
+      "RouteIsCaseSensitive": false,
+      "FileCacheOptions": {
+        "TtlSeconds": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 5000,
+        "TimeoutValue": 120000
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 1,
+        "Limit": 200
+      }
     }
-
-  ],
-  "Aggregates": [
-    {
-      "RouteKeys": [
-        "Customer-id",
-        "Order-id"
-      ],
-      "UpstreamPathTemplate": "/op/{id}",
-      "Aggregator": "FakeDefinedAggregator"
-    }
-
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:10090"

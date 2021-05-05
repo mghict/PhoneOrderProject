@@ -17,6 +17,8 @@ namespace StoreManagment.Persistence.QueryRepositories
         {
         }
 
+        
+
         public async Task<List<GetOrderDetailsByUserId>> getOrderDetailsByUserId(DateTime startDate, DateTime endDate, float storeId = 0.0f, int userId = 0)
         {
             var param = new
@@ -104,6 +106,38 @@ namespace StoreManagment.Persistence.QueryRepositories
 
             return lst;
         }
+
+
+        public async Task<List<GetSummeryOrdersByDateAndStore>> getSummeryOrdersByDateAndStore(DateTime orderDate, float storeId)
+        {
+            var param = new
+            {
+                @OrderDate = orderDate,
+                @StoreId = storeId
+            };
+
+            var query = "exec [dbo].[Report_GetSummeryOrdersByDateAndStore] @OrderDate,@StoreId ";
+
+            var lst = await db.QueryAsync<GetSummeryOrdersByDateAndStore>(query, param);
+
+            return lst.ToList();
+        }
+        public async Task<List<GetDetailsOrdersByDateAndStore>> getDetailsOrdersByDateAndStore(DateTime orderDate, float storeId, string orderTime)
+        {
+            var param = new
+            {
+                @OrderDate = orderDate,
+                @StoreID = storeId,
+                @OrderTime = orderTime
+            };
+
+            var query = " exec [dbo].[Report_GetDetailsOrders] @OrderDate,@StoreID,@OrderTime ";
+
+            var lst = await db.QueryAsync<GetDetailsOrdersByDateAndStore>(query, param);
+
+            return lst.ToList();
+        }
+        
     }
 
 }

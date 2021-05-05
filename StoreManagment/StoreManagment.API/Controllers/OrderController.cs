@@ -268,6 +268,90 @@ namespace StoreManagment.API.Controllers
 
         #endregion
 
+        #region GetSummeryOrdersByDateAndStore
+
+        [HttpPost("GetSummeryOrdersByDateAndStore")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.GetSummeryOrdersByDateAndStore>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.GetSummeryOrdersByDateAndStore>>>>
+            GetSummeryOrdersByDateAndStoreAsync([FromBody] Application.OrderInfoFeature.Commands.GetSummeryOrdersByDateAndStore command)
+        {
+            FluentResults.Result<List<Domain.Entities.GetSummeryOrdersByDateAndStore>> result =
+                new FluentResults.Result<List<Domain.Entities.GetSummeryOrdersByDateAndStore>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region GetDetailsOrdersByDateAndStore
+
+        [HttpPost("GetDetailsOrdersByDateAndStore")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.GetDetailsOrdersByDateAndStore>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.GetDetailsOrdersByDateAndStore>>>>
+            GetDetailsOrdersByDateAndStoreAsync([FromBody] Application.OrderInfoFeature.Commands.GetDetailsOrdersByDateAndStore command)
+        {
+            FluentResults.Result<List<Domain.Entities.GetDetailsOrdersByDateAndStore>> result =
+                new FluentResults.Result<List<Domain.Entities.GetDetailsOrdersByDateAndStore>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
         #region ChangeOrderStatus
 
         [HttpPost("ChangeOrderStatus")]

@@ -1,0 +1,53 @@
+﻿@model List<WebSites.Panles.Models.Order.CustomerPreOrderUserActiveSummery>
+
+@{
+    Layout = null;
+    int rowNum = 0;
+}
+
+<div class="card ">
+    <div class="card-body">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">#</th>
+                            <th rowspan="1" colspan="1">نام کاربر</th>
+                            <th rowspan="1" colspan="1">وضعیت سفارشات</th>
+                            <th rowspan="1" colspan="1">تعداد</th>
+                            <th rowspan="1" colspan="1">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            rowNum++;
+
+                            <tr role="row">
+                                <td>@rowNum</td>
+                                <td>@item.FullName</td>
+                                <td>@item.StatusDescription</td>
+                                <td>@item.StatusCount.ToString("#,#")</td>
+                                <td>
+                                    <a href="/Stores/Reports/GetUserActivityDetailsInDate?userId=@item.UserId" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="نمایش سفارش">
+                                        <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات برای نمایش وجود ندارد</h6>
+        }
+    </div>
+</div>

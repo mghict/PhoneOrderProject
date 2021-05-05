@@ -203,6 +203,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillManagement.Application", "BillManagement\BillManagement.Application\BillManagement.Application.csproj", "{E788F502-BD43-4BD6-AFA8-18E45AD18604}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{ED3D12CC-BF8D-44B8-80B3-B532C29BFFF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillManagement.API", "BillManagement\BillManagement.API\BillManagement.API.csproj", "{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -385,6 +389,10 @@ Global
 		{E788F502-BD43-4BD6-AFA8-18E45AD18604}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E788F502-BD43-4BD6-AFA8-18E45AD18604}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E788F502-BD43-4BD6-AFA8-18E45AD18604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -489,6 +497,8 @@ Global
 		{1476E50C-A57A-4430-B9C8-F51763AF8629} = {9C2F6E18-9DF1-4D19-BF0C-D11435D6637B}
 		{B0A122E1-16B0-49D8-8CB1-6B0B17DE2A46} = {588596F8-EA68-4D9B-850F-DACC0A0102DA}
 		{E788F502-BD43-4BD6-AFA8-18E45AD18604} = {B0A122E1-16B0-49D8-8CB1-6B0B17DE2A46}
+		{ED3D12CC-BF8D-44B8-80B3-B532C29BFFF4} = {588596F8-EA68-4D9B-850F-DACC0A0102DA}
+		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA} = {ED3D12CC-BF8D-44B8-80B3-B532C29BFFF4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCC8689D-A361-4643-AACA-B00A7F70292E}

@@ -37,7 +37,7 @@ namespace Gateway.TelOrderAPI
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<Middleware.JwtMiddleware>();
+            //app.UseMiddleware<Middleware.JwtMiddleware>();
 
             app.UseHttpsRedirection();
 

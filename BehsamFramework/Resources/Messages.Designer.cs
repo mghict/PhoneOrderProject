@@ -160,6 +160,15 @@ namespace BehsamFramework.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to توکن ارسالی صحیح نمی باشد.
+        /// </summary>
+        public static string TokenNotValid {
+            get {
+                return ResourceManager.GetString("TokenNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نام کاربری/رمزعبور صحیح نمی باشد.
         /// </summary>
         public static string UserNamePassNotFound {

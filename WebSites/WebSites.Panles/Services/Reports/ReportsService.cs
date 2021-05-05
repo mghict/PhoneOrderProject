@@ -16,6 +16,10 @@ namespace WebSites.Panles.Services.Reports
         Task<FluentResult<List<Models.Reports.GetSummeryOrderStatusDetailsByDate>>> GetSummeryOrderStatusDetailsByDate(float storeId, DateTime startDate, DateTime endDate, int status);
         Task<FluentResult<List<Models.Reports.GetOrderDetailsByUserId>>> GetOrderDetailsByUserId(DateTime startDate, DateTime endDate, float storeId=0.0f,int userId=0 );
         Task<FluentResult<Models.Reports.GetOrderInfoWithItems>> GetOrderInfoWithItems(long orderCode);
+        Task<FluentResult<List<Models.Reports.GetDetailsOrdersByDateAndStore>>> GetDetailsOrdersByDateAndStore(float storeId, DateTime orderDate, string orderTime);
+        Task<FluentResult<List<Models.Reports.GetSummeryOrdersByDateAndStore>>> GetSummeryOrdersByDateAndStore(float storeId, DateTime orderDate);
+        Task<FluentResult<List<Models.Order.CustomerPreOrderUserActive>>> GetUserActivityDetailsInDate(DateTime orderDate, float storeId = 0.0f, int userId = 0);
+        Task<FluentResult<List<Models.Order.CustomerPreOrderUserActiveSummery>>> GetUserActivitySummeryInDate(DateTime orderDate, float storeId = 0.0f, int userId = 0, int roleId = 0);
     }
 
     public class ReportsService : Base.ServiceBase, IReportsService
@@ -89,6 +93,62 @@ namespace WebSites.Panles.Services.Reports
             };
 
             var result = await ServiceCaller.PostDataWithValue<List<Models.Reports.GetSummeryOrderStatusDetailsByDate>>("Order/Order/GetSummeryOrderStatusDetailsByDate", command);
+
+            return result;
+        }
+
+        public async Task<FluentResult<List<Models.Reports.GetSummeryOrdersByDateAndStore>>> GetSummeryOrdersByDateAndStore(float storeId, DateTime orderDate)
+        {
+            var command = new
+            {
+                StoreId = storeId,
+                OrderDate = orderDate
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<List<Models.Reports.GetSummeryOrdersByDateAndStore>>("Order/Order/GetSummeryOrdersByDateAndStore", command);
+
+            return result;
+        }
+
+        public async Task<FluentResult<List<Models.Reports.GetDetailsOrdersByDateAndStore>>> GetDetailsOrdersByDateAndStore(float storeId, DateTime orderDate,string orderTime)
+        {
+            var command = new
+            {
+                StoreId = storeId,
+                OrderDate = orderDate,
+                OrderTime=orderTime
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<List<Models.Reports.GetDetailsOrdersByDateAndStore>>("Order/Order/GetDetailsOrdersByDateAndStore", command);
+
+            return result;
+        }
+
+        public async Task<FluentResult<List<Models.Order.CustomerPreOrderUserActive>>> GetUserActivityDetailsInDate( DateTime orderDate, float storeId=0.0f,int userId=0)
+        {
+            var command = new
+            {
+                UserId = userId,
+                OrderDate = orderDate,
+                StoreId = storeId
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<List<Models.Order.CustomerPreOrderUserActive>>("Order/UserActive/GetUserActivityDetailsInDate", command);
+
+            return result;
+        }
+
+        public async Task<FluentResult<List<Models.Order.CustomerPreOrderUserActiveSummery>>> GetUserActivitySummeryInDate(DateTime orderDate, float storeId = 0.0f, int userId = 0,int roleId=0)
+        {
+            var command = new
+            {
+                UserId = userId,
+                OrderDate = orderDate,
+                StoreId = storeId,
+                RoleId=roleId
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<List<Models.Order.CustomerPreOrderUserActiveSummery>>("Order/UserActive/GetUserActivitySummeryInDate", command);
 
             return result;
         }
