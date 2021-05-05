@@ -22,7 +22,7 @@ namespace StoreManagment.API.Controllers.Base
             loggerData = _logData;
         }
 
-        
+
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -31,18 +31,6 @@ namespace StoreManagment.API.Controllers.Base
                 ControllerContext.ActionDescriptor.ControllerName
             );
 
-
-            await logger.SendToQueue(new InternalLog()
-            {
-                LogLevel = BehsamFreamwork.Logger.LogLevel.Information,
-                LogMessage = new BehsamFreamwork.Logger.LogMessage(
-                    controllrName: ControllerContext.ActionDescriptor.ControllerName,
-                    methodName: ControllerContext.ActionDescriptor.ActionName,
-                    userName: BehsamFramework.Util.Utility.GetUserName(HttpContext),
-                    body: "Get is Run"
-                ).ToSerialize()
-            });
-
             return Ok(result);
         }
 
@@ -50,6 +38,9 @@ namespace StoreManagment.API.Controllers.Base
         [NonAction]
         protected async Task SendDataForLog<T>(T data, string actionName, string entityName, long entityId)
         {
+            string Id = HttpContext.Request.Headers["Id"].ToString();
+            Id = string.IsNullOrEmpty(Id) ? "0" : Id;
+
             Framework.MessageSender.LogMessage logMessage = new Framework.MessageSender.LogMessage()
             {
                 CreateDate = System.DateTime.Now,
@@ -57,7 +48,7 @@ namespace StoreManagment.API.Controllers.Base
                 Entity = entityName,
                 Data = data.ToJsonString(),
                 IP = HttpContext.Request.Headers["IP"].ToString() ?? HttpContext.Connection.RemoteIpAddress.ToString(),
-                UserId = Convert.ToInt32(HttpContext.Request.Headers["Id"].ToString() ?? "0"),
+                UserId = Convert.ToInt32(Id),
                 UserName = HttpContext.Request.Headers["Name"].ToString(),
                 Id = entityId
             };
@@ -67,18 +58,25 @@ namespace StoreManagment.API.Controllers.Base
         }
 
         [NonAction]
-        protected async Task SendForLog<T>(T data, LogLevel lvl,string actionName,string status)
+        protected async Task SendForLog<T>(T data, LogLevel lvl, string actionName, string status)
         {
+            LogMessage _LogMessage = new LogMessage()
+            {
+                ControllrName = ControllerContext.ActionDescriptor.ControllerName,
+                MethodName = actionName,
+                IP = HttpContext.Request.Headers["IP"].ToString() ?? HttpContext.Connection.RemoteIpAddress.ToString(),
+                UserId = Convert.ToInt32(HttpContext.Request.Headers["Id"].ToString() ?? "0"),
+                UserName = HttpContext.Request.Headers["Name"].ToString(),
+                ActionName = actionName,
+                CreateDate = System.DateTime.Now,
+                Status = status,
+                Body = data.ToJsonString(),
+            };
+
             var log = new InternalLog()
             {
                 LogLevel = lvl,
-                LogMessage = new LogMessage(
-                        controllrName: ControllerContext.ActionDescriptor.ControllerName,
-                        methodName: actionName,
-                        userName: HttpContext.Request.Headers["Name"].ToString(),
-                        body: "Command is :" + data,
-                        status:status
-                    ).ToSerialize()
+                LogMessage = _LogMessage.ToSerialize()
             };
 
             await logger.SendToQueue(log);

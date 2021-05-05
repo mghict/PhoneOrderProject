@@ -373,29 +373,32 @@ namespace StoreManagment.API.Controllers
 
             try
             {
-                await SendForLog(command,LogLevel.Information, action, "Input");
+                //var taskInput= SendForLog(command,LogLevel.Information, action, "Input");
 
                 result = await Mediator.Send(command);
 
                 if (result.IsSuccess)
                 {
                     await SendDataForLog(command, action, "CustomerPreOrderInfoTbl", command.OrderCode);
-                    
-                    await SendForLog(command, LogLevel.Information, action, "Result is success");
+                    //var taskLogResultOK= SendForLog(command, LogLevel.Information, action, "Result is success");
 
-                    
+                    //Task.WaitAll(taskInput, taskLogData, taskLogResultOK);
+
                     return Ok(value: result);
                 }
                 else
                 {
-                    await SendForLog(command, LogLevel.Error, action, "Result Has error:"+ string.Join(",", result.Errors));
+                    //var taskLogResultBad = SendForLog(command, LogLevel.Error, action, "Result Has error:"+ string.Join(",", result.Errors));
+
+                    //Task.WaitAll(taskInput, taskLogResultBad);
+
                     return BadRequest(error: result);
                 }
             }
             catch (Exception ex)
             {
                 result.WithError(ex.Message);
-                await SendForLog(command, LogLevel.Error, action, "Exception error:" + ex.Message);
+                //await SendForLog(command, LogLevel.Error, action, "Exception error:" + ex.Message);
                 return BadRequest(error: result);
             }
 

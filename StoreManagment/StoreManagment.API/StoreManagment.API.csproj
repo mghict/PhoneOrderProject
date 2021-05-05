@@ -7,10 +7,12 @@
 	<ItemGroup>
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
+		<PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\BehsamFramework.Util\BehsamFramework.Util.csproj" />
 		<ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
 		<ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
 		<ProjectReference Include="..\..\Framework\Framework.MessageSender\Framework.MessageSender.csproj" />

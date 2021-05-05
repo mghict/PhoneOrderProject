@@ -38,18 +38,6 @@ namespace AuthoManagment.AuthoAPI.Controllers.Base
                 //ControllerContext.ActionDescriptor.ActionName
             );
 
-
-            await logger.SendToQueue(new InternalLog()
-            {
-                LogLevel = BehsamFreamwork.Logger.LogLevel.Information,
-                LogMessage = new BehsamFreamwork.Logger.LogMessage(
-                    controllrName: ControllerContext.ActionDescriptor.ControllerName,
-                    methodName: ControllerContext.ActionDescriptor.ActionName,
-                    userName: BehsamFramework.Util.Utility.GetUserName(HttpContext) ,
-                    body: "Get is Run"
-                ).ToSerialize()
-            });
-
             return Ok(result);
         }
 

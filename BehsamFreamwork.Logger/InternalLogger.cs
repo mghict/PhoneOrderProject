@@ -12,10 +12,13 @@ namespace BehsamFreamwork.Logger
     {
         Task SendToQueue(InternalLog input);
     }
-    public class InternalLogger:IInternalLogger
+    public class InternalLogger:IInternalLogger,IDisposable
     {
         private ConnectionFactory _connectionFactory;
-        private IModel _model;
+        //private IModel _model;
+        //private IConnection Connection { get; set; }
+        protected IModel _model { get; private set; }
+        private IConnection Connection;
 
         private string exchangeName;
         private string queueName;
@@ -23,7 +26,7 @@ namespace BehsamFreamwork.Logger
         private string pass ;
         private string hostName;
         private int port;
-        private IConnection Connection { get; set; }
+        
 
         public InternalLogger(string exchangeName= "InternalLogEx", string queueName= "InternalLogQ", string userName= "admin", string pass= "admin", string hostName= "localhost", int port = 0)
         {
@@ -32,37 +35,61 @@ namespace BehsamFreamwork.Logger
             this.userName = userName;
             this.pass = pass;
             this.hostName = hostName;
-            this.port = port;
+            this.port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port;
+
+            _connectionFactory = new ConnectionFactory()
+            {
+                HostName = this.hostName,
+                Password = this.pass,
+                UserName = this.userName,
+                Port = this.port
+            };
         }
 
         private void CreateConnection()
         {
-            if (_connectionFactory == null)
+            if (Connection == null || Connection.IsOpen == false)
             {
-                _connectionFactory = new ConnectionFactory()
-                {
-                    HostName = hostName,
-                    Password = pass,
-                    UserName = userName,
-                    Port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port
-                };
+                Connection = _connectionFactory.CreateConnection();
             }
 
-            Connection = _connectionFactory.CreateConnection();
-            _model = Connection.CreateModel();
-            _model.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            _model.QueueDeclare(queueName, true, false, false, null);
-            _model.QueueBind(queueName, exchangeName, queueName, null);
+            if (_model == null || _model.IsOpen == false)
+            {
+                _model = Connection.CreateModel();
+                _model.ExchangeDeclare(exchangeName, ExchangeType.Direct,durable: true,autoDelete: false);
+                _model.QueueDeclare(queueName, false, false, false);
+                _model.QueueBind(queueName, exchangeName, queueName, null);
+            }
+            
         }
 
         public async Task SendToQueue(InternalLog input)
         {
+            
             await Task.Run(() =>
             {
                 CreateConnection();
                 _model.BasicPublish(exchangeName, queueName, null, input.ToByteArray());
             });
 
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                _model?.Close();
+                _model?.Dispose();
+                _model = null;
+
+                Connection?.Close();
+                Connection?.Dispose();
+                Connection = null;
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
     }
 }

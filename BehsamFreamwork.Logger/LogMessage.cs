@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace BehsamFreamwork.Logger
 {
@@ -19,6 +21,9 @@ namespace BehsamFreamwork.Logger
         public string Body { get; set; }
         public string Status { get; set; }
 
+        public LogMessage()
+        {
+        }
         public LogMessage(string controllrName, string methodName, string userName, object body)
         {
             ControllrName = controllrName;

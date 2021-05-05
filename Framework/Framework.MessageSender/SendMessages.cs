@@ -34,7 +34,7 @@ namespace Framework.MessageSender
 
         private  void CreateConnection()
         {
-            if (Connection == null)
+            if (Connection == null || Connection.IsOpen == false)
             {
                 _connectionFactory = new ConnectionFactory()
                 {
@@ -44,13 +44,15 @@ namespace Framework.MessageSender
                     Port = _messageDetails.Port
                 };
 
-
                 Connection = _connectionFactory.CreateConnection();
-                _model = Connection.CreateModel();
-                _model.QueueDeclare(_messageDetails.QueueName, true, false, false, null);
-                _model.ExchangeDeclare(_messageDetails.ExchangeName, ExchangeType.Direct);
+            }
 
-                _model.QueueBindNoWait(_messageDetails.QueueName, _messageDetails.ExchangeName, _messageDetails.QueueName, null);
+            if(_model == null || _model.IsOpen==false)
+            {
+                _model = Connection.CreateModel();
+                _model.ExchangeDeclare(_messageDetails.ExchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
+                _model.QueueDeclare(_messageDetails.QueueName, false, false, false);
+                _model.QueueBind(_messageDetails.QueueName, _messageDetails.ExchangeName, _messageDetails.QueueName, null);
             }
         }
 

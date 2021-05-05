@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BehsamFramework.Util\BehsamFramework.Util.csproj" />
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
     <ProjectReference Include="..\..\BehsamFreamwork.Logger\BehsamFreamwork.Logger.csproj" />
     <ProjectReference Include="..\AuthoManagment.Application\AuthoManagment.Application.csproj" />
