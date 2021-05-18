@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "ScanItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row  ">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">بارکد خوان</div>
+                <div class="card-body align-items-center justify-content-center">
+                    <div id="my_camera"></div>
+                    <!-- A button for taking snaps -->
+                    <div class="col-12">
+                        <form>
+                            <input type="button" class="btn btn-success btn-block" style="width:330px;" value="تایید بارکد" onClick="take_snapshot()">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Captured Photo</div>
+                    <div class="panel-body">
+                        <div id="results">Your captured image will appear here...</div>
+                    </div>
+                    <br />
+                    <br />
+                </div>
+            </div>*@
+    </div>
+</div>
+@section Scripts{
+    <script language="JavaScript">
+
+        Webcam.set({
+            width: 330,
+            height: 330,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    </script>
+    <!-- Code to handle taking the snapshot and displaying it locally -->
+    <script language="JavaScript">
+        function take_snapshot() {
+            // take snapshot and get image data
+            Webcam.snap(function (data_uri) {
+                // display results in page
+                //document.getElementById('results').innerHTML =
+                //    '<img src="' +
+                //    data_uri +
+                //    '"/>';
+
+                Webcam.upload(data_uri,
+                    '/Orders/Capture',
+                    function (code, text) {
+                        alert('Photo Captured');
+                    });
+
+            });
+        }
+    </script>
+}

@@ -402,7 +402,20 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                     throw new Exception("سفارش وجود ندارد");
                 }
 
-                result = OrderFacad.CreateOrderService.Execute(model).Result;
+                var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+                if (user == null)
+                {
+                    return Json(new { IsSuccess = false, Message ="اطلاعات کاربر صحیح نمی باشد" });
+                }
+
+                float sId = 0.0f;
+                NumberStyles style = NumberStyles.AllowDecimalPoint;
+                CultureInfo info = CultureInfo.InvariantCulture;
+
+                float.TryParse(user.StoreId, style, info, out sId);
+
+                result = OrderFacad.CreateOrderService.Execute(model,user.UserId,sId).Result;
 
                 if (result.IsSuccess)
                 {
@@ -423,7 +436,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                         userId = 0
                     };
 
-                    _notificationService.CreateGeneralNotification(message);
+                    _notificationService.CreateStoreNotification(message);
 
                     //return View();
                 }

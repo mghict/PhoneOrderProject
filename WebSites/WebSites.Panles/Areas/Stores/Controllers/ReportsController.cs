@@ -15,12 +15,16 @@ namespace WebSites.Panles.Areas.Stores.Controllers
     public class ReportsController : Base.BaseController
     {
         private Services.IReportFacad ReportsService { get; }
+        private Services.IUserFacad UserFacad { get; }
+
 
         public ReportsController(
             Services.IReportFacad reportsService,
-            ServiceCaller serviceCaller, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(serviceCaller, memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+            Services.IUserFacad _UserFacad,
+        ServiceCaller serviceCaller, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper) : base(serviceCaller, memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             ReportsService = reportsService;
+            UserFacad = _UserFacad;
         }
 
         public IActionResult Index()
@@ -423,6 +427,65 @@ namespace WebSites.Panles.Areas.Stores.Controllers
             model = await ReportsService.ReportsService.GetUserActivityDetailsInDate(reportDate,sId,userId);
 
             return View(model.Value);
+        }
+
+        //---------------------------------------------------
+        // User Logs
+        //---------------------------------------------------
+        public async Task<IActionResult> JourChinUserLog(string searchkey = "", int page = 0, int pageSize = 20)
+        {
+            var model = new Models.Authorize.UserModel();
+
+            var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+            if (user != null)
+            {
+                float sId = 0.0f;
+                NumberStyles style = NumberStyles.AllowDecimalPoint;
+                CultureInfo info = CultureInfo.InvariantCulture;
+
+                float.TryParse(user.StoreId, style, info, out sId);
+
+                model = await UserFacad.UserActivityService.GetAllUserActiveCurrentDateAsync(4, sId, searchkey, page, pageSize, 100);
+            }
+
+            ViewBag.BackUrl = "JourChinUserLog";
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> SafirUserLog(string searchkey = "", int page = 0, int pageSize = 20)
+        {
+            var model = new Models.Authorize.UserModel();
+
+            var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+            if (user != null)
+            {
+                float sId = 0.0f;
+                NumberStyles style = NumberStyles.AllowDecimalPoint;
+                CultureInfo info = CultureInfo.InvariantCulture;
+
+                float.TryParse(user.StoreId, style, info, out sId);
+
+                model = await UserFacad.UserActivityService.GetAllUserActiveCurrentDateAsync(5, sId, searchkey, page, pageSize, 100);
+            }
+
+            ViewBag.BackUrl = "SafirUserLog";
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> UserLogs(int userId,string backUrl)
+        {
+            DateTime reportDate = System.DateTime.Now;
+
+            var model = await ReportsService.ReportsService.GetUserAvtivityOrderLogs(reportDate, reportDate, userId);
+          
+
+            ViewBag.BackUrl = backUrl;
+
+            return View(model);
         }
     }
 }

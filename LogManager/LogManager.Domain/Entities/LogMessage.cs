@@ -28,5 +28,7 @@ namespace LogManager.Domain.Entities
         //-------------------------------
         public string Data { get; set; }
         public DateTime CreateDate { get; set; }
+        public int StatusDescription { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using RabbitMQ.Client.Events;
 
 namespace LogManager.Api.DataLog
 {
-    public class DataLogService : BackgroundService
+    public class DataLogService : BackgroundService, IDisposable
     {
         private string exchangeName, queueName, hostName, userName, pass;
         int port;
@@ -51,20 +51,43 @@ namespace LogManager.Api.DataLog
 
             try
             {
-                var logData = JsonConvert.DeserializeObject<Domain.Entities.LogMessage>(content);
+                var log= JsonConvert.DeserializeObject<LogMessageGeneral>(content);
 
-                if (logData != null)
+                if (log.Type.ToUpper().Equals("LogMessage".ToUpper()))
                 {
+                    var logData = JsonConvert.DeserializeObject<Domain.Entities.LogMessage>(log.MessageValue);
 
-                    unitOfWork.LogMessageRepository.Insert(logData);
+                    if (logData != null)
+                    {
 
-                    _model.BasicAck(e.DeliveryTag, false);
+                        var insItem = (unitOfWork.LogMessageRepository.InsertAsync(logData)).Result;
 
+                        _model.BasicAck(e.DeliveryTag, false);
+
+                    }
+                }
+                else if (log.Type.ToUpper().Equals("OrderLogsModel".ToUpper()))
+                {
+                    var logData = JsonConvert.DeserializeObject<BehsamFramework.Models.OrderLogsModel>(log.MessageValue);
+
+                    if (logData != null)
+                    {
+
+                        var insItem = (unitOfWork.LogOrderRepository.InsertAsync(logData)).Result;
+
+                        _model.BasicAck(e.DeliveryTag, false);
+
+                    }
+                }
+                else
+                {
+                    _model.BasicNack(e.DeliveryTag, false, false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogInformation("Data Logger has an error :=>" + ex.Message);
+                _model.BasicNack(e.DeliveryTag, false, true);
+                _logger.LogError("Data Logger has an error :=>" + ex.Message);
             }
 
 
@@ -72,23 +95,7 @@ namespace LogManager.Api.DataLog
 
         //------------------------------------------------------
         //------------------------------------------------------
-        private void CreateConnection()
-        {
-            _connectionFactory = new ConnectionFactory()
-            {
-                HostName = hostName,
-                Password = pass,
-                UserName = userName,
-                Port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port
-            };
-
-            Connection = _connectionFactory.CreateConnection();
-            _model = Connection.CreateModel();
-            _model.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            _model.QueueDeclare(queueName, true, false, false, null);
-            _model.QueueBind(queueName, exchangeName, queueName, null);
-
-        }
+       
         private void SetInjection(IConfiguration configuration)
         {
             hostName = configuration
@@ -121,7 +128,45 @@ namespace LogManager.Api.DataLog
                     .GetSection(key: "QueueData")
                     .Value;
         }
+        private void CreateConnection()
+        {
+            if (Connection == null || Connection.IsOpen == false)
+            {
+                _connectionFactory = new ConnectionFactory()
+                {
+                    HostName = hostName,
+                    Password = pass,
+                    UserName = userName,
+                    Port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port
+                };
 
+                Connection = _connectionFactory.CreateConnection();
+            }
 
+            if (_model == null || _model.IsOpen == false)
+            {
+                _model = Connection.CreateModel();
+                _model.ExchangeDeclare(exchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
+                _model.QueueDeclare(queueName, false, false, false, null);
+                _model.QueueBind(queueName, exchangeName, queueName, null);
+            }
+        }
+        public void Dispose()
+        {
+            try
+            {
+                _model?.Close();
+                _model?.Dispose();
+                _model = null;
+
+                Connection?.Close();
+                Connection?.Dispose();
+                Connection = null;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

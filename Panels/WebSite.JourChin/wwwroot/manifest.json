@@ -1,0 +1,33 @@
+{
+  "name": "افق کوروش - جورچین",
+  "short_name": "جورچین",
+  "description": "JourChin Panel PWA for Ofough Korosh",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#8c8888",
+  "theme_color": "#b03f3f",
+  //"categories": [ "shop", "ecommerce", "fashion" ],
+  //"orientation": "portrait",
+  "icons": [
+    {
+      "src": "img/icons/logo144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icons/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "img/icons/logo168.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icons/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

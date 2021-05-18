@@ -17,6 +17,7 @@ namespace BehsamFramework.Models
         public long Id { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public int CustomerGroupId { get; set; }
         public long WaletPrice { get; set; }
@@ -29,5 +30,14 @@ namespace BehsamFramework.Models
         public TimeSpan RegisterTime { get; set; }
         public byte Status { get; set; }
         public long DefaultMobile { get; set; }
+
+
+        //public string CustomerFullName
+        //{
+        //    get
+        //    {
+        //        return string.Concat(CustomerName, " ", CustomerLastName);
+        //    }
+        //}
     }
 }

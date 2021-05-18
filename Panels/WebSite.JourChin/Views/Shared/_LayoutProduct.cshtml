@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@{ long itemId;
+    try
+    {
+        itemId = Convert.ToInt64(ViewBag.ItemIdOrderReserve);
+    }
+    catch
+    {
+        itemId = 0;
+    } }
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, shrink-to-fit=no">
+    <meta name="description" content="JourChin Ofough Korosh PhoneOrder">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#d94c4c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- The above tags *must* come first in the head, any other head content must come *after* these tags-->
+    <!-- Title-->
+    <title>جورچین</title>
+
+    <!-- Favicon-->
+    <link rel="icon" href="~/favicon.png">
+    <!-- Apple Touch Icon-->
+    <link rel="apple-touch-icon" href="~/favicon.png">
+
+    <!-- Stylesheet-->
+    <link rel="stylesheet" href="~/style.css">
+    <link href="~/css/loader.css" rel="stylesheet" />
+    <!-- Web App Manifest-->
+    <link rel="manifest" href="~/manifest.json">
+    <!-- Toast-->
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <!-- Sweetalert2 -->
+    <link href="~/js/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <!-- Preloader-->
+    <div class="preloader" id="preloader">
+        <div class="spinner-grow text-danger" role="status">
+            <div class="sr-only">بارگذاری...</div>
+        </div>
+    </div>
+
+    <div id="ajax-loader" class="ajax-loader">
+        <img src="~/img/loader.svg" class="loader-img" alt="لودر">
+    </div>
+
+    <!-- Header Area-->
+    <div class="header-area" id="headerArea">
+        <div class="container h-100 d-flex align-items-center justify-content-between">
+            <div class="back-button d-flex float-right"><a href="/home/index"><i class="lni lni-arrow-right"></i></a></div>
+            <!-- Logo Wrapper-->
+            <div class="logo-wrapper">
+                <span>
+                    <a href="/home/index">
+                        <img src="~/img/brand/logo-with-name.png" style="width:45%;" alt="Ok Logo">
+                    </a>
+                </span>
+            </div>
+
+            <!-- Filter Option-->
+            <div class="filter-option m-2" id="suhaNavbarToggler"><i class="lni lni-funnel text-danger lni-16"></i></div>
+            <!-- Navbar Toggler-->
+            <div class="d-flex flex-wrap float-left m-2" id="suhaNavbarTogglerProductList">
+                <a href="#" onclick="fillReversProductList('@itemId')">
+                    <i class="lni lni-list text-black-50 lni-16"></i>
+                </a>
+                <span></span><span></span><span></span>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="page-content-wrapper">
+        @RenderBody()
+    </div>
+
+    <!-- Right Panel Nav-->
+    <div class="suha-sidenav-wrapper filter-nav" id="sidenavWrapper">
+        <!-- Catagory Sidebar Area-->
+        <div class="catagory-sidebar-area" id="slideContent">
+            <!-- Catagory-->
+            <div class="widget catagory mb-4">
+                <h6 class="widget-title mb-3">جستجوی محصولات</h6>
+                <div class="widget-desc">
+                    <!-- Single Checkbox-->
+                    <div class="form-check">
+                        <input class="form-check-input" id="chkName" type="checkbox">
+                        <label class="form-check-label" for="chkName"><span>براساس نام کالا</span></label>
+                        <input class="search-text" placeholder="نام کالا را وارد کنید" id="txtName" />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="chkBrand" type="checkbox">
+                        <label class="form-check-label" for="chkBrand"><span>براساس نام برند</span></label>
+                        <input class="search-text" placeholder="نام برند را وارد کنید" id="txtBrand" />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="chkCat" type="checkbox" checked>
+                        <label class="form-check-label" for="chkCat">براساس دسته بندی مشابه</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Apply Filter-->
+            <div class="apply-filter-btn"><a class="btn btn-success" href="#" onclick="filter()">اعمال محدودیت</a></div>
+        </div>
+        <!-- Go Back Button-->
+        <div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
+    </div>
+
+    <div class="suha-sidenav-wrapper filter-nav" id="sidenavWrapperProductList">
+        <!-- Catagory Sidebar Area-->
+        <div class="catagory-sidebar-area" id="slideProductListContent">
+
+        </div>
+        <!-- Go Back Button-->
+        <div class="go-home-btn" id="goHomeBtnProductList"><i class="lni lni-arrow-right"></i></div>
+    </div>
+
+    <!-- Internet Connection Status-->
+    <div class="internet-connection-status" id="internetStatus"></div>
+
+    <!-- Footer Nav-->
+    <div class="footer-nav-area" id="footerNav">
+        <div class="container h-100 px-0">
+            <div class="suha-footer-nav h-100">
+                <ul class="h-100 d-flex align-items-center justify-content-between pl-0">
+                    <li class="active">
+                        <a href="/home/Index"><i class="lni lni-home"></i>خانه</a>
+                    </li>
+                    <li>
+                        <a href="/User/Index"><i class="lni lni-life-ring"></i>درخواست شروع</a>
+                    </li>
+                    <li>
+                        <a href="/Orders/Index"><i class="lni lni-cart-full"></i>سفارشات</a>
+                    </li>
+                    <li>
+                        <a href="pages.html"><i class="lni lni-heart"></i>صفحات</a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="logout()"><i class="lni lni-power-switch"></i>خروج</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- All JavaScript Files-->
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/waypoints.min.js"></script>
+    <script src="~/js/jquery.easing.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.counterup.min.js"></script>
+    <script src="~/js/jquery.countdown.min.js"></script>
+    <script src="~/js/default/jquery.passwordstrength.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/jarallax.min.js"></script>
+    <script src="~/js/jarallax-video.min.js"></script>
+    <script src="~/js/default/dark-mode-switch.js"></script>
+    <script src="~/js/default/no-internet.js"></script>
+    <script src="~/js/default/active.js"></script>
+    <script src="~/js/pwa.js"></script>
+
+    <script src="~/js/site.js"></script>
+    <script src="~/js/sweetalert2/sweetalert2.min.js"></script>
+
+    <script src="~/js/toaster/toastr.min.js"></script>
+    <script src="~/js/toaster/toast-top-left.js"></script>
+
+
+    <script src="~/webcamjs/webcam.js"></script>
+
+    <script src="~/js/home/logout.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -20,6 +20,7 @@ namespace WebSites.Panles.Services.Reports
         Task<FluentResult<List<Models.Reports.GetSummeryOrdersByDateAndStore>>> GetSummeryOrdersByDateAndStore(float storeId, DateTime orderDate);
         Task<FluentResult<List<Models.Order.CustomerPreOrderUserActive>>> GetUserActivityDetailsInDate(DateTime orderDate, float storeId = 0.0f, int userId = 0);
         Task<FluentResult<List<Models.Order.CustomerPreOrderUserActiveSummery>>> GetUserActivitySummeryInDate(DateTime orderDate, float storeId = 0.0f, int userId = 0, int roleId = 0);
+        Task<List<Models.Order.UserActivityOrderLogs>> GetUserAvtivityOrderLogs(DateTime fromDate, DateTime toDate, int userId = 0);
     }
 
     public class ReportsService : Base.ServiceBase, IReportsService
@@ -153,5 +154,31 @@ namespace WebSites.Panles.Services.Reports
             return result;
         }
 
+        public async Task<List<Models.Order.UserActivityOrderLogs>> GetUserAvtivityOrderLogs(DateTime fromDate, DateTime toDate, int userId = 0)
+        {
+            FluentResult<List<Models.Order.UserActivityOrderLogs>> result =
+                new FluentResult<List<Models.Order.UserActivityOrderLogs>>();
+
+            result.IsFailed = true;
+
+            var command = new
+            {
+                UserId = userId,
+                FromDate = fromDate,
+                ToDate = toDate
+            };
+
+            try
+            {
+                result = await ServiceCaller.PostDataWithValue<List<Models.Order.UserActivityOrderLogs>>("Order/UserActive/GetUserActivityOrderLogs", command);
+            }
+            catch (Exception ex)
+            {
+                result = new FluentResult<List<Models.Order.UserActivityOrderLogs>>();
+                result.WithError(ex.Message);
+            }
+
+            return result.Value;
+        }
     }
 }

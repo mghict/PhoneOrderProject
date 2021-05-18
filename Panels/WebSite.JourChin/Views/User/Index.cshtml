@@ -1,0 +1,33 @@
+﻿@model WebSite.JourChin.Models.User.UserActivityModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+
+        @if (Model == null || Model.Id == 0)
+        {
+            <div class="d-flex align-items-center justify-content-center mt-5">
+                <p>آیا از ارسال درخواست مطمئن هستید؟</p>
+            </div><br />
+            <div class="d-flex align-items-center justify-content-center">
+                <button class="btn btn-success ml-2 mr-2 w-25" onclick="sendRequest()">بلی</button>
+                <button class="btn btn-danger w-25" onclick="window.location.replace('/home/index')">خیر</button>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-center justify-content-center">
+                <p><strong>درخواست شما برای روز جاری ثبت شده است</strong></p>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/user/user.js"></script>
+}

@@ -11,6 +11,7 @@ namespace BehsamFreamwork.Logger
 {
     public class LogMessage
     {
+        public string ServiceName { get; set; }
         public string ControllrName { get; set; }
         public string MethodName { get; set; }
         public string UserName { get; set; }

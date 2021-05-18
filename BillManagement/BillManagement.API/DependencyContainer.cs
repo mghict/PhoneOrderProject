@@ -45,6 +45,16 @@ namespace BillManagement
 			//***********************************************
 			//===============================================
 			//***********************************************
+			services.AddSingleton<BehsamFramework.Util.Middleware.LoggingMiddlewareOptions>(c =>
+			{
+				string serviceName =
+					configuration
+					.GetSection(key: "ServiceName")
+					.Value;
+
+				return new BehsamFramework.Util.Middleware.LoggingMiddlewareOptions(serviceName);
+
+			});
 
 			services.AddSingleton<BehsamFreamwork.Logger.IInternalLogger, BehsamFreamwork.Logger.InternalLogger>(c =>
 			{
@@ -171,7 +181,7 @@ namespace BillManagement
             services.AddMediatR
                 (typeof(Application.BillFeature.Commands.GetOrderDetailCommand).GetTypeInfo().Assembly);
             
-            //services.AddAutoMapper(typeof(Application.ApplicationInfo.MappingProfile).GetTypeInfo().Assembly);
+            services.AddAutoMapper(typeof(Application.BillFeature.MappingProfile).GetTypeInfo().Assembly);
             // **************************************************
             services.AddTransient<Persistence.IUnitOfWork, Persistence.UnitOfWork>(current =>
             {

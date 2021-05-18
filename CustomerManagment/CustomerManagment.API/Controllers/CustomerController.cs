@@ -385,17 +385,6 @@ namespace CustomerManagment.API.Controllers
             try
             {
 
-                await logger.SendToQueue(new InternalLog()
-                {
-                    LogLevel = LogLevel.Information,
-                    LogMessage = new LogMessage(
-                        controllrName: ControllerContext.ActionDescriptor.ControllerName,
-                        methodName: ControllerContext.ActionDescriptor.ActionName,
-                        userName: BehsamFramework.Util.Utility.GetUserName(HttpContext),
-                        body: "Command is :" + command
-                    ).ToSerialize()
-                });
-
                 result = await Mediator.Send(command);
 
                 if (result.IsSuccess)
@@ -419,7 +408,7 @@ namespace CustomerManagment.API.Controllers
 
         #endregion
 
-        #region GetCustomerInfo
+        #region GetCustomers
 
         [HttpPost("GetCustomers")]
         [ProducesResponseType

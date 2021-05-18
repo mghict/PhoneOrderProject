@@ -11,7 +11,7 @@ namespace WebSites.Panles.Services.Order
 {
     public interface ICreateOrderService
     {
-        Task<FluentResult> Execute(Models.Order.CachedOrderInfo model);
+        Task<FluentResult> Execute(Models.Order.CachedOrderInfo model, int userId, float userStoreId);
     }
     public class CreateOrderService : Base.ServiceBase, ICreateOrderService
     {
@@ -19,7 +19,7 @@ namespace WebSites.Panles.Services.Order
         {
         }
 
-        public async Task<FluentResult> Execute(Models.Order.CachedOrderInfo model)
+        public async Task<FluentResult> Execute(Models.Order.CachedOrderInfo model,int userId,float userStoreId)
         {
             FluentResult result = new FluentResult();
             try
@@ -43,9 +43,10 @@ namespace WebSites.Panles.Services.Order
                     {
                         EndTime = model.EndTime,
                         StartTime = model.StartTime,
-                        UserId = 1,
-                        UserStoreId = 1
+                        UserId = userId,
+                        UserStoreId = userStoreId
                     },
+
                     Items = model.Items.Select(p => new Models.Order.OrderItems
                     {
                         Description = p.Description,

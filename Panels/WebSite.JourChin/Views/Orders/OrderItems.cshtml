@@ -1,0 +1,129 @@
+﻿@model WebSite.JourChin.Models.Order.GetOrderInfoWithItems
+@{
+    ViewData["Title"] = "OrderItems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="cart-wrapper-area py-3">
+        @if (Model != null)
+        {
+            var order = Model.OrderInfo;
+
+            <div class="cta-area">
+                <div class="cta-text p-4 p-lg-5 d-flex align-items-center ">
+
+                    <h6 class="text-white pr-3 mb-0 border-right">
+                        سفارش:<br />
+                        @order.OrderCode
+                    </h6>
+                    <div class="pl-3 mb-0">
+                        <p class="pl-1 mb-0">
+                            مشتری: @(order.CustomerName)
+                        </p>
+                        <p class="pl-1 mb-0">
+                            تاریخ سفارش: @(order.OrderDate.ToPersianDate())- ساعت سفارش:@(order.OrderTime.ToString().Substring(0,5))
+                        </p>
+                        <p class="pl-1 mb-0">
+                            بازه تحویل: @(order.StartTime.ToString().Substring(0, 5))-@(order.EndTime.ToString().Substring(0, 5))
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+            <br />
+            <div class="cart-table card mb-3">
+                @if (Model.OrderItems != null)
+                {
+                    <div class="table-responsive card-body">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <td>#</td>
+                                    <td></td>
+                                    <td>بارکد</td>
+                                    <td>نام محصول</td>
+                                    <td>نام برند</td>
+                                    <td>تعداد</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.OrderItems.Count; i++)
+                                {
+                                    var item = Model.OrderItems[i];
+                                    var bg_color = item.Status >= 5 ? "bg-success" : "";
+
+
+                                    <tr class="@bg_color">
+                                        <td>@(i+1)</td>
+                                        @*<th scope="row"><a href="#" class="stretched-link" onclick="OrderItemComplate('@item.OrderId','@item.Id','@item.DisplayName','@item.Quantity')">@(i+1)</a></th>*@
+                                        <td>
+                                            @if (item.Status < 5)
+                                            {
+                                                <a href="#" onclick="OrderItemComplate('@item.OrderId','@item.Id','@item.DisplayName','@item.Quantity')"
+                                                   data-toggle="tooltip" data-placement="bottom" title="تایید کالا">
+                                                    <i class="lni lni-thumbs-up text-success lni-16 border-success m-2 border-right"></i>
+                                                </a>
+                                                <a href="#" onclick="OrderItemReject('@item.OrderId','@item.Id','@order.OrderCode','@item.DisplayName','@item.Quantity')"
+                                                   data-toggle="tooltip" data-placement="bottom" title="اتمام کالا">
+                                                    <i class="lni lni-thumbs-down text-danger lni-16  m-2 border-right"></i>
+                                                </a>
+                                            }
+                                            else if (item.Status == 5)
+                                            {
+                                                <a href="#" onclick="OrderItemFirstState('@item.OrderId','@item.Id')"
+                                                   data-toggle="tooltip" data-placement="bottom" title="برگشت به حالت اولیه">
+                                                    <i class="lni lni-microsoft text-danger lni-16"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <i class="lni lni-checkmark-circle text-black-50 lni-16"></i>
+                                            }
+                                        </td>
+                                        <td>@item.ProductCode</td>
+                                        <td>@item.DisplayName</td>
+                                        <td>@item.BrandName</td>
+                                        <td>
+                                            @item.Quantity.ToString("#,##0")
+                                        </td>
+                                        <td>@item.StatusName</td>
+                                        <td></td>
+
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    var isOk = Model.OrderItems.Any(p => p.Status < 5);
+
+                    @if (!isOk && Model.OrderInfo.OrderState == 3)
+                    {
+                        <br />
+                        <button type="button" class="btn btn-block btn-success" onclick="OrderComplate('@Model.OrderInfo.OrderCode')">تایید تکمیل اطلاعات</button>
+                    }
+                }
+                else
+                {
+                    <br />
+                    <p class="text-danger">اطلاعات جزئیات سفارش یافت نشد</p>
+                }
+            </div>
+        }
+        else
+        {
+            <br />
+            <p class="text-danger">اطلاعات سفارش یافت نشد</p>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/order/orderitems.js"></script>
+}

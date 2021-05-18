@@ -16,6 +16,13 @@ namespace SettingManagment.Application.InActiveFeature
 
             CreateMap<Domain.Entities.InActiveTbl, Commands.EditInActiveCommand>();
             CreateMap<Commands.EditInActiveCommand, Domain.Entities.InActiveTbl>();
+
+
+            CreateMap<Domain.Entities.StoreInActiveTbl, Commands.CreateStoreInActiveCommand>();
+            CreateMap<Commands.CreateStoreInActiveCommand, Domain.Entities.StoreInActiveTbl>();
+
+            CreateMap<Domain.Entities.StoreInActiveTbl, Commands.EditStoreInActiveCommand>();
+            CreateMap<Commands.EditStoreInActiveCommand, Domain.Entities.StoreInActiveTbl>();
         }
     }
 }

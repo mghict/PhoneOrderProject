@@ -30,15 +30,15 @@ namespace CustomerManagment.Application.CustomerInfoFeature.CommandsHandler
 
             try
             {
-                if (request.PageNumber < 0)
-                {
-                    request.PageNumber = 1;
-                }
+                //if (request.PageNumber < 0)
+                //{
+                //    request.PageNumber = 1;
+                //}
 
-                if ( request.PageSize < 10)
-                {
-                    request.PageSize = 10;
-                }
+                //if ( request.PageSize < 10)
+                //{
+                //    request.PageSize = 10;
+                //}
 
                 // **************************************************
 

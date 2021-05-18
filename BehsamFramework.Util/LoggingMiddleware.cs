@@ -14,11 +14,13 @@ namespace BehsamFramework.Util.Middleware
         private readonly RequestDelegate _next;
         private readonly InternalLogger _logger;
         private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
-        public LoggingMiddleware(RequestDelegate next, InternalLogger logger)
+        private readonly LoggingMiddlewareOptions _option;
+        public LoggingMiddleware(RequestDelegate next, InternalLogger logger, LoggingMiddlewareOptions option)
         {
             _next = next;
             _logger = logger;
             _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
+            _option = option;
         }
 
 
@@ -112,6 +114,8 @@ namespace BehsamFramework.Util.Middleware
         //-------------------------------------------------------------
         private async Task SendForLog(LogMessage logMessage,LogLevel logLevel)
         {
+            logMessage.ServiceName = _option.ServiceName;
+
             var log = new InternalLog()
             {
                 LogLevel = logLevel,

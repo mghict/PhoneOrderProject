@@ -26,10 +26,11 @@ namespace BehsamFreamwork.Logger
         private string pass ;
         private string hostName;
         private int port;
-        
+
 
         public InternalLogger(string exchangeName= "InternalLogEx", string queueName= "InternalLogQ", string userName= "admin", string pass= "admin", string hostName= "localhost", int port = 0)
         {
+
             this.exchangeName = exchangeName;
             this.queueName = queueName;
             this.userName = userName;

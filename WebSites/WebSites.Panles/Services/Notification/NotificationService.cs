@@ -78,7 +78,12 @@ namespace WebSites.Panles.Services.Notification
                     foreach (var item in users.Keys)
                     {
                         var userinfo = users[item] as Models.UserModel;
-                        if(userinfo!=null && userinfo.StoreId!=null && userinfo.StoreId==message.storeId.ToString(CultureInfo.InvariantCulture))
+
+                        decimal uSId =Math.Round(Convert.ToDecimal(userinfo.StoreId.ToString(CultureInfo.InvariantCulture)),3);
+                        decimal mSId= Math.Round(Convert.ToDecimal(message.storeId.ToString(CultureInfo.InvariantCulture)), 3);
+
+
+                        if (userinfo!=null && userinfo.StoreId!=null && uSId==mSId)
                         {
                             var connections = _userConnectionManager.GetUserConnections(userinfo.UserId);
                             if (connections != null && connections.Count > 0)

@@ -8,5 +8,6 @@ namespace LogManager.Persistence
     public interface IQueryUnitOfWork : BehsamFramework.DapperDomain.Base.IQueryUnitOfWork
     {
         Domain.IRepositories.ILogMessageRepository.ILogMessageQueryRepository LogMessageQueryRepository { get; }
+        Domain.IRepositories.IOrderLogRepository.ILogOrderQueryRepository LogOrderQueryRepository { get; }
     }
 }

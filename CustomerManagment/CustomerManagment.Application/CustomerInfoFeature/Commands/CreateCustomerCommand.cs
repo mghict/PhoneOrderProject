@@ -15,6 +15,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Commands
         }
 
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public int CustomerGroupId { get; set; }
         public int RegisterTypeId { get; set; }
@@ -23,5 +24,8 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Commands
         public int Education { get; set; }
         public byte Status { get; set; }
         public long  DefaultMobile { get; set; }
+
+
+        
     }
 }

@@ -7,18 +7,26 @@ using FluentValidation;
 
 namespace CustomerManagment.Application.CustomerInfoFeature.Validators
 {
-    public class CreateCustomerValidator:FluentValidation.AbstractValidator<Commands.CreateCustomerCommand>
+    public class CreateCustomerValidator : FluentValidation.AbstractValidator<Commands.CreateCustomerCommand>
     {
-        public CreateCustomerValidator():base()
+        public CreateCustomerValidator() : base()
         {
+            
             RuleFor(current => current.CustomerName)
-                .NotEmpty()
-                .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotNull()
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+                    .NotEmpty()
+                    .WithErrorCode("10")
+                    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+                    .NotNull()
+                    .WithErrorCode("11")
+                    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
+            RuleFor(current => current.CustomerLastName)
+                    .NotEmpty()
+                    .WithErrorCode("10")
+                    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+                    .NotNull()
+                    .WithErrorCode("11")
+                    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
             RuleFor(current => current.CustomerTypeId)
                 .NotEmpty()

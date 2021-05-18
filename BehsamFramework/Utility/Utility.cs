@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using FluentResults;
 
 namespace BehsamFramework.Util
 {
@@ -56,6 +57,9 @@ namespace BehsamFramework.Util
                 return DateTime.Now;
             }
         }
+
+        
+
         public static string ToPersianDate(this DateTime input)
         {
             var pdt =new  System.Globalization.PersianCalendar();
@@ -110,6 +114,22 @@ namespace BehsamFramework.Util
                    pdt.GetDayOfMonth(dt).ToString("00");
 
         }
+        public static string GetPersianDateTime(this DateTime dt)
+        {
+            var pdt = new System.Globalization.PersianCalendar();
+
+            try
+            {
+                return pdt.GetYear(dt).ToString("0000") + "/" +
+                       pdt.GetMonth(dt).ToString("00") + "/" +
+                       pdt.GetDayOfMonth(dt).ToString("00") + " " + dt.GetTime();
+            }
+            catch
+            {
+                return "غیرقابل تبدیل";
+            }
+
+        }
         public static string GetPersianFullDate(this DateTime dt)
         {
             var day = dt.GetDayOfWeekPersianStr();
@@ -127,10 +147,15 @@ namespace BehsamFramework.Util
         public static string GetTime(this DateTime dt)
         {
             var pdt = new System.Globalization.PersianCalendar();
-
-            return pdt.GetHour(dt).ToString("00") + ":" +
-                   pdt.GetMinute(dt).ToString("00") + ":" +
-                   pdt.GetSecond(dt).ToString("00");
+            try
+            {
+                return pdt.GetHour(dt).ToString("00") + ":" +
+                       pdt.GetMinute(dt).ToString("00") + ":" +
+                       pdt.GetSecond(dt).ToString("00");
+            }catch
+            {
+                return "00:00:00";
+            }
         }
 
         public static string GetTime(this TimeSpan dt)

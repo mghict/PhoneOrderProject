@@ -8,6 +8,14 @@ namespace BehsamFramework.Models
 {
     public class LoginModel
     {
+        public LoginModel()
+        {
+            Token = "";
+        }
+        public LoginModel(string token)
+        {
+            Token = token;
+        }
         public string Token { get; set; }
     }
 }

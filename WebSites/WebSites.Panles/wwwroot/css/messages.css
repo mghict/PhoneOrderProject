@@ -1,0 +1,40 @@
+﻿.vc_color-grey.vc_message_box-outline, .vc_color-grey.vc_message_box-solid-icon {
+    color: #858585;
+    border-color: #ebebeb;
+    background-color: transparent;
+}
+
+.vc_color-grey.vc_message_box {
+    color: #858585;
+    border-color: #d2d2d2;
+    background-color: #ebebeb;
+}
+
+.vc_color-danger.vc_message_box-outline, .vc_color-danger.vc_message_box-solid-icon {
+    color: #a85959;
+    border-color: #ff7877;
+    background-color: transparent;
+}
+
+.vc_color-danger.vc_message_box {
+    color: #a85959;
+    border-color: #fedede;
+    background-color: #fdeaea;
+}
+
+.vc_message_box-outline, .vc_message_box-solid-icon {
+    border-width: 2px;
+}
+
+.vc_message_box {
+    border: 1px solid transparent;
+    display: block;
+    overflow: hidden;
+    margin: 0 0 21.73913043px 0;
+    padding: 1em 1em 1em 4em;
+    position: relative;
+    font-size: 1em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

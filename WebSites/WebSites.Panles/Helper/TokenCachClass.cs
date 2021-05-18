@@ -18,6 +18,7 @@ namespace WebSites.Panles.Helper
         public static CancellationTokenSource CachedMessageToken = new CancellationTokenSource();
         public static CancellationTokenSource StoreToken = new CancellationTokenSource();
         public static CancellationTokenSource InActiveToken = new CancellationTokenSource();
+        public static CancellationTokenSource StoreInActiveToken = new CancellationTokenSource();
         public static CancellationTokenSource Product = new CancellationTokenSource();
         public static CancellationTokenSource Page = new CancellationTokenSource();
         public static CancellationTokenSource User = new CancellationTokenSource();

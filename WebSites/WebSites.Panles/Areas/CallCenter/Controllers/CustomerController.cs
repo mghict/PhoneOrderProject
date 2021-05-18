@@ -59,13 +59,13 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         
-        public IActionResult Index(int page = 1, int pagesize = 10, string searchkey = "")
+        public IActionResult Index(int page = 1, int pagesize = 20, string searchkey = "")
         {
             GetPagianationDataModel command =
                 new GetPagianationDataModel()
                 {
                     PageNumber=page,
-                    PageSize=pagesize,
+                    PageSize= pagesize,
                     SearchKey=searchkey
                 };
 

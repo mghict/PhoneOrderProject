@@ -15,9 +15,5 @@
     <ProjectReference Include="..\..\BehsamFramework\BehsamFramework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 
 </Project>

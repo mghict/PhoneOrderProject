@@ -52,7 +52,7 @@ namespace CustomerManagment.Persistence.Repositories.CustomerInfo
             var param = new
             {
                 @Search= search,
-                @PageNumber = pageNumber <= 0 ? 0 : pageNumber,
+                @PageNumber = pageNumber<=0?0:pageNumber-1,
                 @PageSize = pageSize
             };
 

@@ -9,9 +9,13 @@ namespace WebSites.Panles.Models
     public class CustomerRegisterModel
     {
 
-        [Display(Name = "مشخصات مشتری")]
+        [Display(Name = "نام مشتری")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
         public string CustomerName { get; set; }
+
+        [Display(Name = "نام خانوادگی مشتری")]
+        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        public string CustomerLastName { get; set; }
 
         [Display(Name = "تلفن تماس")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]

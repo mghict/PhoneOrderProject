@@ -63,20 +63,24 @@
                                 <td>@store.StatusStr</td>
                                 <td>
                                     @*<a href="/Admin/Store/StoreInActive?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
-                                           data-toggle="tooltip" data-placement="bottom" title="ثبت تعطیلی">
-                                            <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
-                                        </a>*@
+           data-toggle="tooltip" data-placement="bottom" title="ثبت تعطیلی">
+            <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
+        </a>*@
                                     <a href="/Admin/Product/StoreProductIndex?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش محصولات شعبه">
-                                        <i class="fa fa-credit-card  text-success " aria-hidden="true"></i>
+                                        <i class="fa fa-credit-card  text-success m-2" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="/Admin/InActive/StoreInActive?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="تعطیلات شعبه">
+                                        <i class="fa fa-calendar  text-dark m-2" aria-hidden="true"></i>
                                     </a>
                                     <a href="/Admin/StoreShipping/StoreShipping?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="تعیین کرایه ثابت">
-                                        <i class="fa fa-motorcycle  text-pink" aria-hidden="true"></i>
+                                        <i class="fa fa-motorcycle  text-pink m-2" aria-hidden="true"></i>
                                     </a>
                                     <a href="/Admin/StoreShipping/AreaShipping?storeId=@store.StoreCode.ToString(CultureInfo.InvariantCulture)&cityId=@store.CityId" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="تعیین مناطق جغرافیایی و کرایه">
-                                        <i class="fa fa-truck  text-info" aria-hidden="true"></i>
+                                        <i class="fa fa-truck  text-info m-2" aria-hidden="true"></i>
                                     </a>
                                 </td>
                             </tr>

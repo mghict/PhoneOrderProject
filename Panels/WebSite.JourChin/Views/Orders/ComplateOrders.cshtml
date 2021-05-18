@@ -1,0 +1,124 @@
+﻿@model List<WebSite.JourChin.Models.User.OrderUserActivity>
+@using BehsamFramework.Util
+@using BehsamFramework.Utility
+
+@{
+    ViewData["Title"] = "CpmplateOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="table-responsive">
+        <br />
+        @if (Model != null && Model.Count > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="cta-area-success border-0">
+                    <div class="cta-text p-4 p-lg-5 d-flex align-items-center ">
+                        @*<div class="card-body">*@
+                        @*<a href="/Orders/OrderItems?orderCode=@item.OrderCode">*@
+                        @*<div class="coupon-text-wrap d-flex align-items-center p-3">*@
+                        <div class="text-white pr-3 mb-0 border-right">
+                            <h6 class="text-white">
+                                سفارش:<br />
+                                @item.OrderCode
+                            </h6>
+                        </div>
+
+                        <div class="text-white pl-3 pr-3 mb-0">
+                            <p class="text-white">
+                                تاریخ سفارش: @(item.OrderDate.ToPersianDate())- ساعت سفارش:@(item.OrderTime.ToString().Substring(0,5)) <br />
+                                بازه تحویل: @(item.StartTime.ToString().Substring(0, 5))-@(item.EndTime.ToString().Substring(0, 5))
+                            </p>
+                        </div>
+                        <div class="text-white pl-3">
+                            <a href="#" onclick="currentOrderChange('@item.OrderCode')"
+                               data-toggle="tooltip" data-placement="bottom" title="برگشت به حالت جاری جهت اعمال تغییرات">
+                                <i class="lni lni-control-panel text-danger lni-32"></i>
+                            </a>
+                            <a href="/Orders/OrderItems?orderCode=@item.OrderCode"
+                               data-toggle="tooltip" data-placement="bottom" title="مشاهده جزئیات سفارش">
+                                <i class="lni lni-select text-primary lni-32"></i>
+                            </a>
+                        </div>
+                    </div>
+                    @*</a>*@
+                </div>
+                @*</div>
+                    </div>*@
+                <br />
+            }
+
+        }
+        else
+        {
+            <p class="text-danger">سفارش وجود ندارد </p>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function currentOrderChange(orderCode) {
+
+            swal.fire({
+                title: 'تایید',
+                text: 'از برگشت وضعیت سفارش مطمئن هستید؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'orderCode': orderCode
+                    };
+
+                    $.ajax({
+                        //contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "/Orders/CurrentOrderChange",
+                        data: postData,
+                        beforeSend: function () {
+                            showBehsamLoading();
+                        },
+                        complete: function () {
+                            hideBehsamLoading();
+                        },
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire(
+                                    'موفق!',
+                                    'با موفقیت انجام شد',
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function (request, status, error) {
+                            hideBehsamLoading();
+                        }
+
+                    });
+
+                }
+            });
+        }
+
+    </script>
+}
+

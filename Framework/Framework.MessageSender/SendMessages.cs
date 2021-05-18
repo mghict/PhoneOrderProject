@@ -9,30 +9,34 @@ using MassTransit;
 
 namespace Framework.MessageSender
 {
-    public class SendMessages //<TMessageDetails>
+    public class SendMessages : IDisposable //<TMessageDetails>
     // where TMessageDetails : IMessageDetails
     {
-        private  ConnectionFactory _connectionFactory;
-        private  IModel _model;
-        private  IMessageDetails _messageDetails;
-        private  IConnection Connection { get; set; }
+        private ConnectionFactory _connectionFactory;
+        private IModel _model;
+        private IMessageDetails _messageDetails;
+        private IConnection Connection { get; set; }
 
         public SendMessages(IMessageDetails messageDetails)
         {
             _messageDetails = messageDetails;
         }
 
-        public  async Task SendToQueue<T>(T input)
+        public async Task SendToQueue<T>(T input)
         {
-            await Task.Run(() =>
-            {
-                CreateConnection();
-                _model.BasicPublish(_messageDetails.ExchangeName, _messageDetails.QueueName, null, input.ToByteArray());
-            });
+            CreateConnection();
+
+            LogMessageGeneral logMessage = new LogMessageGeneral()
+            { 
+                MessageValue= input.ToJsonString(),
+                Type=input.GetType().Name
+            };
+
+            _model.BasicPublish(_messageDetails.ExchangeName, _messageDetails.QueueName, null, logMessage.ToByteArray());
 
         }
 
-        private  void CreateConnection()
+        private void CreateConnection()
         {
             if (Connection == null || Connection.IsOpen == false)
             {
@@ -47,7 +51,7 @@ namespace Framework.MessageSender
                 Connection = _connectionFactory.CreateConnection();
             }
 
-            if(_model == null || _model.IsOpen==false)
+            if (_model == null || _model.IsOpen == false)
             {
                 _model = Connection.CreateModel();
                 _model.ExchangeDeclare(_messageDetails.ExchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
@@ -74,5 +78,23 @@ namespace Framework.MessageSender
         //    await bus.Publish(input);
         //    await bus.StopAsync();
         //}
+
+        public void Dispose()
+        {
+            try
+            {
+                _model?.Close();
+                _model?.Dispose();
+                _model = null;
+
+                Connection?.Close();
+                Connection?.Dispose();
+                Connection = null;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

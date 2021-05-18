@@ -11,6 +11,7 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Commands
     {
         public long Id { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public int CustomerGroupId { get; set; }
         public int RegisterTypeId { get; set; }

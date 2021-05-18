@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace SettingManagment.Application.InActiveFeature.Commands
 {
-    public class GetAllInActiveCommand:
+    public class GetAllInActiveCommand :
         BehsamFramework.Mediator.CommandWithReturnValue<List<Domain.Entities.InActiveTbl>>
     {
+
     }
 }

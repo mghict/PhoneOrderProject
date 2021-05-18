@@ -28,5 +28,10 @@ namespace StoreManagment.Persistence
         private IOrderUserActiveQueryRepository _UserActiveQueryRepository;
         public IOrderUserActiveQueryRepository UserActiveQueryRepository =>
             _UserActiveQueryRepository = _UserActiveQueryRepository ?? new QueryRepositories.OrderUserActivityQueryRepository(IDbConnection);
+
+
+        private IOrderItemsReserveRepository _OrderItemsReserveRepository;
+        public IOrderItemsReserveRepository OrderItemsReserveRepository =>
+            _OrderItemsReserveRepository = _OrderItemsReserveRepository ?? new QueryRepositories.OrderItemsReserveQueryRepository(IDbConnection);
     }
 }

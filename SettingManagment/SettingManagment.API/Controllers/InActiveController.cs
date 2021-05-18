@@ -67,7 +67,7 @@ namespace SettingManagment.API.Controllers
 
         public async
             Task<ActionResult<FluentResults.Result<List<Domain.Entities.InActiveTbl>>>>
-            GetAllTimeSheetAsync([FromBody] Application.InActiveFeature.Commands.GetAllInActiveCommand command)
+            GetAllAsync([FromBody] Application.InActiveFeature.Commands.GetAllInActiveCommand command)
         {
 
             FluentResults.Result<List<Domain.Entities.InActiveTbl>> result =
@@ -207,5 +207,201 @@ namespace SettingManagment.API.Controllers
 
         #endregion
 
+        //------------------------------------
+        // StoreInActive
+        //------------------------------------
+
+        #region Create
+
+        [HttpPost("CreateStoreInActive")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            CreateStoreInActiveAsync([FromBody] Application.InActiveFeature.Commands.CreateStoreInActiveCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region Update
+
+        [HttpPost("UpdateStoreInActive")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            StoreInActiveAsync([FromBody] Application.InActiveFeature.Commands.EditStoreInActiveCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region Remove
+
+        [HttpPost("RemoveStoreInActive")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            RemoveStoreInActiveAsync([FromBody] Application.InActiveFeature.Commands.DeleteStoreInActiveCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetById
+
+        [HttpPost("GetByIdStoreInActive")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.StoreInActiveTbl>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.InActiveTbl>>>
+            GetByIdStoreInActiveAsync([FromBody] Application.InActiveFeature.Commands.GetByIdStoreInActiveCommand command)
+        {
+
+            FluentResults.Result<Domain.Entities.StoreInActiveTbl> result =
+                new FluentResults.Result<Domain.Entities.StoreInActiveTbl>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
+        #region GetAll
+
+        [HttpPost("GetAllStoreInActive")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.StoreInActiveTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.InActiveTbl>>>>
+            GetAllStoreInActiveAsync([FromBody] Application.InActiveFeature.Commands.GetAllStoreInActiveCommand command)
+        {
+
+            FluentResults.Result<List<Domain.Entities.StoreInActiveTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.StoreInActiveTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                var sortedList = result.Value.OrderBy(p => p.FromDate).ThenBy(p => p.ToDate).ToList();
+                result.WithValue(sortedList);
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row g-3">
+        <div class="col-4  mt-5">
+            <div class="card catagory-card" style="height:100px;">
+                <div class="card-body">
+                    <a href="/Orders/CurrentOrder">
+                        <i class="lni lni-layers text-danger"></i>
+                        <span>سفارشات جاری</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4  mt-5">
+            <div class="card catagory-card">
+                <div class="card-body" style="height:100px;">
+                    <a href="/Orders/ComplateOrders">
+                        <i class="lni lni-package text-success"></i>
+                        <span>سفارشات تکمیل شده</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

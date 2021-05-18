@@ -12,9 +12,13 @@ namespace WebSites.Panles.Models.Customer
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
         public long Id { get; set; }
 
-        [Display(Name = "مشخصات مشتری")]
+        [Display(Name = "نام مشتری")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
         public string CustomerName { get; set; }
+
+        [Display(Name = "نام خانوادگی مشتری")]
+        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        public string CustomerLastName { get; set; }
 
         [Display(Name = "تلفن تماس")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]

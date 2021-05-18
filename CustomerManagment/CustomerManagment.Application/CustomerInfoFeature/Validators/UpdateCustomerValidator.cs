@@ -22,6 +22,13 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent);
 
+            RuleFor(current => current.CustomerLastName)
+                .NotEmpty()
+                .WithErrorCode("10")
+                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent)
+                .NotEmpty()
+                .WithErrorCode("11")
+                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent);
 
             RuleFor(current => current.CustomerTypeId)
                 .NotEmpty()

@@ -1,5 +1,6 @@
 ﻿using BehsamFramework.DapperDomain;
 using LogManager.Domain.IRepositories.ILogMessageRepository;
+using LogManager.Domain.IRepositories.IOrderLogRepository;
 using System;
 
 namespace LogManager.Persistence
@@ -15,5 +16,9 @@ namespace LogManager.Persistence
         private ILogMessageQueryRepository _LogMessageQueryRepository;
         public ILogMessageQueryRepository LogMessageQueryRepository =>
             _LogMessageQueryRepository = _LogMessageQueryRepository ?? new Repositories.LogMessageQueryRepository(IDbConnection);
+
+        private ILogOrderQueryRepository _LogOrderQueryRepository;
+        public ILogOrderQueryRepository LogOrderQueryRepository =>
+            _LogOrderQueryRepository = _LogOrderQueryRepository ?? new Repositories.OrderLogQueryRepository(IDbConnection);
     }
 }

@@ -1,0 +1,63 @@
+﻿@model List<WebSites.Panles.Models.Order.UserActivityOrderLogs>
+@using BehsamFramework.Util
+@using BehsamFramework.Utility
+
+@{
+    ViewData["Title"] = "UserLogs";
+    Layout = "~/Areas/Stores/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست فعالیتها
+        </h6>
+
+        <br />
+        <hr class="text-danger bg-danger" />
+        @if (Model != null && Model?.Count > 0)
+        {
+            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">#</th>
+                            <th rowspan="1" colspan="1">شماره سفارش</th>
+                            <th rowspan="1" colspan="1">تاریخ و ساعت</th>
+                            <th rowspan="1" colspan="1">توضیحات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            var row = 1;
+
+
+                            @foreach (var log in Model)
+                            {
+                                <tr role="row">
+                                    <td>@row </td>
+                                    <td>@log.OrderCode</td>
+                                    <td>@log.CreatDate.GetPersianDateTime()</td>
+                                    <td>@log.FullDescr</td>
+                                </tr>
+
+                                row++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <h7 class="text-danger">اطلاعات یافت نشد</h7>
+        }
+    </div>
+    <div class="card-footer">
+        <a href="/Stores/Reports/@ViewBag.BackUrl" class="btn btn-primary">بازگشت </a>
+    </div>
+</div>
+

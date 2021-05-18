@@ -37,6 +37,9 @@ namespace WebSites.Panles.Mapper
 
             CreateMap<BehsamFramework.Models.CustomerAddressModel, Models.CustomerAddress.CustomerAddressModel>().ConvertUsing<Models_CustomerAddress_CustomerAddressModelConverter>();
             CreateMap<Models.CustomerAddress.CustomerAddressModel, Models.CustomerAddress.CustomerAddressUpdateModel>();
+
+            CreateMap<Models.InActive.StoreInActiveTbl, Models.InActive.StoreInActiveModel>();
+            CreateMap<Models.InActive.StoreInActiveModel, Models.InActive.StoreInActiveTbl>();
         }
     }
 
@@ -54,6 +57,7 @@ namespace WebSites.Panles.Mapper
             destination.CustomerGroupId = source.CustomerGroupId;
             destination.CustomerGroupStr = StaticValues.CustomerListModel_Group.ValuesList.FirstOrDefault(p => p.Id == source.CustomerGroupId).Name;
             destination.CustomerName = source.CustomerName;
+            destination.CustomerLastName = source.CustomerLastName;
             destination.CustomerTypeId = source.CustomerTypeId;
             destination.CustomerTypeStr = StaticValues.CustomerListModel_Type.ValuesList.FirstOrDefault(p => p.Id == source.CustomerTypeId).Name;
             destination.Education = source.Education;
@@ -91,6 +95,7 @@ namespace WebSites.Panles.Mapper
             destination.CustomerGroupId = source.CustomerGroupId;
             destination.CustomerGroupStr = StaticValues.CustomerListModel_Group.ValuesList.FirstOrDefault(p => p.Id == source.CustomerGroupId).Name;
             destination.CustomerName = source.CustomerName;
+            destination.CustomerLastName = source.CustomerLastName;
             destination.CustomerTypeId = source.CustomerTypeId;
             destination.CustomerTypeStr = StaticValues.CustomerListModel_Type.ValuesList.FirstOrDefault(p => p.Id == source.CustomerTypeId).Name;
             destination.Education = source.Education;

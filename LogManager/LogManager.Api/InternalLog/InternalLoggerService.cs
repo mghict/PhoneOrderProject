@@ -11,7 +11,7 @@ using RabbitMQ.Client.Events;
 
 namespace LogManager.Api.InternalLog
 {
-    public class InternalLoggerService : BackgroundService
+    public class InternalLoggerService : BackgroundService,IDisposable
     {
         ILogger<InternalLoggerService> _logger;
 
@@ -78,24 +78,6 @@ namespace LogManager.Api.InternalLog
             _model.BasicAck(e.DeliveryTag, false);
         }
 
-        private void CreateConnection()
-        {
-            _connectionFactory = new ConnectionFactory()
-            {
-                HostName = hostName,
-                Password = pass,
-                UserName = userName,
-                Port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port
-            };
-
-            Connection = _connectionFactory.CreateConnection();
-            _model = Connection.CreateModel();
-            _model.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            _model.QueueDeclare(queueName, true, false, false, null);
-            _model.QueueBind(queueName, exchangeName, queueName, null);
-
-        }
-
         private void SetInjection(IConfiguration configuration)
         {
             hostName = configuration
@@ -127,6 +109,48 @@ namespace LogManager.Api.InternalLog
                     .GetSection(key: "RabbitMQSetting")
                     .GetSection(key: "QueueLogData")
                     .Value;
+        }
+
+        private void CreateConnection()
+        {
+            if (Connection == null || Connection.IsOpen == false)
+            {
+                _connectionFactory = new ConnectionFactory()
+                {
+                    HostName = hostName,
+                    Password = pass,
+                    UserName = userName,
+                    Port = port == 0 ? Protocols.DefaultProtocol.DefaultPort : port
+                };
+
+                Connection = _connectionFactory.CreateConnection();
+            }
+
+            if (_model == null || _model.IsOpen == false)
+            {
+                _model = Connection.CreateModel();
+                _model.ExchangeDeclare(exchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
+                _model.QueueDeclare(queueName, false, false, false, null);
+                _model.QueueBind(queueName, exchangeName, queueName, null);
+            }
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                _model?.Close();
+                _model?.Dispose();
+                _model = null;
+
+                Connection?.Close();
+                Connection?.Dispose();
+                Connection = null;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

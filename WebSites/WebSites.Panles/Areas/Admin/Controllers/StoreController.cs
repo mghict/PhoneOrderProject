@@ -21,7 +21,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             storeInfoPaginationService = StoreInfoPaginationService;
         }
 
-        public async Task< IActionResult > Index(int page = 1,int pagesize = 20,string searchKey="")
+        public async Task< IActionResult > Index(int page = 0,int pagesize = 20,string searchKey="")
         {
             var model=await storeInfoPaginationService.GetStoresAsync(page, pagesize, searchKey);
             if(model==null)

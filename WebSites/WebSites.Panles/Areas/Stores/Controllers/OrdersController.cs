@@ -280,7 +280,7 @@ namespace WebSites.Panles.Areas.Stores.Controllers
 
                 float.TryParse(user.StoreId, style, info, out sId);
 
-                var result = await OrderFacad.ReportsService.GetSummeryOrderStatusDetailsByDate(sId, DateTime.Now.AddDays(-10), DateTime.Now, 3);
+                var result = await OrderFacad.ReportsService.GetSummeryOrderStatusDetailsByDate(sId, DateTime.Now.AddDays(-10), DateTime.Now, 5);
                 if (result.IsSuccess)
                 {
                     model = result.Value;

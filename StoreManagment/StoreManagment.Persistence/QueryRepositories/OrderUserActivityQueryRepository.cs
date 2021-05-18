@@ -79,6 +79,37 @@ namespace StoreManagment.Persistence.QueryRepositories
 
             return result.ToList();
         }
+
+        public async Task<List<UserActivityLogs>> GetOrderUserActivityLogs(DateTime fromDate, DateTime toDate, int userId = 0)
+        {
+            var query = " exec dbo.[OrderUserActivityLog] @UserId,@FromDate,@ToDate";
+
+            var param = new
+            {
+                @UserId = userId,
+                @FromDate=fromDate,
+                @ToDate = toDate
+            };
+
+            var result = await db.QueryAsync<UserActivityLogs>(query, param);
+
+            return result.ToList();
+        }
+
+        public async Task<List<OrderUserActivityByStatus>> GetOrderUserActivityByStatus(int userId, int status)
+        {
+            var query = " exec dbo.[OrderUserActivityByStatus] @UserId,@Status";
+
+            var param = new
+            {
+                @UserId = userId,
+                @Status = status
+            };
+
+            var result = await db.QueryAsync<OrderUserActivityByStatus>(query, param);
+
+            return result.ToList();
+        }
     }
 
 }

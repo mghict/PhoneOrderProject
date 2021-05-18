@@ -1,0 +1,90 @@
+﻿@model List<WebSites.Panles.Models.InActive.StoreInActiveTbl>
+@{
+    ViewData["Title"] = "StoreInActive";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card ">
+    <div class="card-body">
+        <h6 class="card-title ">
+            @*<span class="fa fa-tab"></span>*@
+            لیست تعطیلات شعبه
+        </h6>
+
+        <br />
+
+        <br />
+        <p>
+            <a class="btn btn-danger btn-rounded" href="/Admin/InActive/StoreInActiveAdd?storeId=@ViewBag.StoreId">  ایجاد تعطیلات جدید  </a>
+        </p>
+        <hr class="text-danger bg-danger" />
+        @if (Model != null && Model.Count > 0)
+        {
+            var row = 1;
+            <div class="table-responsive" tabindex="1" style="overflow:auto; outline: none;">
+                <table class="table table-striped table-hover mg-b-0 text-md-nowrap">
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">#</th>
+                            <th rowspan="1" colspan="1">عنوان</th>
+                            <th rowspan="1" colspan="1">تاریخ شروع</th>
+                            <th rowspan="1" colspan="1">تاریخ خاتمه</th>
+                            <th rowspan="1" colspan="1">وضعیت</th>
+                            <th rowspan="1" colspan="1">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+
+                        @foreach (var store in Model)
+                        {
+                            <tr role="row">
+                                <td>@row </td>
+                                <td>@store.Title</td>
+                                <td>@store.FromDate</td>
+                                <td>@store.ToDate</td>
+                                <td>
+                                    @if (store.Status)
+                                    {
+                                        <span>فعال</span>
+
+                                    }
+                                    else
+                                    {
+                                        <span>غیرفعال</span>
+                                    }
+                                </td>
+                                <td>
+
+                                    <a href="#" onclick="DeleteStoreInActive('@store.Id');" class="d-inline"
+                                       data-toggle="tooltip" data-placement="bottom" title="حذف تعطیلات">
+                                        <i class="fa fa-times  text-danger m-2" aria-hidden="true"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            row++;
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-danger">اطلاعات وجود ندارد</p>
+        }
+    </div>
+
+    <div class="card-footer">
+        <a href="/Admin/InActive/Index" class="btn btn-primary">برگشت</a>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/Admin/inactiveindex.js"></script>
+}

@@ -9,18 +9,11 @@ namespace CustomerManagment.Domain.Entities
     [Dapper.Contrib.Extensions.Table("CustomerInfoTbl")]
     public partial class CustomerInfoTbl : BehsamFramework.Entity.IEntity<long>
     {
-        public CustomerInfoTbl()
-        {
-            //CustomerAddressTbls = new HashSet<CustomerAddressTbl>();
-            //CustomerAttributeItemTbls = new HashSet<CustomerAttributeItemTbl>();
-            ///*CustomerOrderTbls = new HashSet<CustomerOrderTbl>();*/
-            //CustomerPhoneTbls = new HashSet<CustomerPhoneTbl>();
-            /*CustomerPreOrderInfoTbls = new HashSet<CustomerPreOrderInfoTbl>();*/
-        }
 
         public long Id { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public int CustomerGroupId { get; set; }
         public long WaletPrice { get; set; }
@@ -33,10 +26,13 @@ namespace CustomerManagment.Domain.Entities
         public TimeSpan RegisterTime { get; set; }
         public byte Status { get; set; }
         public long DefaultMobile { get; set; }
-        //public virtual ICollection<CustomerAddressTbl> CustomerAddressTbls { get; set; }
-        //public virtual ICollection<CustomerAttributeItemTbl> CustomerAttributeItemTbls { get; set; }
-        ///*public virtual ICollection<CustomerOrderTbl> CustomerOrderTbls { get; set; }*/
-        //public virtual ICollection<CustomerPhoneTbl> CustomerPhoneTbls { get; set; }
-        ///*public virtual ICollection<CustomerPreOrderInfoTbl> CustomerPreOrderInfoTbls { get; set; }*/
+
+        [Dapper.Contrib.Extensions.Write(false)]
+        public string CustomerFullName {
+            get
+            {
+                return string.Concat(CustomerName, " ", CustomerLastName);
+            }
+        }
     }
 }

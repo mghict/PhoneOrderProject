@@ -10,6 +10,7 @@ namespace WebSites.Panles.Models.Customer
         public long Id { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public string CustomerTypeStr { get; set; }
         public int CustomerGroupId { get; set; }
@@ -29,5 +30,12 @@ namespace WebSites.Panles.Models.Customer
         public byte Status { get; set; }
         public string StatusStr { get; set; }
         public string DefaultMobile { get; set; }
+
+
+        public string CustomerFullName { 
+            get {
+                return string.Concat(CustomerName, " ", CustomerLastName);
+            } 
+        }
     }
 }

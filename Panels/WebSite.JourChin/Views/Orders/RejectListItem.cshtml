@@ -1,0 +1,66 @@
+﻿@model List<BehsamFramework.Models.OrderItemsReserveModel>
+
+@{
+    Layout = null;
+}
+<div class="container">
+    <div class="table-responsive">
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row g-3">
+                <p class="text-danger">اطلاعات کالاهای جایگزین</p>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var item = Model[i];
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card featured-product-card">
+                            <div class="card-body">
+                                @*<div class="product-thumbnail-side">
+                                    <a class="product-thumbnail d-block" href="#">
+                                        <img src="~/img/product/logo-white.png" alt="product name">
+                                    </a>
+                                </div>*@
+                                <div class="product-description">
+                                    <p class="product-title d-block">@item.DisplayName</p>
+                                    <p class="sale-price">برند: @item.BrandName</p>
+                                    <p class="product-rating">@item.ProductCode</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @*<table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td></td>
+                            <td>بارکد</td>
+                            <td>نام محصول</td>
+                            <td>نام برند</td>
+                            <td>نام دسته بندی</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            var item = Model[i];
+                            <tr>
+                                <td>@(i+1)</td>
+                                <td></td>
+                                <td>@item.ProductCode</td>
+                                <td>@item.DisplayName</td>
+                                <td>@item.BrandName</td>
+                                <td>@item.CategoryName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>*@
+        }
+        else
+        {
+            <p class="text-danger">اطلاعات یافت نشد</p>
+        }
+    </div>
+</div>

@@ -30,8 +30,10 @@ namespace StoreManagment.API.Controllers
             Task<ActionResult<FluentResults.Result>>
             CreateAsync([FromBody] Application.OrderInfoFeature.Commands.CreateOrderCommand command)
         {
-            FluentResults.Result result =
-                new FluentResults.Result();
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<long> result =
+                new FluentResults.Result<long>();
             try
             {
 
@@ -39,6 +41,23 @@ namespace StoreManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        var tasklog = SendDataForLog(createDate,command, action, "CustomerPreOrderInfoTbl", command.OrderInfo.OrderCode, command.OrderInfo.OrderState, "ثبت سفارش");
+                        //tasklog.Start();
+
+                        string storeId = Math.Round(command.OrderInfo.StoreId, 3).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                        var tasklogOrder = SendDataForOrderLog(createDate,"ثبت سفارش توسط کاربر کال سنتر در شعبه" + storeId, command.OrderInfo.Id, command.OrderInfo.OrderCode, command.OrderInfo.Detail.UserId);
+
+                        //tasklogOrder.Start();
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+                    }
+                    catch
+                    {
+
+                    }
                     return Ok(value: result);
                 }
                 else
@@ -366,32 +385,37 @@ namespace StoreManagment.API.Controllers
             Task<ActionResult<FluentResults.Result>>
             ChangeOrderStatusAsync([FromBody] Application.OrderInfoFeature.Commands.ChangeOrderStatusCommand command)
         {
+            DateTime createDate = System.DateTime.Now;
+
             FluentResults.Result result =
                 new FluentResults.Result();
 
-            string action = ControllerContext.ActionDescriptor.ActionName;
-
             try
             {
-                //var taskInput= SendForLog(command,LogLevel.Information, action, "Input");
 
                 result = await Mediator.Send(command);
 
                 if (result.IsSuccess)
                 {
-                    await SendDataForLog(command, action, "CustomerPreOrderInfoTbl", command.OrderCode);
-                    //var taskLogResultOK= SendForLog(command, LogLevel.Information, action, "Result is success");
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
 
-                    //Task.WaitAll(taskInput, taskLogData, taskLogResultOK);
+                        var tasklog = SendDataForLog(createDate,command, action, "CustomerPreOrderInfoTbl", command.OrderCode, command.Status, command.Reason);
+                        var tasklogOrder = SendDataForOrderLog(createDate,command.Reason, 0, command.OrderCode, 0);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+                        
+                    }
+                    catch
+                    {
+
+                    }
 
                     return Ok(value: result);
                 }
                 else
                 {
-                    //var taskLogResultBad = SendForLog(command, LogLevel.Error, action, "Result Has error:"+ string.Join(",", result.Errors));
-
-                    //Task.WaitAll(taskInput, taskLogResultBad);
-
                     return BadRequest(error: result);
                 }
             }
@@ -400,6 +424,359 @@ namespace StoreManagment.API.Controllers
                 result.WithError(ex.Message);
                 //await SendForLog(command, LogLevel.Error, action, "Exception error:" + ex.Message);
                 return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        //----------------------------------
+        //----------------------------------
+
+        #region AcceptUserForOrderItems
+
+        [HttpPost("AcceptUserForOrderItems")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            AcceptUserForOrderItemsAsync([FromBody] Application.OrderInfoFeature.Commands.AcceptUserForOrderItemsCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        string reason = "تایید کالا";
+                        int status = 6;
+                        var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemTbl", command.OrderId,status,reason );
+                        var tasklogOrder = SendDataForOrderLog(createDate, reason, command.OrderId,0, 0);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
+        #region FirstStateUserForOrderItems
+
+        [HttpPost("FirstStateUserForOrderItems")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            FirstStateUserForOrderItemsAsync([FromBody] Application.OrderInfoFeature.Commands.FirstStateUserForOrderItemsCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        string reason = "برگشت کالا به تخصیص نیافته";
+                        int status = 6;
+                        var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemTbl", command.OrderId, status, reason);
+                        var tasklogOrder = SendDataForOrderLog(createDate, reason, command.OrderId, 0, 0);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+        //----------------------------------
+        //----------------------------------
+
+        #region CreateItemReserve
+
+        [HttpPost("CreateItemReserve")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<long>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<long>>>
+            CreateItemReserveAsync([FromBody] Application.OrderInfoFeature.Commands.CreateOrderItemsReserveCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<long> result =
+                new FluentResults.Result<long>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    //try
+                    //{
+                    //    string action = ControllerContext.ActionDescriptor.ActionName;
+                    //    var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemsReserveTbl", command.OrderItemId, command.OrderInfo.OrderState, "ثبت سفارش");
+                    //    //tasklog.Start();
+
+                    //    string storeId = Math.Round(command.OrderInfo.StoreId, 3).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    //    var tasklogOrder = SendDataForOrderLog(createDate, "ثبت سفارش توسط کاربر کال سنتر در شعبه" + storeId, command.OrderInfo.Id, command.OrderInfo.OrderCode, command.OrderInfo.Detail.UserId);
+
+                    //    tasklogOrder.Start();
+
+                    //    Task.WaitAll(tasklog, tasklogOrder);
+                    //}
+                    //catch
+                    //{
+
+                    //}
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region UpdateItemReserve
+
+        [HttpPost("UpdateItemReserve")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            UpdateItemReserveAsync([FromBody] Application.OrderInfoFeature.Commands.UpdateOrderItemsReserveCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    //try
+                    //{
+                    //    string action = ControllerContext.ActionDescriptor.ActionName;
+                    //    var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemsReserveTbl", command.OrderItemId, command.OrderInfo.OrderState, "ثبت سفارش");
+                    //    //tasklog.Start();
+
+                    //    string storeId = Math.Round(command.OrderInfo.StoreId, 3).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    //    var tasklogOrder = SendDataForOrderLog(createDate, "ثبت سفارش توسط کاربر کال سنتر در شعبه" + storeId, command.OrderInfo.Id, command.OrderInfo.OrderCode, command.OrderInfo.Detail.UserId);
+
+                    //    tasklogOrder.Start();
+
+                    //    Task.WaitAll(tasklog, tasklogOrder);
+                    //}
+                    //catch
+                    //{
+
+                    //}
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region DeleteItemReserve
+
+        [HttpPost("DeleteItemReserve")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            DeleteItemReserveAsync([FromBody] Application.OrderInfoFeature.Commands.DeleteOrderItemsReserveCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    //try
+                    //{
+                    //    string action = ControllerContext.ActionDescriptor.ActionName;
+                    //    var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemsReserveTbl", command.OrderItemId, command.OrderInfo.OrderState, "ثبت سفارش");
+                    //    //tasklog.Start();
+
+                    //    string storeId = Math.Round(command.OrderInfo.StoreId, 3).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    //    var tasklogOrder = SendDataForOrderLog(createDate, "ثبت سفارش توسط کاربر کال سنتر در شعبه" + storeId, command.OrderInfo.Id, command.OrderInfo.OrderCode, command.OrderInfo.Detail.UserId);
+
+                    //    tasklogOrder.Start();
+
+                    //    Task.WaitAll(tasklog, tasklogOrder);
+                    //}
+                    //catch
+                    //{
+
+                    //}
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region GetOrderItemsReserve
+
+        [HttpPost("GetOrderItemsReserve")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.OrderItemsReserve>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.OrderItemsReserve>>>>
+            GetOrderItemsReserveAsync([FromBody] Application.OrderInfoFeature.Commands.GetOrderItemsReserveDetailsCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.OrderItemsReserve>> result =
+                new FluentResults.Result<List<Domain.Entities.OrderItemsReserve>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result.ToResult());
             }
 
 

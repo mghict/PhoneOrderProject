@@ -27,8 +27,13 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="CustomerName" class="control-label"></label>
-                                <input asp-for="CustomerName" name="CustomerName" class="form-control" placeholder="نام و نام خانوادگی مشتری" required="" type="text">
+                                <input asp-for="CustomerName" name="CustomerName" class="form-control" placeholder="نام مشتری" required="" type="text">
                                 <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CustomerLastName" class="control-label"></label>
+                                <input asp-for="CustomerLastName" name="CustomerLastName" class="form-control" placeholder="نام خانوادگی مشتری" required="" type="text">
+                                <span asp-validation-for="CustomerLastName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="DefaultMobile" class="control-label">موبایل پیش فرض</label>

@@ -32,6 +32,8 @@ namespace StoreManagment.API.Controllers
             Task<ActionResult<FluentResults.Result<long>>>
             CreateAsync([FromBody] Application.OrderUserActiveFeature.Commands.CreateUserActiveCommand command)
         {
+            DateTime createDate = System.DateTime.Now;
+
             FluentResults.Result< long> result =
                 new FluentResults.Result<long>();
             try
@@ -41,6 +43,24 @@ namespace StoreManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    try
+                    {
+                        
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+
+                        var tasklog = SendDataForLog(createDate,command, action, "CustomerPreOrderUserActive", result.Value, command.Status, BehsamFramework.Resources.MessageDataLog.OperationRegister);
+                        var tasklogOrder = SendDataForOrderLog(createDate,"تخصیص به کاربر",0, command.OrderCode, command.UserId);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                   
+
                     return Ok(value: result);
                 }
                 else
@@ -74,6 +94,8 @@ namespace StoreManagment.API.Controllers
             Task<ActionResult<FluentResults.Result<bool>>>
             UpdateAsync([FromBody] Application.OrderUserActiveFeature.Commands.UpdateUserActiveCommand command)
         {
+            DateTime createDate = System.DateTime.Now;
+
             FluentResults.Result<bool> result =
                 new FluentResults.Result<bool>();
             try
@@ -83,6 +105,23 @@ namespace StoreManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    
+
+                    try
+                    {
+
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+
+                        var tasklog = SendDataForLog(createDate,command, action, "CustomerPreOrderUserActive", command.OrderCode, command.Status, BehsamFramework.Resources.MessageDataLog.OperationUpdate);
+                        var tasklogOrder = SendDataForOrderLog(createDate,"ویرایش /تغییر وضعیت", 0, command.OrderCode, command.UserId);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
                     return Ok(value: result);
                 }
                 else
@@ -116,6 +155,8 @@ namespace StoreManagment.API.Controllers
             Task<ActionResult<FluentResults.Result<bool>>>
             UpdateAsync([FromBody] Application.OrderUserActiveFeature.Commands.DeleteUserActiveCommand command)
         {
+            DateTime createDate = System.DateTime.Now;
+
             FluentResults.Result<bool> result =
                 new FluentResults.Result<bool>();
             try
@@ -125,6 +166,23 @@ namespace StoreManagment.API.Controllers
 
                 if (result.IsSuccess)
                 {
+                    
+
+                    try
+                    {
+
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+
+                        var tasklog = SendDataForLog(createDate,command, action, "CustomerPreOrderUserActive", command.OrderCode, 0, BehsamFramework.Resources.MessageDataLog.OperationDelete);
+                        var tasklogOrder = SendDataForOrderLog(createDate,"حذف از کاربر", 0, command.OrderCode, command.UserId);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
                     return Ok(value: result);
                 }
                 else
@@ -331,6 +389,93 @@ namespace StoreManagment.API.Controllers
         {
             FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>> result =
                 new FluentResults.Result<List<Domain.Entities.CustomerPreOrderUserActiveSummery>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        #region GetOrderUserActivityByStatus
+
+        [HttpPost("GetOrderUserActivityByStatus")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>>>
+            GetOrderUserActivityByStatusAsync([FromBody] Application.OrderUserActiveFeature.Commands.OrderUserActivityByStatusCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>> result =
+                new FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
+        //------------------------------------
+        //------------------------------------
+
+        #region GetUserActivityOrderLogs
+
+        [HttpPost("GetUserActivityOrderLogs")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.UserActivityLogs>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.UserActivityLogs>>>>
+            GetUserActivityOrderLogsAsync([FromBody] Application.OrderUserActiveFeature.Commands.GetUserActivityOrderLogsCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.UserActivityLogs>> result =
+                new FluentResults.Result<List<Domain.Entities.UserActivityLogs>>();
             try
             {
 

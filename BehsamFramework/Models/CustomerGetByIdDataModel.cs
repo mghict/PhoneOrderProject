@@ -11,6 +11,7 @@ namespace BehsamFramework.Models
         public long Id { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
         public int CustomerTypeId { get; set; }
         public int CustomerGroupId { get; set; }
         public long WaletPrice { get; set; }
@@ -22,5 +23,16 @@ namespace BehsamFramework.Models
         public DateTime RegisterDate { get; set; }
         public TimeSpan RegisterTime { get; set; }
         public byte Status { get; set; }
+
+
+        [Dapper.Contrib.Extensions.Write(false)]
+        [Dapper.Contrib.Extensions.Computed]
+        public string CustomerFullName
+        {
+            get
+            {
+                return string.Concat(CustomerName, " ", CustomerLastName);
+            }
+        }
     }
 }

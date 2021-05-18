@@ -16,6 +16,7 @@ namespace WebSites.Panles.Services.Order
         Task<Models.Order.CustomerPreOrderUserActive> GetByIdAsync(long id);
         Task<List<Models.Order.CustomerPreOrderUserActive>> GetDetailsByUserId(int userId);
         Task<List<Models.Order.CustomerPreOrderUserActiveSummery>> GetSummeryByUserId(int userId);
+        Task<List<Models.Order.UserActivityOrderLogs>> GetUserAvtivityOrderLogs(DateTime fromDate, DateTime toDate, int userId = 0);
     }
 
     public class OrderUserActive : Base.ServiceBase,IOrderUserActive
@@ -249,6 +250,33 @@ namespace WebSites.Panles.Services.Order
             }
 
             return ret;
+        }
+
+        public async Task<List<Models.Order.UserActivityOrderLogs>> GetUserAvtivityOrderLogs(DateTime fromDate,DateTime toDate,int userId=0)
+        {
+            FluentResult<List<Models.Order.UserActivityOrderLogs>> result =
+                new FluentResult<List<Models.Order.UserActivityOrderLogs>>();
+
+            result.IsFailed = true;
+
+            var command = new
+            {
+                UserId = userId,
+                FromDate=fromDate,
+                ToDate=toDate
+            };
+
+            try
+            {
+                result = await ServiceCaller.PostDataWithValue<List<Models.Order.UserActivityOrderLogs>>("Order/UserActive/GetUserActivityOrderLogs", command);
+            }
+            catch (Exception ex)
+            {
+                result = new FluentResult<List<Models.Order.UserActivityOrderLogs>>();
+                result.WithError(ex.Message);
+            }
+
+            return result.Value;
         }
     }
 

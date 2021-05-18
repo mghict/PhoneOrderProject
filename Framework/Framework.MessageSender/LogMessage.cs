@@ -57,6 +57,7 @@ namespace Framework.MessageSender
         //-------------------------------
         //===============================
         //-------------------------------
-        
+        public int StatusDescription { get; set; }
+        public string Description { get; set; }
     }
 }

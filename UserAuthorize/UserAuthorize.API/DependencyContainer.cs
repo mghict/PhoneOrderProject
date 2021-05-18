@@ -13,6 +13,18 @@ namespace UserAuthorize
         public static IServiceCollection ConfigureServices
             (this Microsoft.Extensions.DependencyInjection.IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
+
+			services.AddSingleton<BehsamFramework.Util.Middleware.LoggingMiddlewareOptions>(c =>
+			{
+				string serviceName =
+					configuration
+					.GetSection(key: "ServiceName")
+					.Value;
+
+				return new BehsamFramework.Util.Middleware.LoggingMiddlewareOptions(serviceName);
+
+			});
+
 			//***********************************************
 			//===============================================
 			//***********************************************

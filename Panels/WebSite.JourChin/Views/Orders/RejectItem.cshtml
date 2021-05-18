@@ -1,0 +1,48 @@
+﻿@model WebSite.JourChin.Models.Order.GetOrderItems
+@{
+    ViewData["Title"] = "RejectItem";
+    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+}
+
+<div class="container">
+    <div class="cart-wrapper-area py-3">
+        <div class="cta-area">
+            @if (Model != null && Model.Id > 0)
+            {
+                var order = Model;
+                <div class="cta-text p-4 p-lg-5 d-flex align-items-center ">
+                    <h6 class="text-white pr-3 mb-0 border-right">
+                        سفارش:<br />
+                        @ViewBag.OrderCode
+                    </h6>
+                    <div class="pl-3 mb-0">
+                        <p class="pl-1 mb-0">
+                            نام کالا: @(order.DisplayName) - بارکد کالا: @(order.ProductCode)
+                        </p>
+                        <p class="pl-1 mb-0">
+                            برند کالا: @(order.BrandName)
+                        </p>
+                        <p class="pl-1 mb-0">
+                            تعداد: @(order.Quantity.ToString("#,##0"))
+                        </p>
+                    </div>
+
+                </div>
+                <button class="btn btn-success m-2">ثبت اطلاعات</button>
+                <div class="card">
+                    <span> اطلاعات محصولات </span>
+                    <div class="card-body" id="divFilterProduct">
+
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/order/rejectitem.js"></script>
+}

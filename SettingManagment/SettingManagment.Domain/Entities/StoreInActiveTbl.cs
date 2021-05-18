@@ -2,6 +2,7 @@
 
 namespace SettingManagment.Domain.Entities
 {
+    [Dapper.Contrib.Extensions.Table("StoreInActiveTbl")]
     public class StoreInActiveTbl :
         BehsamFramework.Entity.IEntity<int>
     {
@@ -10,7 +11,7 @@ namespace SettingManagment.Domain.Entities
         public float StoreId { get; set; }
         public string Title { get; set; }
         public DateTime FromDate { get; set; }
-        public DateTime ToTime { get; set; }
+        public DateTime ToDate { get; set; }
         public bool Status { get; set; }
     }
 }

@@ -50,12 +50,18 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
 
                     if (response == null)
                     {
-                        throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
+                        result.WithError("اطلاعات برای ورود صحیح نمی باشد");
+                        //result.WithValue(new LoginModel() { Token = "" });
+                        return result;
+                        //throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
                     }
                 }
                 catch(Exception ex)
                 {
-                    throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
+                    result.WithError("اطلاعات برای ورود صحیح نمی باشد");
+                    //result.WithValue(new LoginModel() { Token = "" });
+                    return result;
+                    //throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
                 }
             
                 var model=new BehsamFramework.Models.LoginModel()
@@ -69,7 +75,10 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
             catch(Exception ex)
             {
                 result.WithError(ex.Message);
-                result.WithValue(new LoginModel() { Token = "" });
+                result.WithError("اطلاعات برای ورود صحیح نمی باشد");
+                //result.WithValue(new LoginModel() { Token = "" });
+                return result;
+                //result.WithValue(new LoginModel() { Token = "" });
             }
 
             return result;

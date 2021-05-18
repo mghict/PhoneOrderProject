@@ -118,7 +118,7 @@ namespace WebSites.Panles.Services.Authorize
 
             if(userName<1 || appllicationId<1 || string.IsNullOrEmpty(password))
             {
-                result.WithError("اطلاعات صحیح نمی باشد");
+                result.WithError("اطلاعات ورودی صحیح نمی باشد");
                 return result;
             }
 
@@ -134,7 +134,7 @@ namespace WebSites.Panles.Services.Authorize
             if(result == null || result.Value==null || string.IsNullOrEmpty( result.Value.Token))
             {
                 result =new FluentResult<BehsamFramework.Models.LoginModel>();
-                result.WithError("اطلاعات صحیح نمی باشد");
+                result.WithError("اطلاعات از سمت سرویس صحیح نمی باشد");
                 return result;
             }
 

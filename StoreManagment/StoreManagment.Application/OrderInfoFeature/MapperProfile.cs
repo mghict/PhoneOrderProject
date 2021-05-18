@@ -10,7 +10,13 @@ namespace StoreManagment.Application.OrderInfoFeature
     {
         public MapperProfile():base()
         {
+            CreateMap<Commands.CreateOrderItemsReserveCommand,Domain.Entities.OrderItemsReserve>()
+                .ForMember(dest=>dest.Status,opt=>opt.MapFrom(src=>true));
+            CreateMap<Domain.Entities.OrderItemsReserve,Commands.CreateOrderItemsReserveCommand>();
 
+
+            CreateMap<Commands.UpdateOrderItemsReserveCommand, Domain.Entities.OrderItemsReserve>();
+            CreateMap<Domain.Entities.OrderItemsReserve, Commands.UpdateOrderItemsReserveCommand>();
         }
     }
 }
