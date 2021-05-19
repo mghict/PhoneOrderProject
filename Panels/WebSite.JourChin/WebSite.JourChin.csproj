@@ -32,6 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Services\Product\" />
 	  <Folder Include="wwwroot\img\NewFolder\" />
 	  <Folder Include="wwwroot\CameraPhotos\" />
 	</ItemGroup>

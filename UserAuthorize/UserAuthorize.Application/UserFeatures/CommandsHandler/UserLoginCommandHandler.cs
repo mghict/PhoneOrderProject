@@ -59,9 +59,9 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
                 catch(Exception ex)
                 {
                     result.WithError("اطلاعات برای ورود صحیح نمی باشد");
-                    //result.WithValue(new LoginModel() { Token = "" });
+                    result.WithError(ex.Message);
+                    result.WithValue(new LoginModel() { Token = string.Empty });
                     return result;
-                    //throw new Exception("اطلاعات برای ورود صحیح نمی باشد");
                 }
             
                 var model=new BehsamFramework.Models.LoginModel()
@@ -76,9 +76,8 @@ namespace UserAuthorize.Application.UserFeatures.CommandsHandler
             {
                 result.WithError(ex.Message);
                 result.WithError("اطلاعات برای ورود صحیح نمی باشد");
-                //result.WithValue(new LoginModel() { Token = "" });
+                result.WithValue(new LoginModel() { Token = string.Empty });
                 return result;
-                //result.WithValue(new LoginModel() { Token = "" });
             }
 
             return result;

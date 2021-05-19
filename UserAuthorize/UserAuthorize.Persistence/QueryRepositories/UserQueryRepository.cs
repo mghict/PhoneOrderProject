@@ -38,7 +38,7 @@ namespace UserAuthorize.Persistence.QueryRepositories
             }
             catch(Exception ex)
             {
-               return false;
+                return false;
             }
             
 

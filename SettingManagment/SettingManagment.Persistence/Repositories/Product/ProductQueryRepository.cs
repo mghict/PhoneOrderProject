@@ -101,6 +101,37 @@ namespace SettingManagment.Persistence.Repositories.Product
             return entity.ToList();
         }
 
+        public async Task<ProductReserveModel> GetProductReserve(long itemId, float storeId, bool categoryEqual = true, bool brandEqual = false, string brandSearch = "", bool nameEqual = false, string nameSearch = "", int pageNumber = 0, int pageSize = 20)
+        {
+            var query = " exec [dbo].[GetProductForReplace] @ItemId,@StoreId,@BrandEqual,@CategoryEqual,@NameEqual,@NameSearch,@BrandSearch,@PageNumber,@PageSize";
+
+            var param = new
+            {
+                @ItemId=itemId,
+                @StoreId=storeId,
+                @BrandEqual=brandEqual,
+                @CategoryEqual=categoryEqual,
+                @NameEqual=nameEqual,
+                @NameSearch=nameSearch,
+                @BrandSearch=brandSearch,
+                @PageNumber = pageNumber,
+                @PageSize = pageSize
+            };
+
+            ProductReserveModel lst = new ProductReserveModel();
+            lst.Items = new List<ProductReserveItemsModel>();
+
+            using (var list = await db.QueryMultipleAsync(query, param))
+            {
+                lst.RowCount = list.ReadFirst<int>();
+                var temp = list.Read<ProductReserveItemsModel>().ToList();
+                lst.Items.AddRange(temp);
+
+            }
+
+            return lst;
+        }
+
         public async Task<ProductsModel> GetProducts(float storeId, string searchKey = "", float catId = 0,int pageNumber=0,int pageSize=20)
         {
             var query = " exec dbo.GetProducts @StoreId,@CatId,@ProdName,@PageNumber,@PageSize ";

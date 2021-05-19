@@ -358,5 +358,43 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+        #region GetProductsReserve
+
+        [HttpPost("GetProductsReserve")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<BehsamFramework.Models.ProductReserveModel>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<BehsamFramework.Models.ProductReserveModel>>>
+            GetProductsReserveAsync([FromBody] Application.CustomerValuesFeature.Commands.GetProductReserveCommand command)
+        {
+
+            FluentResults.Result<BehsamFramework.Models.ProductReserveModel> result =
+                new FluentResults.Result<BehsamFramework.Models.ProductReserveModel>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
     }
 }
