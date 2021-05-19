@@ -29,7 +29,7 @@ namespace UserAuthorize.Persistence.QueryRepositories
             {
                 var entity = await db.QueryFirstOrDefaultAsync<int>(query, param);
                 
-                if (entity == null || entity<1)
+                if (entity<1)
                 {
                     return false;
                 }
