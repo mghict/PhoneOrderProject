@@ -19,5 +19,7 @@ namespace SettingManagment.Domain.IRepositories.Product
         Task<BehsamFramework.Models.ProductReserveModel> GetProductReserve
             (long itemId,float storeId,bool categoryEqual=true,bool brandEqual=false,string brandSearch="",bool nameEqual=false,string nameSearch="",
              int pageNumber=0,int pageSize=20);
+
+        Task<Domain.Entities.ProductInfoTbl> GetProductByBarcode(float storeId,string barcode);
     }
 }

@@ -15,10 +15,11 @@ namespace WebSite.JourChin.Controllers
     public class HomeController : Base.BaseController
     {
         private readonly Services.Authorize.IAuthorizeService _authorizeService;
-
-        public HomeController(Services.Authorize.IAuthorizeService AuthorizeService,ServiceCaller serviceCaller, ICachedMemoryService _cacheService, IMapper mapper) : base(serviceCaller, _cacheService, mapper)
+        private readonly Services.User.IUserService _userService;
+        public HomeController(Services.User.IUserService UserService,Services.Authorize.IAuthorizeService AuthorizeService,ServiceCaller serviceCaller, ICachedMemoryService _cacheService, IMapper mapper) : base(serviceCaller, _cacheService, mapper)
         {
             _authorizeService = AuthorizeService;
+            _userService = UserService;
         }
 
         public async Task< IActionResult> Index()
@@ -113,6 +114,55 @@ namespace WebSite.JourChin.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> ResetPass()
+        {
+            var item = new Models.User.UserInfoModel();
+
+            var user = HttpContext.Session.Get<Models.UserModel>("User");
+
+            if (user != null)
+            {
+                var userId = user.UserId;
+                item = await _userService.GetByIdAsync(userId);
+            }
+
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPass(Models.User.UserInfoModel usr)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (usr.Password != usr.PasswordConfirm || string.IsNullOrEmpty(usr.Password))
+                    {
+                        throw new Exception("رمزعبور و تایید آن مشابه نیستند");
+                    }
+
+                    var ret = await _userService.ResetUserAsync(usr);
+                    if (ret.IsFailed)
+                    {
+                        ModelState.AddModelError("Error", ret.Errors.Select(s=>s.Message).ToList().ListToString());
+                        return View("ResetPass", usr);
+                    }
+
+                    return Redirect("/Home/Index");
+                }
+                else
+                {
+                    return View("ResetPass", usr);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("ResetPass", usr);
+            }
         }
     }
 }

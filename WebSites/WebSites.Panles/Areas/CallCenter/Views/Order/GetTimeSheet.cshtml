@@ -32,40 +32,18 @@
                     {
                         @foreach (var time in Model)
                         {
-                            <tr role="row">
-                                <td>@time.RowNum</td>
+                            <tr>
+                                <td>
+                                    @time.RowNum
+                                </td>
                                 <td>@time.StartTime</td>
                                 <td>@time.EndTime</td>
                                 <td>
                                     @if (time.Status)
                                     {
-
-                                        @*<a
-                                               asp-area="CallCenter" asp-controller="Order" asp-action="GetStoreOrder"
-                                               asp-route-customerId="@ViewBag.CustomerId"
-                                               asp-route-startTime="@time.StartTime.ToString("c",CultureInfo.InvariantCulture)"
-                                               asp-route-endTime="@time.EndTime.ToString("c",CultureInfo.InvariantCulture)"
-                                               asp-route-address="@ViewBag.AddressId">
-                                                <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                                انتخاب کنید
-                                            </a>*@
-
-                                        <a href="/CallCenter/Order/GetStoreOrder?customerId=@ViewBag.CustomerId&startTime=@time.StartTime.ToString("c",CultureInfo.InvariantCulture)&endTime=@time.EndTime.ToString("c",CultureInfo.InvariantCulture)&address=@ViewBag.AddressId" >
+                                        <a href="/CallCenter/Order/GetStoreOrder?customerId=@ViewBag.CustomerId&startTime=@time.StartTime.ToString("c",CultureInfo.InvariantCulture)&endTime=@time.EndTime.ToString("c",CultureInfo.InvariantCulture)&address=@ViewBag.AddressId">
                                             <i class="fa fa-check text-success" aria-hidden="true"></i>
-                                            انتخاب کنید
                                         </a>
-
-                                        @*<div>
-                                                <form href="/CallCenter/Order/GetStoreOrder" method="post">
-                                                    <input type="hidden" id="startTime" name="startTime" value="@time.StartTime" />
-                                                    <input type="hidden" id="endTime" name="endTime" value="@time.EndTime" />
-                                                    <input type="hidden" id="customerId" name="customerId" value="@ViewBag.CustomerId" />
-                                                    <div class="row">
-                                                        <input type="submit" value="انتخاب" class="btn btn-success" />
-                                                    </div>
-                                                </form>
-                                            </div>*@
-
 
                                     }
                                     else

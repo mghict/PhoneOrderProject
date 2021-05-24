@@ -13,6 +13,7 @@ namespace StoreManagment.Domain.IQueryRepositories
         Task<List<Domain.Entities.CustomerPreOrderUserActive>> GetOrderUserActivityDetailsInDate(DateTime orderDate, float storeId = 0, int userId = 0);
         Task<List<Domain.Entities.UserActivityLogs>> GetOrderUserActivityLogs(DateTime fromDate,DateTime toDate, int userId=0);
         Task<List<Domain.Entities.OrderUserActivityByStatus>> GetOrderUserActivityByStatus(int userId, int status);
+        Task<List<Domain.Entities.OrderUserActivityByStatus>> GetOrderUserActivityByStatusItems(int userId, int status,int itemStatus);
 
     }
 }

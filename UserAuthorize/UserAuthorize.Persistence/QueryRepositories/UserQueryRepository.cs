@@ -55,7 +55,7 @@ namespace UserAuthorize.Persistence.QueryRepositories
                 @ApplicationId = applicationId
             };
 
-            var entity = await db.QueryFirstOrDefaultAsync<Domain.Entities.UserInfoTbl>(query, param);
+            var entity = await db.QueryFirstAsync<Domain.Entities.UserInfoTbl>(query, param);
             if(entity!=null)
             {
                 entity.Password = "";

@@ -196,3 +196,54 @@ function OrderComplate(orderCode) {
         }
     });
 }
+
+function OrderReplace(orderCode) {
+
+    swal.fire({
+        title: 'تایید',
+        text: 'از تایید سفارش مطمئن هستید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#7cacbe',
+        confirmButtonText: 'بله',
+        cancelButtonText: 'خیر'
+    }).then((result) => {
+        if (result.value) {
+            var postData = {
+                'orderCode': orderCode
+            };
+
+            $.ajax({
+                //contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "POST",
+                url: "/Orders/NeedForReplaceOrder",
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        location.replace('/Orders/CurrentOrder');
+                    }
+                    else {
+                        swal.fire(
+                            'هشدار!',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
+                    hideBehsamLoading();
+                }
+
+            });
+
+        }
+    });
+}

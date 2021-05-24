@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebSite.JourChin.Helper;
+using WebSite.JourChin.Models.User;
 
 namespace WebSite.JourChin.Services.User
 {
@@ -32,6 +33,7 @@ namespace WebSite.JourChin.Services.User
         //---------------------------------------------
 
         Task<List<Models.User.OrderUserActivity>> GetOrderUserActivityByStatusAsync(int userId, int status);
+        Task<List<Models.User.OrderUserActivity>> GetOrderUserActivityByStatusItemsAsync(int userId, int status,int itemStatus);
     }
 
     public class UserActivityService : Base.ServiceBase, IUserActivityService
@@ -251,6 +253,31 @@ namespace WebSite.JourChin.Services.User
 
             return ret;
         }
+        public async Task<List<OrderUserActivity>> GetOrderUserActivityByStatusItemsAsync(int userId, int status, int itemStatus)
+        {
+            List<Models.User.OrderUserActivity> ret = new List<Models.User.OrderUserActivity>();
 
+            var command = new
+            {
+                UserId = userId,
+                Status = status,
+                ItemStatus=itemStatus
+            };
+
+            try
+            {
+                var resp = await ServiceCaller.PostDataWithValue<List<Models.User.OrderUserActivity>>("Order/UserActive/GetOrderUserActivityByStatusItems", command);
+                if (resp != null && resp.IsSuccess)
+                {
+                    ret = resp.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret = new List<Models.User.OrderUserActivity>();
+            }
+
+            return ret;
+        }
     }
 }

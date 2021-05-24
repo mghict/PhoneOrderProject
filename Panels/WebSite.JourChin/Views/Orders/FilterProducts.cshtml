@@ -1,4 +1,102 @@
-﻿@{ 
+﻿@model BehsamFramework.Models.ProductReserveModel
+@{
     Layout = null;
+
+    int PageNumber = 0;
+    int PageSize = 20;
+
 }
-<h1>Hi</h1>
+
+<div>
+
+    <div class="pagination pagination-rounded float-left">
+        <div class="product-description">
+            <button class="btn btn-primary btn-sm add2cart-notify" href="#" onclick="minPage('@(PageNumber)','@(Model==null?0:Model.RowCount)')">
+                <i class="lni lni-chevron-left"></i>
+            </button>
+            <button class="btn btn-primary btn-sm add2cart-notify" href="#" onclick="addPage('@(PageNumber)','@(Model==null?0:Model.RowCount)')">
+                <i class="lni lni-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    <br />
+
+    @if (Model != null && Model.Items != null)
+    {
+        <div class="container">
+            <div class="row g-3">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+
+                    <div class="col-12 col-md-12 col-lg-12" >
+                        <div class="card featured-product-card">
+                            <div class="card-body">
+                                <div class="product-thumbnail-side">
+                                    <a class="product-thumbnail d-block" href="#">
+                                        <img src="~/img/product/logo-white.png" alt="product name">
+                                    </a>
+                                </div>
+                                <div class="product-description">
+                                    <p class="product-title d-block">@item.DisplayName</p>
+                                    <p class="sale-price">برند: @item.BrandName</p>
+                                    <p class="product-rating">@item.ProductCode</p>
+                                    <button class="btn btn-success btn-sm add2cart-notify" href="#" onclick="addToList('@item.Id')">
+                                        <i class="lni lni-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+    function addToList(pid) {
+        let id = $('#txtItemIdReserve').val();
+
+        var postData = {
+            'orderItemId': id,
+            'productId':pid
+        };
+
+        $.ajax({
+            //dataType: 'json',
+            type: 'POST',
+            url: '/Orders/AddToRejectList',
+            data: postData,
+            beforeSend: function () {
+
+                showBehsamLoading();
+            },
+            complete: function () {
+
+                hideBehsamLoading();
+            },
+            success: function (res) {
+
+                if (res.isSuccess == true) {
+                    $('#txt' + id).hide();
+                }
+                else {
+                    swal.fire(
+                        'هشدار!',
+                        res.message,
+                        'warning'
+                    );
+                }
+            },
+            error: function (request, status, error) {
+                console.log(request);
+                console.log(status);
+                console.log(error);
+
+            }
+        });
+    }
+</script>
+

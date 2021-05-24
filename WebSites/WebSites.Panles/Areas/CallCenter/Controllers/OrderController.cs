@@ -17,6 +17,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
     [Area("CallCenter")]
     public class OrderController : BaseController
     {
+        private readonly Services.IOrderFacad _OrderFacad;
+
+
         private Services.Customer.IGetCustomerBySearch GetCustomerBySearch;
         private Services.Customer.IGetCustomer GetCustomer;
         private Services.CustomerPhone.IGetCustomerPhone GetCustomerPhone;
@@ -25,8 +28,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         private Services.IOrderFacad OrderFacad;
         private readonly Services.Notification.INotificationService _notificationService;
-
+        
         public OrderController(
+            Services.IOrderFacad OrderFacad,
             Services.Map.NeshanMapService neshanMapService,
             Services.Notification.INotificationService NotificationService,
             Services.IOrderFacad orderFacad,
@@ -34,7 +38,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             Services.Customer.IGetCustomer getCustomer,
             Services.CustomerPhone.IGetCustomerPhone getCustomerPhone,
             Services.CustomerAddress.IGetCustomerAddressService getCustomerAddressService,
-            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+            IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller, memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             OrderFacad = orderFacad;
             GetCustomerBySearch = getCustomerBySearch;
@@ -43,6 +47,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             GetCustomerAddressService = getCustomerAddressService;
             _notificationService = NotificationService;
             NeshanMapService = neshanMapService;
+            _OrderFacad = OrderFacad;
         }
 
         public IActionResult Index()
@@ -51,21 +56,15 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpGet]
-        public IActionResult OrderRegister()//(Models.Customer.CustomerProfileModel model)
+        public IActionResult OrderRegister(string customerId)
         {
-            //return View(model);
+            ViewBag.CustomerId = customerId;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> OrderRegister(string searchKey = "")
+        public async Task<IActionResult> PostOrderRegister(string searchKey = "")
         {
-            //var model = new Models.Customer.CustomerProfileModel()
-            //{
-            //    GetCustomerInfo = new Models.Customer.CustomerInfoModel(),
-            //    GetCustomerAddresses=new List<Models.CustomerAddress.CustomerAddressModel>(),
-            //    GetCustomerPhones=new List<Models.CustomerPhone.CustomerPhoneModel>()
-            //};
 
             Models.Customer.CustomerInfoModel model = new Models.Customer.CustomerInfoModel();
 
@@ -79,21 +78,6 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             {
                 var ret = await GetCustomerBySearch.GetCustomerInfoAsync(searchKey.Trim());
                 model = ret;
-                //var resp = ret.Result;
-
-                //if (resp != null)
-                //{
-                //var customerPhones = GetCustomerPhone.Execute(ret.Result.Id);
-                //var customerAddress = GetCustomerAddressService.ExecuteGetAddresses(ret.Result.Id);
-
-
-                //customerPhones.Wait();
-                //customerAddress.Wait();
-
-                //model.GetCustomerInfo = ret.Result;
-                //model.GetCustomerPhones = customerPhones.Result;
-                //model.GetCustomerAddresses = customerAddress.Result;
-                //    }
 
             }
 
@@ -172,8 +156,8 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowProductList(TimeSpan sT, TimeSpan eT, long cId, long add, string sId,int shipp)//,
-            //string catId="0", int pageNumber=0,int pageSize=21,string searchKey="")
+        public async Task<IActionResult> ShowProductList(TimeSpan sT, TimeSpan eT, long cId, long add, string sId, int shipp)//,
+                                                                                                                             //string catId="0", int pageNumber=0,int pageSize=21,string searchKey="")
         {
             DateTime requestDate = DateTime.Now;
 
@@ -197,11 +181,11 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
             var item = new BehsamFramework.Models.CategoryShowModel()
             {
-                Id=0f,
-                CategoryName="همه محصولات",
-                ParentId=0,
-                Priority=1,
-                Status=1
+                Id = 0f,
+                CategoryName = "همه محصولات",
+                ParentId = 0,
+                Priority = 1,
+                Status = 1
             };
 
             var exists = model.FirstOrDefault(p => p.Id == 0.0f);
@@ -209,15 +193,15 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             {
                 model.Add(item);
             }
-            return View(model.OrderBy(p=>p.Id).ToList());
+            return View(model.OrderBy(p => p.Id).ToList());
         }
 
         [HttpPost]
         public IActionResult GetSubCategory(string catId)
         {
             decimal id = catId.ToDecimal();
-            
-            if(id<=0)
+
+            if (id <= 0)
             {
                 return View(new List<BehsamFramework.Models.CategoryShowModel>());
             }
@@ -227,7 +211,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ShowProduct(string storeId, string catId, int pageNumber = 0, int pageSize = 21,string searchKey="")
+        public async Task<IActionResult> ShowProduct(string storeId, string catId, int pageNumber = 0, int pageSize = 21, string searchKey = "")
         {
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
@@ -240,7 +224,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
 
         [HttpPost]
-        public IActionResult AddToCart(string storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, string unitPrice, int count, string productName,int tax,int shipping)
+        public IActionResult AddToCart(string storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime, int productId, string unitPrice, int count, string productName, int tax, int shipping)
         {
             try
             {
@@ -252,7 +236,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 float sid;
                 float.TryParse(storeId, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out sid);
 
-                var model = OrderFacad.CachedOrderService.AddItem(sid, customerId, addressId, start, end, productId, price, count, productName,shipping,tax);
+                var model = OrderFacad.CachedOrderService.AddItem(sid, customerId, addressId, start, end, productId, price, count, productName, shipping, tax);
 
                 if (model < 1)
                 {
@@ -406,7 +390,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 if (user == null)
                 {
-                    return Json(new { IsSuccess = false, Message ="اطلاعات کاربر صحیح نمی باشد" });
+                    return Json(new { IsSuccess = false, Message = "اطلاعات کاربر صحیح نمی باشد" });
                 }
 
                 float sId = 0.0f;
@@ -415,7 +399,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 float.TryParse(user.StoreId, style, info, out sId);
 
-                result = OrderFacad.CreateOrderService.Execute(model,user.UserId,sId).Result;
+                result = OrderFacad.CreateOrderService.Execute(model, user.UserId, sId).Result;
 
                 if (result.IsSuccess)
                 {
@@ -448,6 +432,51 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             }
 
             return Json(new { IsSuccess = result.IsSuccess, Message = result.GetErrors(), Code = model.OrderCode });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RegisterOrderContinue(string storeId, long customerId)
+        {
+            ViewBag.StoreId = storeId;
+            ViewBag.CustomerId = customerId;
+
+            float sid;
+            float.TryParse(storeId, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out sid);
+
+            var model = OrderFacad.CachedOrderService.GetRequest(sid, customerId);
+
+            if (model != null)
+            {
+                return Redirect($"/CallCenter/Order/ShowProductList?sT={model.StartTime}&eT={model.EndTime}&cId={model.CustomerId}&add={model.AddressID}&sId={storeId}&shipp={model.ShippingPrice}");
+            }
+            else
+            {
+                var customer = await GetCustomer.GetCustomerInfoAsync(customerId);
+                if (customer != null)
+                {
+                    return Redirect($"/CallCenter/Order/OrderRegister?customerId={customer.CustomerCode}");
+                }
+                else
+                {
+                    return Redirect($"/CallCenter/Order/OrderRegister");
+                }
+            }
+
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReplaceOrders()
+        {
+            DateTime dt = DateTime.Now;
+            var result = await _OrderFacad.ReportsService.GetSummeryOrderStatusDetailsByDate(0, dt.AddDays(-3), dt.AddDays(1), 4);
+
+            if (!result.IsSuccess)
+            {
+                result.Value = new List<Models.Reports.GetSummeryOrderStatusDetailsByDate>();
+            }
+
+            return View(result.Value);
         }
 
         private async Task<BehsamFramework.Models.ProductsModel> ShowProductModel(string storeId, string catId, int pageNumber = 0, int pageSize = 21, string searchKey = "")

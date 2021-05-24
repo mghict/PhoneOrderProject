@@ -44,7 +44,7 @@
                                 <div class="row row-sm">
                                     <div class="col-sm-6">
                                         <label asp-for="Sex" class="control-label"></label>
-                                        <select asp-for="Sex" name="Sex" id="cmbSex" class="form-control select2" required asp-items="ViewBag.customerSex">
+                                        <select asp-for="Sex" name="Sex" id="cmbSex" class="form-control select2"  asp-items="ViewBag.customerSex">
                                             <option selected value="" data-select2-id="0">انتخاب کنید</option>
 
                                         </select>
@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label asp-for="Education" class="control-label"></label>
-                                        <select asp-for="Education" name="Education" id="cmbEducation" class="form-control select2" required asp-items="ViewBag.customerEducation">
+                                        <select asp-for="Education" name="Education" id="cmbEducation" class="form-control select2"  asp-items="ViewBag.customerEducation">
                                             <option selected value="" data-select2-id="0">انتخاب کنید</option>
                                         </select>
                                         <span asp-validation-for="Education" class="text-danger"></span>
@@ -63,7 +63,7 @@
                                 <div class="row row-sm">
                                     <div class="col-sm-6">
                                         <label asp-for="CustomerTypeId" class="control-label"></label>
-                                        <select asp-for="CustomerTypeId" name="CustomerTypeId" id="cmbType" class="form-control select2" required asp-items="ViewBag.customerType">
+                                        <select asp-for="CustomerTypeId" name="CustomerTypeId" id="cmbType" class="form-control select2"  asp-items="ViewBag.customerType">
                                             <option value="" data-select2-id="0">انتخاب کنید</option>
 
                                         </select>
@@ -73,7 +73,7 @@
                                     <div class="col-sm-6">
                                         @*<p class="mg-b-10">شغل</p>*@
                                         <label asp-for="Job" class="control-label"></label>
-                                        <select asp-for="Job" name="Job" id="cmbJob" class="form-control select2" required asp-items="ViewBag.customerJob">
+                                        <select asp-for="Job" name="Job" id="cmbJob" class="form-control select2"  asp-items="ViewBag.customerJob">
                                             <option value="" data-select2-id="0">انتخاب کنید</option>
                                         </select>
                                         <span asp-validation-for="Job" class="text-danger"></span>
@@ -85,7 +85,7 @@
                                 <div class="row row-sm">
                                     <div class="col-sm-6">
                                         <label asp-for="CustomerGroupId" class="control-label"></label>
-                                        <select asp-for="CustomerGroupId" name="CustomerGroupId" id="cmbGroup" class="form-control select2 required" required asp-items="ViewBag.customerGroup">
+                                        <select asp-for="CustomerGroupId" name="CustomerGroupId" id="cmbGroup" class="form-control select2 required"  asp-items="ViewBag.customerGroup">
                                             <option selected value="" data-select2-id="0">انتخاب کنید</option>
                                         </select>
 
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label asp-for="RegisterTypeId" class="control-label"></label>
-                                        <select asp-for="RegisterTypeId" name="RegisterTypeId" id="cmbRegisterType" class="form-control select2" required asp-items="ViewBag.customerRegisterType" disabled>
+                                        <select asp-for="RegisterTypeId" name="RegisterTypeId" id="cmbRegisterType" class="form-control select2"  asp-items="ViewBag.customerRegisterType" disabled>
                                             <option value="6" selected>سامانه فروش تلفنی</option>
                                             <option value="">انتخاب کنید</option>
 
@@ -110,7 +110,8 @@
         </div>
 
         <div class="card-footer">
-            <a asp-action="Index">برگشت به صفحه مشتریان</a>
+            <a href="/CallCenter/Customer/Index" class="btn btn-primary" >برگشت به صفحه مشتریان</a>
+            <a href="/CallCenter/Order/OrderRegister" class="btn btn-danger">ثبت سفارش</a>
         </div>
     </div>
 

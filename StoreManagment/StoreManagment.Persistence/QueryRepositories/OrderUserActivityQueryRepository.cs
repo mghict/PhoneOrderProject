@@ -110,6 +110,22 @@ namespace StoreManagment.Persistence.QueryRepositories
 
             return result.ToList();
         }
+
+        public async Task<List<OrderUserActivityByStatus>> GetOrderUserActivityByStatusItems(int userId, int status, int itemStatus)
+        {
+            var query = " exec dbo.[OrderUserActivityByStatusItem] @UserId,@Status,@ItemStatus";
+
+            var param = new
+            {
+                @UserId = userId,
+                @Status = status,
+                @ItemStatus=itemStatus
+            };
+
+            var result = await db.QueryAsync<OrderUserActivityByStatus>(query, param);
+
+            return result.ToList();
+        }
     }
 
 }

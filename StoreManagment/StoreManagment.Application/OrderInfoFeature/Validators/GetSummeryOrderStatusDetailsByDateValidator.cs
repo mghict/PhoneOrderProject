@@ -22,13 +22,13 @@ namespace StoreManagment.Application.OrderInfoFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
-            RuleFor(current => current.StoreId)
-                .NotEmpty()
-                .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotNull()
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+            //RuleFor(current => current.StoreId)
+            //    .NotEmpty()
+            //    .WithErrorCode("10")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+            //    .NotNull()
+            //    .WithErrorCode("11")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
         }
     }

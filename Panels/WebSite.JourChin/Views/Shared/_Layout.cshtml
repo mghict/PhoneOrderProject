@@ -31,6 +31,7 @@
 </head>
 <body>
     <!-- Preloader-->
+    
     <div class="preloader" id="preloader">
         <div class="spinner-grow text-danger" role="status">
             <div class="sr-only">بارگذاری...</div>
@@ -44,12 +45,20 @@
     <!-- Header Area-->
     <div class="header-area" id="headerArea">
         <div class="container h-100 d-flex align-items-center justify-content-between">
-            <div class="back-button d-flex float-right"><a href="/home/index"><i class="lni lni-arrow-right"></i></a></div>
+            @{ 
+                string backUrl = "/home/index";
+
+                if (ViewBag.BackUrlArrow!=null && !string.IsNullOrWhiteSpace(ViewBag.BackUrlArrow))
+                {
+                    backUrl = ViewBag.BackUrlArrow;
+                }
+            }
+            <div class="back-button d-flex float-right"><a href="@backUrl"><i class="lni lni-arrow-right"></i></a></div>
             <!-- Logo Wrapper-->
             <div class="logo-wrapper"><a href="/home/index"><img src="~/img/brand/logo-with-name.png" style="width:45%;" alt="Ok Logo"></a></div>
             <!-- Search Form-->
-            <!-- Navbar Toggler-->
-            @*<div class="suha-navbar-toggler d-flex flex-wrap float-left" id="suhaNavbarToggler"><span></span><span></span><span></span></div>*@
+            @* Navbar Toggler*@
+            <div class="suha-navbar-toggler d-flex flex-wrap float-left" id="suhaNavbarToggler" onclick="showUserProfile()"><span></span><span></span><span></span></div>
         </div>
     </div>
 
@@ -58,18 +67,16 @@
     <div class="page-content-wrapper">
         @RenderBody()
     </div>
-
-    @*<div class="suha-sidenav-wrapper" id="sidenavWrapper">
+    <div class="suha-sidenav-wrapper" id="sidenavWrapper">
         <!-- Sidenav Profile-->
         <div class="sidenav-profile">
-            <div class="user-profile"><img src="~/img/bg-img/9.jpg" alt=""></div>
-            <div class="user-info">
-                <h6 class="user-name mb-0">نیلوفر</h6>
-                <p class="available-balance">حساب شما <span><span class="counter">350000</span></span><span> تومان</span></p>
+            <div class="user-profile"><img src="~/img/bg-img/user_profile.svg" alt=""></div>
+            <div class="user-info" id="userProfile">
+                
             </div>
         </div>
         <!-- Sidenav Nav-->
-        <ul class="sidenav-nav pl-0">
+        @*<ul class="sidenav-nav pl-0">
                 <li><a href="profile.html"><i class="lni lni-user"></i>پروفایل من</a></li>
                 <li><a href="notifications.html"><i class="lni lni-alarm lni-tada-effect"></i>اطلاعیه ها <span class="ml-3 badge badge-warning">3</span></a></li>
                 <li class="suha-dropdown-menu">
@@ -92,10 +99,10 @@
                 </li>
                 <li><a href="settings.html"><i class="lni lni-cog"></i>تنظیمات</a></li>
                 <li><a href="#" onclick="logout()"><i class="lni lni-power-switch"></i>خروج از سیستم</a></li>
-            </ul>
+            </ul>*@
             <!-- Go Back Button-->
             <div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
-        </div>*@
+        </div>
 
     <!-- Internet Connection Status-->
     <div class="internet-connection-status" id="internetStatus"></div>
@@ -151,6 +158,7 @@
 
     <script src="~/webcamjs/webcam.js"></script>
 
+    <script src="~/js/home/showprofile.js"></script>
     <script src="~/js/home/logout.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

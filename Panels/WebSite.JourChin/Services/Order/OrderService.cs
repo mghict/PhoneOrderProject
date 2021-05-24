@@ -15,6 +15,10 @@ namespace WebSite.JourChin.Services.Order
         Task<FluentResults.Result<bool>> AcceptUserForOrderItems(long orderId, long itemId);
 
         Task<FluentResults.Result<bool>> FirstStateUserForOrderItems(long orderId, long itemId);
+        
+        Task<FluentResults.Result<bool>> ReplaceStateUserForOrderItems(long orderId, long itemId);
+
+        Task<FluentResults.Result<bool>> ChangeStateUserForOrderItems(long orderId, long itemId, int state);
 
         //-----------------------------------------------------------------
         // OrderItemsReverse
@@ -88,6 +92,33 @@ namespace WebSite.JourChin.Services.Order
             };
 
             var result = await ServiceCaller.PostDataWithValue<bool>("Order/Order/FirstStateUserForOrderItems", command);
+
+            return result;
+        }
+
+        public async Task<FluentResults.Result<bool>> ReplaceStateUserForOrderItems(long orderId, long itemId)
+        {
+            var command = new
+            {
+                OrderId = orderId,
+                ItemId = itemId
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<bool>("Order/Order/ReplaceStateUserForOrderItems", command);
+
+            return result;
+        }
+
+        public async Task<FluentResults.Result<bool>> ChangeStateUserForOrderItems(long orderId, long itemId,int state)
+        {
+            var command = new
+            {
+                OrderId = orderId,
+                ItemId = itemId,
+                State=state
+            };
+
+            var result = await ServiceCaller.PostDataWithValue<bool>("Order/Order/ChangeStateUserForOrderItems", command);
 
             return result;
         }

@@ -106,7 +106,7 @@
 
         <div class="pagination pagination-rounded float-left">
             <nav aria-label="Page navigation example" class="mb-3">
-                <paging total-records="@Model.RowCount.ToInt()"
+                <paging total-records="@(Model!=null?Model.RowCount.ToInt():0)"
                         page-no="@PageNumber==0?1:PageNumber"
                         page-size="@PageSize==0?10:PageSize"
                         show-prev-next="true"

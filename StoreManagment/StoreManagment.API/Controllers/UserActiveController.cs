@@ -457,6 +457,48 @@ namespace StoreManagment.API.Controllers
 
         #endregion
 
+        #region GetOrderUserActivityByStatusItems
+
+        [HttpPost("GetOrderUserActivityByStatusItems")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>>>
+            GetOrderUserActivityByStatusItemsAsync([FromBody] Application.OrderUserActiveFeature.Commands.OrderUserActivityByStatusItemsCommand command)
+        {
+            FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>> result =
+                new FluentResults.Result<List<Domain.Entities.OrderUserActivityByStatus>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
         //------------------------------------
         //------------------------------------
 

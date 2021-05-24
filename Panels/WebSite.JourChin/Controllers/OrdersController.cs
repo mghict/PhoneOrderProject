@@ -18,14 +18,16 @@ namespace WebSite.JourChin.Controllers
     {
         private readonly Services.User.IUserActivityService _userActivityService;
         private readonly Services.Order.IOrderService _orderService;
-
+        private readonly Services.Product.IProductService _productService;
         public OrdersController(
             Services.Order.IOrderService OrderService,
             Services.User.IUserActivityService UserActivityService,
+            Services.Product.IProductService ProductService,
             ServiceCaller serviceCaller, ICachedMemoryService _cacheService, IMapper mapper) : base(serviceCaller, _cacheService, mapper)
         {
             _userActivityService = UserActivityService;
             _orderService = OrderService;
+            _productService = ProductService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,6 +46,8 @@ namespace WebSite.JourChin.Controllers
         //--------------------------------------------
         public async Task<IActionResult> CurrentOrder()
         {
+            ViewBag.BackUrlArrow = $"/Orders/Index";
+
             List<Models.User.OrderUserActivity> model = new List<Models.User.OrderUserActivity>();
 
             Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
@@ -105,7 +109,38 @@ namespace WebSite.JourChin.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> NeedForReplaceOrder(long orderCode)
+        {
+
+            try
+            {
+                var model = await _orderService.GetOrderInfoWithItems(orderCode);
+                if(model!=null && model.Value!=null)
+                {
+                    var item = model.Value;
+                    if(item.OrderInfo.OrderState==3)
+                    {
+                        var result = await _orderService.ChangeOrderStatus(orderCode, 4, "درخواست جایگزینی کالا");
+                        return Json(new { IsSuccess = result.IsSuccess, Message = result.Errors.Select(s => s.Message).ToList().ListToString() });
+                    }
+                    else
+                    {
+                        throw new Exception("وضعیت سفارش صحیح نیست");
+                    }
+                }
+                else
+                {
+                    throw new Exception("سفارش یافت نشد");
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Message = ex.Message });
+            }
+        }
+
         //--------------------------------------------
         // اعلام جایگزینی کالا
         //--------------------------------------------
@@ -113,22 +148,36 @@ namespace WebSite.JourChin.Controllers
         [HttpGet]
         public async Task<IActionResult> RejectItem(long orderId, long itemId, long orderCode)
         {
+            ViewBag.BackUrlArrow = $"/Orders/OrderItems?orderCode={orderCode}";
+
+            var result = await _orderService.ReplaceStateUserForOrderItems(orderId, itemId);
+            
             FluentResults.Result<Models.Order.GetOrderInfoWithItems> model =
                 new FluentResults.Result<Models.Order.GetOrderInfoWithItems>();
 
-            model = await _orderService.GetOrderInfoWithItems(orderCode);
-
-            if (model.IsFailed)
+            if (result.IsSuccess)
             {
-                model = new FluentResults.Result<Models.Order.GetOrderInfoWithItems>();
+                
+                model = await _orderService.GetOrderInfoWithItems(orderCode);
+
+                if (model.IsFailed)
+                {
+                    model = new FluentResults.Result<Models.Order.GetOrderInfoWithItems>();
+                }
+
+                var item = model.Value?.OrderItems.FirstOrDefault(p => p.OrderId == orderId && p.Id == itemId);
+                ViewBag.OrderCode = orderCode;
+
+                ViewBag.ItemIdOrderReserve = item.Id;
+
+                return View(item);
+            }
+            else
+            {
+                ViewBag.ItemIdOrderReserve = 0;
+                return Redirect($"/Orders/OrderItems?orderCode={orderCode}");
             }
 
-            var item = model.Value?.OrderItems.FirstOrDefault(p => p.OrderId == orderId && p.Id == itemId);
-            ViewBag.OrderCode = orderCode;
-
-            ViewBag.ItemIdOrderReserve = item.Id;
-
-            return View(item);
         }
 
         [HttpGet]
@@ -142,18 +191,99 @@ namespace WebSite.JourChin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> FilterProducts(string productName,string brandName,bool sameCategory)
+        public async Task<IActionResult> DeleteFromRejectList(long id)
         {
-            
+            try
+            {
+                var result = await _orderService.DeleteItemReserveAsync(id);
 
-            return View();
+                return Json(new { IsSuccess = result.IsSuccess, Message = result.Errors.Select(s=>s.Message).ToList().ListToString() });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { IsSuccess=false,Message=ex.Message });
+            }
+            
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToRejectList(long orderItemId,int productId)
+        {
+            try
+            {
+                var result = await _orderService.CreateItemReserveAsync(orderItemId,productId);
+
+                return Json(new { IsSuccess = result.IsSuccess, Message = result.Errors.Select(s => s.Message).ToList().ListToString() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Message = ex.Message });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FindProduct(string barcode)
+        {
+
+            Models.Product.ProductInfoModel model = new Models.Product.ProductInfoModel();
+
+            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+            if (user != null)
+            {
+                var info = System.Globalization.CultureInfo.InvariantCulture;
+                var style = System.Globalization.NumberStyles.AllowDecimalPoint;
+
+                float sId = 0.0f;
+                float.TryParse(user.StoreId, style, info,out sId);
+
+                var result = await _productService.GetProductByBarcode(sId,barcode);
+
+                if(result!=null && result.IsSuccess)
+                {
+                    model = result.Value;
+                }
+            }
+
+           
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FilterProducts(long itemId,int page=0,int pageSize=10, string productName="",string brandName="",bool sameCategory=true)
+        {
+            var item = new Models.Product.ProductReserveSearchModel()
+            {
+                PageNumber = page,
+                PageSize = pageSize,
+                BrandSearch = brandName,
+                BrandEqual = !string.IsNullOrWhiteSpace(brandName),
+                NameSearch = productName,
+                NameEqual = !string.IsNullOrWhiteSpace(productName),
+                CategoryEqual = sameCategory,
+
+            };
+
+            var model = await _productService.GetProductFprReserve(item);
+
+            return View(model.Value);
+        }
+
 
         //--------------------------------------------
         // جزئیات سفارش
         //--------------------------------------------
-        public async Task<IActionResult> OrderItems(long orderCode)
+        public async Task<IActionResult> OrderItems(long orderCode,string ret="")
         {
+            if (string.IsNullOrWhiteSpace(ret))
+            {
+                ViewBag.BackUrlArrow = $"/Orders/CurrentOrder";
+            }
+            else
+            {
+                ViewBag.BackUrlArrow = $"/Orders/{ret}";
+            }
+
             FluentResults.Result<Models.Order.GetOrderInfoWithItems> model =
                 new FluentResults.Result<Models.Order.GetOrderInfoWithItems>();
 
@@ -171,6 +301,8 @@ namespace WebSite.JourChin.Controllers
         //--------------------------------------------
         public async Task<IActionResult> ComplateOrders()
         {
+            ViewBag.BackUrlArrow = $"/Orders/Index";
+
             List<Models.User.OrderUserActivity> model = new List<Models.User.OrderUserActivity>();
 
             Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
@@ -199,6 +331,28 @@ namespace WebSite.JourChin.Controllers
             {
                 return Json(new { IsSuccess = false, Message = ex.Message });
             }
+        }
+
+        //--------------------------------------------
+        // سفارشات جاری با کالای جایگزین
+        //--------------------------------------------
+        public async Task<IActionResult> CurrentReplaceOrder()
+        {
+            ViewBag.BackUrlArrow = $"/Orders/Index";
+
+            List<Models.User.OrderUserActivity> model = new List<Models.User.OrderUserActivity>();
+
+            Models.UserModel user = HttpContext.Session.Get<Models.UserModel>("User");
+            if (user != null)
+            {
+                model = await _userActivityService.GetOrderUserActivityByStatusItemsAsync(3, 3,3);
+            }
+
+            return await Task.Run(() =>
+            {
+                return View( model);
+            });
+
         }
 
         //--------------------------------------------
@@ -291,6 +445,8 @@ namespace WebSite.JourChin.Controllers
                 fs.Flush();
             }
         }
+
+
 
     }
 }

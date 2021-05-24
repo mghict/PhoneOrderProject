@@ -78,6 +78,8 @@ namespace WebSite.JourChin
             //Services Inject
             services.AddScoped<Services.User.IUserActivityService, Services.User.UserActivityService>();
             services.AddScoped<Services.Order.IOrderService, Services.Order.OrderService>();
+            services.AddScoped<Services.Product.IProductService, Services.Product.ProductService>();
+            services.AddScoped<Services.User.IUserService, Services.User.UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

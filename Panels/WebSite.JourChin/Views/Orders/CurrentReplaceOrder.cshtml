@@ -1,0 +1,44 @@
+﻿@model List<WebSite.JourChin.Models.User.OrderUserActivity>
+@using BehsamFramework.Util
+@using BehsamFramework.Utility
+
+@{
+    ViewData["Title"] = "CurrentOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="table-responsive">
+        <br />
+        @if (Model != null && Model.Count > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="card discount-coupon-card border-0" style="background-color: #f3c121 !important">
+                    <div class="card-body">
+                        <a href="/Orders/OrderItems?orderCode=@item.OrderCode&ret=CurrentReplaceOrder">
+                            <div class="coupon-text-wrap d-flex align-items-center p-3">
+                                <h6 class="text-dark pr-3 mb-0 border-right">
+                                    سفارش:<br />
+                                    @item.OrderCode
+                                </h6>
+                                <div class="text-dark pl-3 mb-0">
+                                    <p class="text-dark">
+                                        تاریخ سفارش: @(item.OrderDate.ToPersianDate())- ساعت سفارش:@(item.OrderTime.ToString().Substring(0,5)) |
+                                        بازه تحویل: @(item.StartTime.ToString().Substring(0, 5))-@(item.EndTime.ToString().Substring(0, 5))
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <br />
+            }
+
+        }
+        else
+        {
+            <p class="text-danger">سفارش وجود ندارد </p>
+        }
+    </div>
+</div>
+

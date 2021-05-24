@@ -158,5 +158,20 @@ namespace SettingManagment.Persistence.Repositories.Product
 
             return lst;
         }
+
+        public async Task<Domain.Entities.ProductInfoTbl> GetProductByBarcode(float storeId,string barcode)
+        {
+            var query = " exec [dbo].[GetProductByBarCode] @StoreId,@ProductCode";
+
+            var param = new
+            {
+                @StoreId= storeId,
+                @ProductCode = barcode
+            };
+
+            var result = await db.QueryFirstAsync<Domain.Entities.ProductInfoTbl>(query, param);
+
+            return result;
+        }
     }
 }

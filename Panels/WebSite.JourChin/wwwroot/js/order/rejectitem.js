@@ -1,11 +1,13 @@
 ﻿'use strict';
 
-function filter() {
+function filter(page,pagesize) {
+    alert('ok');
 
     let isCheckedName = $('#chkName').prop('checked');
     let isCheckedBrand = $('#chkBrand').prop('checked');
     let isCheckedCat = $('#chkCat').prop('checked');
 
+    let itemId = $('#txtItemIdReserve').val();
     let txtNameVal = $('#txtName').val();
     let txtBrandVal = $('#txtBrand').val();
 
@@ -34,14 +36,18 @@ function filter() {
     }
 
     var postData = {
+        'itemId': itemId,
+        'page': page,
+        'pagesize': pagesize,
         'productName': txtNameVal,
         'brandName': txtBrandVal,
-        'sameCategory': isCheckedCat
+        'sameCategory': isCheckedCat,
+        
     }
 
     $.ajax({
         //dataType: 'json',
-        type: 'post',
+        type: 'GET',
         url: '/Orders/FilterProducts',
         data: postData,
         beforeSend: function () {
@@ -95,7 +101,132 @@ function fillReversProductList(itemId) {
             console.log(status);
             console.log(error);
 
-        },
-        async: false
+        }
     });
 }
+
+function additionToList(id) {
+
+    let orderItemId = $('#txtItemIdReserve').val();
+    var postData = {
+        'orderItemId': orderItemId,
+        'productId': id
+    };
+
+    $.ajax({
+        //dataType: 'json',
+        type: 'POST',
+        url: '/Orders/AddToRejectList',
+        data: postData,
+        beforeSend: function () {
+
+            showBehsamLoading();
+        },
+        complete: function () {
+
+            hideBehsamLoading();
+        },
+        success: function (res) {
+
+            if (res.isSuccess == true) {
+                fillReversProductList(orderItemId);
+            }
+            else {
+                swal.fire(
+                    'هشدار!',
+                    res.message,
+                    'warning'
+                );
+            }
+        },
+        error: function (request, status, error) {
+            console.log(request);
+            console.log(status);
+            console.log(error);
+
+        }
+    });
+}
+
+function deleteFromList(id) {
+    var postData = {
+        'id': id
+    };
+
+    $.ajax({
+        //dataType: 'json',
+        type: 'POST',
+        url: '/Orders/DeleteFromRejectList',
+        data: postData,
+        beforeSend: function () {
+
+            showBehsamLoading();
+        },
+        complete: function () {
+
+            hideBehsamLoading();
+        },
+        success: function (res) {
+
+            if (res.isSuccess == true) {
+                $('#txt' + id).hide();
+            }
+            else {
+                swal.fire(
+                    'هشدار!',
+                    res.message,
+                    'warning'
+                );
+            }
+        },
+        error: function (request, status, error) {
+            console.log(request);
+            console.log(status);
+            console.log(error);
+
+        }
+    });
+}
+
+function findBarcode() {
+    let barcode = $('#searchkey').val();
+
+    if (barcode == null || barcode == '') {
+        return;
+    }
+
+    $('#findResult').html('');
+
+    var postData = {
+        'barcode': barcode
+    };
+
+    $.ajax({
+        //dataType: 'json',
+        type: 'POST',
+        url: '/Orders/FindProduct',
+        data: postData,
+        beforeSend: function () {
+
+            showBehsamLoading();
+        },
+        complete: function () {
+
+            hideBehsamLoading();
+        },
+        success: function (res) {
+            $('#findResult').html(res);
+        },
+        error: function (request, status, error) {
+            console.log(request);
+            console.log(status);
+            console.log(error);
+
+        }
+    });
+}
+
+$(document).ready(function () {
+    let itemId = $('#txtItemIdReserve').val();
+    fillReversProductList(itemId);
+});

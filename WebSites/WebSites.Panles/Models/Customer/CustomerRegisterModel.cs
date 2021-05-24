@@ -24,14 +24,14 @@ namespace WebSites.Panles.Models
 
 
         [Display(Name = "نوع مشتری")]
-        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        //[Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        //[Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int CustomerTypeId { get; set; }
 
 
         [Display(Name = "گروهبندی")]
-        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        //[Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        //[Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int CustomerGroupId { get; set; }
 
 
@@ -42,20 +42,20 @@ namespace WebSites.Panles.Models
 
 
         [Display(Name = "جنسیت")]
-        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        //[Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        //[Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int Sex { get; set; }
 
 
         [Display(Name = "شغل")]
-        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        //[Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        //[Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int Job { get; set; }
 
 
         [Display(Name = "تحصیلات")]
-        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        //[Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        //[Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int Education { get; set; }
 
 

@@ -1,5 +1,7 @@
 ﻿@{
     Layout = "_Layout";
+    string customerCode = "";
+    customerCode = ViewBag?.CustomerId;
 }
 
 @*model WebSites.Panles.Models.Customer.CustomerProfileModel*@
@@ -12,7 +14,7 @@
         <div class="row row-sm">
             <div class="col col-md-12 col-sm-12 col-lg-12">
                 @*<form data-parsley-validate="" action="/CallCenter/Order/OrderRegister" method="post">*@
-                <input id="searchKey" name="searchKey" class="form-control mb-3" placeholder="کد مشتری و یا تلفن ایشان" required="" type="text">
+                <input id="searchKey" name="searchKey" class="form-control mb-3" placeholder="کد مشتری و یا تلفن ایشان" required="" type="text" value="@(string.IsNullOrWhiteSpace(customerCode)?"":customerCode.Trim())">
                 <input type="button" class="btn btn-outline-danger btn-rounded" value=" مشتری را جستجو کن " onclick="callSearch()" />
                 @*</form>*@
             </div>
@@ -41,14 +43,14 @@
                 return;
             }
 
-            
+
             var postData = {
                 'searchKey': search
             };
 
             $.ajax(
                 {
-                    url: '/CallCenter/Order/OrderRegister',
+                    url: '/CallCenter/Order/PostOrderRegister',
                     type: 'post',
                     data: postData,
                     beforeSend: function () {
@@ -66,5 +68,10 @@
                 });
 
         }
+
+        $(document).ready(function () {
+            callSearch();
+        });
+
     </script>
 }

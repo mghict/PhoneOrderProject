@@ -1,8 +1,19 @@
 ﻿@model WebSite.JourChin.Models.Order.GetOrderItems
 @{
     ViewData["Title"] = "RejectItem";
-    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    long itemId;
+    try
+    {
+        itemId = Convert.ToInt64(ViewBag.ItemIdOrderReserve);
+    }
+    catch
+    {
+        itemId = 0;
+    }
 }
+<input type="hidden" id="txtItemIdReserve" value="@itemId"/>
+<input type="hidden" id="txtItemOrderCode" value="@ViewBag.OrderCode" />
 
 <div class="container">
     <div class="cart-wrapper-area py-3">
@@ -28,13 +39,34 @@
                     </div>
 
                 </div>
-                <button class="btn btn-success m-2">ثبت اطلاعات</button>
-                <div class="card">
-                    <span> اطلاعات محصولات </span>
-                    <div class="card-body" id="divFilterProduct">
+                @*<button class="btn btn-success m-2 ">تایید عدم موجودی و برگشت</button>*@
+                @*<button class="btn btn-danger m-2 " onclick="fillReversProductList('@itemId')">لیست جایگزین</button>*@
+
+                <br />
+                <div class="card ">
+                    <span class="text-danger text-sm pl-3"> ثبت جایگزین </span>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-text" placeholder="جستجو براساس بارکد کالا" name="searchkey" id="searchkey">
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" type="button" onclick="findBarcode()">
+                                    <i class="d-inline lni lni-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-12" id="findResult">
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="card" >
+                    <div class="card-body" id="slideProductListContent">
 
                     </div>
                 </div>
+
             }
         </div>
         <br />

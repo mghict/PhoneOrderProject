@@ -36,13 +36,13 @@ namespace CustomerManagment.Application.CustomerInfoFeature.Validators
                 .WithErrorCode("11")
                 .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
-            RuleFor(current => current.Status)
-                .NotEmpty()
-                .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
-                .NotNull()
-                .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+            //RuleFor(current => current.Status)
+            //    .NotEmpty()
+            //    .WithErrorCode("10")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+            //    .NotNull()
+            //    .WithErrorCode("11")
+            //    .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
 
             RuleFor(current => current.DefaultMobile)
                 .NotEmpty()

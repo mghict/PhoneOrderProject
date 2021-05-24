@@ -396,5 +396,44 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+        #region GetProductsByBarcode
+
+        [HttpPost("GetProductsByBarcode")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.ProductInfoTbl>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.ProductInfoTbl>>>
+            GetProductsByBarcodeAsync([FromBody] Application.CustomerValuesFeature.Commands.GetProductByBarCodeCommand command)
+        {
+
+            FluentResults.Result<Domain.Entities.ProductInfoTbl> result =
+                new FluentResults.Result<Domain.Entities.ProductInfoTbl>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ToResult());
+            }
+        }
+
+        #endregion
+
     }
 }

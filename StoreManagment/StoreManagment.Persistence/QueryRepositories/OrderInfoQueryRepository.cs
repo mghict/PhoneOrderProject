@@ -107,7 +107,6 @@ namespace StoreManagment.Persistence.QueryRepositories
             return lst;
         }
 
-
         public async Task<List<GetSummeryOrdersByDateAndStore>> getSummeryOrdersByDateAndStore(DateTime orderDate, float storeId)
         {
             var param = new
@@ -122,6 +121,7 @@ namespace StoreManagment.Persistence.QueryRepositories
 
             return lst.ToList();
         }
+
         public async Task<List<GetDetailsOrdersByDateAndStore>> getDetailsOrdersByDateAndStore(DateTime orderDate, float storeId, string orderTime)
         {
             var param = new

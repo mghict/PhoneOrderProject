@@ -59,7 +59,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         
-        public IActionResult Index(int page = 1, int pagesize = 20, string searchkey = "")
+        public IActionResult Index(int page = 0, int pagesize = 20, string searchkey = "")
         {
             GetPagianationDataModel command =
                 new GetPagianationDataModel()
@@ -138,8 +138,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpPost(Name = "Register")]
-        //public async Task<IActionResult> Register(CustomerRegisterModel model)
-        public IActionResult Register(CustomerRegisterModel model)
+        public async Task< IActionResult> Register(CustomerRegisterModel model)
         {
             
             try
@@ -151,18 +150,19 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    //var ret = await ServiceInsert.PostDataWithValue("Customer/create", model);
-                    var ret =  ServiceInsert.PostDataWithValue("Customer/create", model).Result;
+                    var ret = await ServiceInsert.PostDataWithValue("Customer/create", model);
 
                     if (ret != null)
                     {
-                        //return Json(new { IsSuccess = ret.IsSuccess, Errors = ret.Errors.ToList().ToString(), Value = ret.Value });
+
                         if(ret.IsFailed)
                         {
                             throw new Exception(ret.GetErrors());
                         }
                         CacheService.ClearToken(TokenCachClass.CustomerList);
-                        return Redirect("/Callcenter/customer/index");
+                        var customer= await serviceCaller.PostDataWithValue<BehsamFramework.Models.CustomerInfoModel>("Customer/GetById", new { Id=ret.Value});
+                        
+                        return Redirect($"/Callcenter/Order/OrderRegister?customerId={customer?.Value?.CustomerCode}");
                     }
                     else
                     {
@@ -253,7 +253,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
                         }
                         await CacheService.ClearCacheAsync("CustomerInfo"+model.Id.ToString());
                         CacheService.ClearToken(TokenCachClass.CustomerList);
-                        return Redirect("/Callcenter/customer/index");
+                        return Redirect("/CallCenter/Order/index");
                     }
                     else
                     {

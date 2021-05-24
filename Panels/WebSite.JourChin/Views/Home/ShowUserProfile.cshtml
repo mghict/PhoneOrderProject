@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+@model WebSite.JourChin.Models.UserModel
+
+<div class="container">
+    <div class="col-12">
+        @if (Model != null)
+        {
+            <h6 class="mt-5">
+                <i class="lni lni-user text-dark m-2" aria-hidden="true"></i>
+                <span class="text-black-50">مشخصات: </span><br />
+                <span class="text-danger">@Model.Name</span>
+            </h6>
+            <hr />
+            <h6>
+                <i class="lni lni-phone text-dark m-2" aria-hidden="true"></i>
+                <span class="text-black-50">شماره تلفن:</span><br />
+                <span class="text-danger"> @Model.PhoneNumber</span>
+            </h6>
+            <hr />
+            <h6>
+                <i class="lni lni-restaurant text-dark m-2" aria-hidden="true"></i>
+                <span class="text-black-50">کد فروشگاه:</span><br />
+                <span class="text-danger">@Model.StoreId</span>
+            </h6>
+            <br />
+            <br />
+            <hr class="bg-danger border-danger" />
+            <a href="/Home/ResetPass" class="btn btn-block btn-danger">
+                تغییر رمز عبور
+            </a>
+        }
+        else
+        {
+            <h6 class="text-danger">اطلاعات کاربر یافت نشد</h6>
+        }
+    </div>
+</div>

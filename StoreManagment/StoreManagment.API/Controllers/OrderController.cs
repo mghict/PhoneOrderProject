@@ -524,7 +524,7 @@ namespace StoreManagment.API.Controllers
                     {
                         string action = ControllerContext.ActionDescriptor.ActionName;
                         string reason = "برگشت کالا به تخصیص نیافته";
-                        int status = 6;
+                        int status = 1;
                         var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemTbl", command.OrderId, status, reason);
                         var tasklogOrder = SendDataForOrderLog(createDate, reason, command.OrderId, 0, 0);
 
@@ -553,6 +553,127 @@ namespace StoreManagment.API.Controllers
         }
 
         #endregion
+
+        #region ReplaceStateUserForOrderItems
+
+        [HttpPost("ReplaceStateUserForOrderItems")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            ReplaceStateUserForOrderItemsAsync([FromBody] Application.OrderInfoFeature.Commands.ReplaceStateUserForOrderItemsCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        string reason = "اتمام موجودی و درخواست تغییر کالا";
+                        int status = 3;
+                        var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemTbl", command.OrderId, status, reason);
+                        var tasklogOrder = SendDataForOrderLog(createDate, reason, command.OrderId, 0, 0);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
+        #region ChangeStateUserForOrderItems
+
+        [HttpPost("ChangeStateUserForOrderItems")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<bool>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            ChangeStateUserForOrderItemsAsync([FromBody] Application.OrderInfoFeature.Commands.ChangeStateUserForOrderItemsCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result<bool> result =
+                new FluentResults.Result<bool>();
+
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        string reason = "درخواست تغییر وضعیت";
+                        int status = command.State;
+                        var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemTbl", command.OrderId, status, reason);
+                        var tasklogOrder = SendDataForOrderLog(createDate, reason, command.OrderId, 0, 0);
+
+                        Task.WaitAll(tasklog, tasklogOrder);
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
         //----------------------------------
         //----------------------------------
 
