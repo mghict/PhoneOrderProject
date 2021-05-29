@@ -26,6 +26,18 @@ namespace WebSites.Panles.Services.Store
         //----------------------------------------------
         Task<FluentResult> UpdateGlobal(Models.Store.StoreGeneralShippingModel model);
         Task<Models.Store.StoreGeneralShippingModel> GetGlobalAsync();
+
+        //----------------------------------------------
+        // Global Shipping By Price
+        //----------------------------------------------
+        Task<FluentResult> CreateGlobalPrice(Models.Store.StoreGeneralShippingPriceModel model);
+        Task<FluentResult> UpdateGlobalPrice(Models.Store.StoreGeneralShippingPriceModel model);
+        Task<FluentResult> DeleteGlobalPrice(int id);
+        Task<Models.Store.StoreGeneralShippingPriceModel> GetByIdGlobalPrice(int id);
+        Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetAllGlobalPrice();
+        Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeGlobalPrice(int fromAmount, int toAmount);
+        Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeByAmountGlobalPrice(int amount);
+
     }
     public class StoreShippingService : Base.ServiceBase, IStoreShippingService
     {
@@ -458,6 +470,245 @@ namespace WebSites.Panles.Services.Store
                     TimeSpan.FromMinutes(20),
                     Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
                     TokenCachClass.GlobalShipping
+                    );
+            }
+
+            return ret;
+        }
+
+        //----------------------------------------------
+        // Global Shipping By Price
+        //----------------------------------------------
+        public async Task<FluentResult> CreateGlobalPrice(Models.Store.StoreGeneralShippingPriceModel model)
+        {
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/CreateShippingByPrice", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingPrice);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+        public async Task<FluentResult> UpdateGlobalPrice(Models.Store.StoreGeneralShippingPriceModel model)
+        {
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/UpdateShippingByPrice", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingPrice);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+        public async Task<FluentResult> DeleteGlobalPrice(int id)
+        {
+            var model = new
+            {
+                Id=id
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/DeleteShippingByPrice", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingPrice);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+
+
+        private async Task<Models.Store.StoreGeneralShippingPriceModel> getByIdGlobalPrice(int id)
+        {
+            var command = new
+            {
+                Id=id
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<Models.Store.StoreGeneralShippingPriceModel>("Setting/StoreShipping/GetByIdShippingByPrice", command);
+                if (ret != null && ret.IsSuccess && ret.Value!=null)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingPriceModel>> getAllGlobalPrice()
+        {
+            var command = new
+            {
+                
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingPriceModel>>("Setting/StoreShipping/GetAllShippingByPrice", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count>0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingPriceModel>> getRangeGlobalPrice(int fromAmount,int toAmount)
+        {
+            var command = new
+            {
+                FromAmount=fromAmount,
+                ToAmount=toAmount
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingPriceModel>>("Setting/StoreShipping/GetRangeShippingByPrice", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count > 0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingPriceModel>> getRangeByAmountGlobalPrice(int amount)
+        {
+            var command = new
+            {
+                Amount = amount
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingPriceModel>>("Setting/StoreShipping/GetRangeByAmountShippingByPrice", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count > 0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        public async Task<Models.Store.StoreGeneralShippingPriceModel> GetByIdGlobalPrice(int id)
+        {
+            string key = $"GlobalShippingPriceById-{id}";
+            var ret = await CacheService.GetAsync<Models.Store.StoreGeneralShippingPriceModel>(key);
+            if (ret == null)
+            {
+                ret = await getByIdGlobalPrice(id);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingPrice
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetAllGlobalPrice()
+        {
+            string key = $"GlobalShippingPriceAll";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingPriceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getAllGlobalPrice();
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingPrice
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeGlobalPrice(int fromAmount, int toAmount)
+        {
+            string key = $"GlobalShippingPriceByRange-{fromAmount}-{toAmount}";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingPriceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getRangeGlobalPrice(fromAmount,toAmount);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingPrice
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeByAmountGlobalPrice(int amount)
+        {
+            string key = $"GlobalShippingPriceByAmount-{amount}";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingPriceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getRangeByAmountGlobalPrice(amount);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingPrice
                     );
             }
 

@@ -265,5 +265,104 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 return View("GlobalShipping", model);
             }
         }
+
+
+        //----------------------------------------------------------------
+        // Global Shipping By Price
+        //----------------------------------------------------------------
+        [HttpGet]
+        public async Task<IActionResult> GlobalShippingPrice()
+        {
+            var ret = await _SettingFacad.StoreShippingService.GetAllGlobalPrice();
+
+            return View(ret);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateShippingPrice(int id)
+        {
+            var ret = await _SettingFacad.StoreShippingService.GetByIdGlobalPrice(id);
+
+            return View(ret);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateShippingPrice(Models.Store.StoreGeneralShippingPriceModel model)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+
+                    var ret = await _SettingFacad.StoreShippingService.UpdateGlobalPrice(model);
+                    if(ret==null || ret.IsFailed)
+                    {
+                        if(ret==null)
+                        {
+                            ret = new FluentResult();
+                        }
+
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("UpdateShippingPrice", model);
+                    }
+
+                    return Redirect("/Admin/StoreShipping/GlobalShippingPrice");
+                }
+                else
+                {
+                    return View("UpdateShippingPrice", model);
+                }
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("UpdateShippingPrice", model);
+            }
+            
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateShippingPrice()
+        {
+            var ret = new Models.Store.StoreGeneralShippingPriceModel();
+
+            return await Task.FromResult( View(ret));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateShippingPrice(Models.Store.StoreGeneralShippingPriceModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var ret = await _SettingFacad.StoreShippingService.CreateGlobalPrice(model);
+                    if (ret == null || ret.IsFailed)
+                    {
+                        if (ret == null)
+                        {
+                            ret = new FluentResult();
+                        }
+
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("CreateShippingPrice", model);
+                    }
+
+                    return Redirect("/Admin/StoreShipping/GlobalShippingPrice");
+                }
+                else
+                {
+                    return View("UpdateShippingPrice", model);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("CreateShippingPrice", model);
+            }
+
+        }
     }
 }

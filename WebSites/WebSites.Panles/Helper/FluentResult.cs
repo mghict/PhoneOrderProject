@@ -20,6 +20,8 @@ namespace WebSites.Panles.Helper
         {
             Errors = new List<Messages>();
             Successes = new List<Messages>();
+            IsSuccess = false;
+            IsFailed = true;
         }
 
         [JsonProperty("isSuccess")]

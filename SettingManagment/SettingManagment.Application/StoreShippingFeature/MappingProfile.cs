@@ -23,6 +23,12 @@ namespace SettingManagment.Application.StoreShippingFeature
 
             CreateMap<Domain.Entities.StoreShippingAreaTbl, Commands.UpdateStoreShippingAreaCommand>();
             CreateMap<Commands.UpdateStoreShippingAreaCommand, Domain.Entities.StoreShippingAreaTbl>();
+
+            CreateMap<Domain.Entities.StoreGeneralShippingByPriceTbl, Commands.UpdateShippingGlobalPriceCommand>();
+            CreateMap<Commands.UpdateShippingGlobalPriceCommand, Domain.Entities.StoreGeneralShippingByPriceTbl>();
+
+            CreateMap<Domain.Entities.StoreGeneralShippingByPriceTbl, Commands.CreateShippingGlobalPriceCommand>();
+            CreateMap<Commands.CreateShippingGlobalPriceCommand, Domain.Entities.StoreGeneralShippingByPriceTbl>();
         }
     }
 }
