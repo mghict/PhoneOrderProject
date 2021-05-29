@@ -137,7 +137,38 @@ namespace StoreManagment.Persistence.QueryRepositories
 
             return lst.ToList();
         }
-        
+
+        public async Task<List<OrderByStatusItem>> getOrderByStatusItem(int status, int itemStatus, int userId = 0)
+        {
+            var param = new
+            {
+                @UserId = userId,
+                @Status=status,
+                @ItemStatus=itemStatus
+            };
+
+            var query = " exec [dbo].[OrderByStatusItem] @UserId,@Status,@ItemStatus ";
+
+            var lst = await db.QueryAsync<OrderByStatusItem>(query, param);
+
+            return lst.ToList();
+        }
+
+        public async Task<List<GetSummeryOrderStatusDetailsByDate>> getCustomerOrder(long customerId, DateTime startDate, DateTime endDate)
+        {
+            var param = new
+            {
+                @StartDate= startDate,
+                @EndDate= endDate,
+                @CustomerId = customerId
+            };
+
+            var query = " exec [dbo].[Report_GetCustomerOrder] @StartDate,@EndDate,@CustomerId ";
+
+            var lst = await db.QueryAsync<GetSummeryOrderStatusDetailsByDate>(query, param);
+
+            return lst.ToList();
+        }
     }
 
 }

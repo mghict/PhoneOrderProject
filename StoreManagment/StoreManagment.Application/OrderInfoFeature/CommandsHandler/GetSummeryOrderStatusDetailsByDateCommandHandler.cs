@@ -4,7 +4,6 @@ using StoreManagment.Application.OrderInfoFeature.Commands;
 using StoreManagment.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

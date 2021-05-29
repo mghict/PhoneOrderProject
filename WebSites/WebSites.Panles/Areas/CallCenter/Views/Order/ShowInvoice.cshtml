@@ -5,7 +5,7 @@
 @model Models.Order.CachedOrderInfo
 @using BehsamFramework.Util;
 
-<input type="hidden" value="@ViewBag.CustomerId" id="CustomerId" />
+<input type="hidden" value="@ViewBag.CustomerId" id="txtCustomerId" />
 <input type="hidden" value="@ViewBag.StoreId.ToString(CultureInfo.InvariantCulture)" id="txtStoreId" />
 
 <div class="container cart-xs cart-sm cart-md cart-lg cart-xl" id="divShowInvoice">
@@ -127,7 +127,7 @@
     function delProduct(pid, count) {
 
         let storeId = $('#txtStoreId').val();
-        let cid = $('#CustomerId').val();
+        let cid = $('#txtCustomerId').val();
 
         delCart(storeId, cid, pid, count);
 

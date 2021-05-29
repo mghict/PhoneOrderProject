@@ -11,29 +11,28 @@ using BehsamFramework.Util;
 using System.Globalization;
 using Microsoft.AspNetCore.SignalR;
 using WebSites.Panles.Hubs;
+using WebSites.Panles.Models.Order;
 
 namespace WebSites.Panles.Areas.CallCenter.Controllers
 {
     [Area("CallCenter")]
     public class OrderController : BaseController
     {
-        private readonly Services.IOrderFacad _OrderFacad;
-
-
         private Services.Customer.IGetCustomerBySearch GetCustomerBySearch;
         private Services.Customer.IGetCustomer GetCustomer;
         private Services.CustomerPhone.IGetCustomerPhone GetCustomerPhone;
         private Services.CustomerAddress.IGetCustomerAddressService GetCustomerAddressService;
         private Services.Map.NeshanMapService NeshanMapService;
 
-        private Services.IOrderFacad OrderFacad;
+        private readonly Services.IOrderFacad OrderFacad;
+        private readonly Services.IReportFacad _reportFacad;
         private readonly Services.Notification.INotificationService _notificationService;
-        
+
         public OrderController(
-            Services.IOrderFacad OrderFacad,
             Services.Map.NeshanMapService neshanMapService,
             Services.Notification.INotificationService NotificationService,
             Services.IOrderFacad orderFacad,
+            Services.IReportFacad reportFacad,
             Services.Customer.IGetCustomerBySearch getCustomerBySearch,
             Services.Customer.IGetCustomer getCustomer,
             Services.CustomerPhone.IGetCustomerPhone getCustomerPhone,
@@ -41,13 +40,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller, memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             OrderFacad = orderFacad;
+
             GetCustomerBySearch = getCustomerBySearch;
             GetCustomer = getCustomer;
             GetCustomerPhone = getCustomerPhone;
             GetCustomerAddressService = getCustomerAddressService;
             _notificationService = NotificationService;
             NeshanMapService = neshanMapService;
-            _OrderFacad = OrderFacad;
+            _reportFacad = reportFacad;
         }
 
         public IActionResult Index()
@@ -161,14 +161,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         {
             DateTime requestDate = DateTime.Now;
 
-            ViewBag.CustomerId = cId;
-            ViewBag.AddressId = add;
-            ViewBag.StartTime = sT;
-            ViewBag.EndTime = eT;
-            ViewBag.Shipping = shipp;
-            ViewBag.StoreId = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}", sId);
-
-            //var model = await ShowProductModel(sId, catId, pageNumber, pageSize, searchKey);
+            //await Task.Run(() => {
+                ViewBag.CustomerId = cId;
+                ViewBag.AddressId = add;
+                ViewBag.StartTime = sT;
+                ViewBag.EndTime = eT;
+                ViewBag.Shipping = shipp;
+                ViewBag.StoreId = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}", sId);
+            //});
 
             return View();//model);
         }
@@ -216,7 +216,10 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
             ViewBag.SearchKey = searchKey;
-
+            if(string.IsNullOrWhiteSpace(catId))
+            {
+                catId = "0";
+            }
             var model = await ShowProductModel(storeId, catId, pageNumber, pageSize, searchKey);
 
             return View(model);
@@ -280,6 +283,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpPost]
         public IActionResult ShowCart(string storeId, long customerId)
         {
+            ViewBag.StoreId = storeId;
+            ViewBag.CustomerId = customerId;
+
             Models.Order.CachedOrderInfo model = new Models.Order.CachedOrderInfo();
             try
             {
@@ -305,6 +311,9 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         [HttpPost]
         public IActionResult ShowCartCount(string storeId, long customerId)
         {
+            ViewBag.StoreId = storeId;
+            ViewBag.CustomerId = customerId;
+
             Models.Order.CachedOrderInfo model = new Models.Order.CachedOrderInfo();
             try
             {
@@ -366,7 +375,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterOrderFinal(string storeId, long customerId)
+        public async  Task<IActionResult> RegisterOrderFinal(string storeId, long customerId)
         {
             ViewBag.StoreId = storeId;
             ViewBag.CustomerId = customerId;
@@ -399,11 +408,11 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
                 float.TryParse(user.StoreId, style, info, out sId);
 
-                result = OrderFacad.CreateOrderService.Execute(model, user.UserId, sId).Result;
+                result =await OrderFacad.CreateOrderService.Execute(model, user.UserId, sId);
 
                 if (result.IsSuccess)
                 {
-                    string key = "R->" + model.CustomerId.ToString() + "->" + model.StoreID.ToString("#.##", CultureInfo.InvariantCulture);
+                    string key = "R->" + model.CustomerId.ToString() + "->" + model.StoreID.ToString(CultureInfo.InvariantCulture);
 
                     CacheService.ClearCache(key);
 
@@ -465,20 +474,6 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ReplaceOrders()
-        {
-            DateTime dt = DateTime.Now;
-            var result = await _OrderFacad.ReportsService.GetSummeryOrderStatusDetailsByDate(0, dt.AddDays(-3), dt.AddDays(1), 4);
-
-            if (!result.IsSuccess)
-            {
-                result.Value = new List<Models.Reports.GetSummeryOrderStatusDetailsByDate>();
-            }
-
-            return View(result.Value);
-        }
-
         private async Task<BehsamFramework.Models.ProductsModel> ShowProductModel(string storeId, string catId, int pageNumber = 0, int pageSize = 21, string searchKey = "")
         {
             decimal cid = 0M;
@@ -496,5 +491,181 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             return model;
         }
 
+        //--------------------------------------------------
+        // Replace Product Process
+        // MGH - 1400/03/05
+        //--------------------------------------------------
+        [HttpGet]
+        public async Task<IActionResult> ReplaceOrders()
+        {
+            DateTime dt = DateTime.Now;
+            var result = await OrderFacad.ReportsService.GetSummeryOrderStatusDetailsByDate(0, dt.AddDays(-30), dt.AddDays(1), 4);
+
+            if (!result.IsSuccess)
+            {
+                result.Value = new List<Models.Reports.GetSummeryOrderStatusDetailsByDate>();
+            }
+
+            return View(result.Value);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReplaceOrderDetails(long orderCode,string urlBack="")
+        {
+            if(string.IsNullOrWhiteSpace(urlBack))
+            {
+                urlBack = "/CallCenter/Order/ReplaceOrders";
+            }
+            else
+            {
+                urlBack = $"/CallCenter/Order/{urlBack}" ;
+            }
+
+            ViewBag.UrlBack = urlBack;
+
+            var result = await OrderFacad.ReportsService.GetOrderInfoWithItems(orderCode);
+
+            return View(result.Value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReplaceOrderItemDetails(long id)
+        {
+            ViewBag.ItemId = id;
+
+            var itemDetails = await OrderFacad.OrderService.GetItemReserveDetailsAsync(id);
+
+            return View(itemDetails.Value);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReplaceOrderItemAccept(long itemId,int productId,int count=0)
+        {
+
+            var result = await OrderFacad.OrderService.ReplaceProductToOrderAcceptAsync(itemId,productId,count);
+
+            var message = result.GetErrors();
+
+            return Json(new { IsSuccess = result.IsSuccess, Message = message });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReplaceOrderCustomerPhone(long customerId)
+        {
+            List<Models.CustomerPhone.CustomerPhoneModel> customerPhone =
+                new List<Models.CustomerPhone.CustomerPhoneModel>();
+
+            customerPhone = await GetCustomerPhone.Execute(customerId);
+
+            return View(customerPhone);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveItemFromOrder(long orderId,long itemId)
+        {
+            var result = await OrderFacad.OrderService.ChangeStateUserForOrderItems(orderId, itemId, 2);
+            return Json(new {IsSuccess=result.IsSuccess,Message=result.GetErrors() });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrder(long orderCode)
+        {
+            var result = await OrderFacad.OrderService.ChangeOrderStatus(orderCode,32,"لغو سفارش به درخواست مشتری");
+            return Json(new { IsSuccess = result.IsSuccess, Message = result.GetErrors() });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditOrder(long orderCode)
+        {
+            try
+            {
+                var result = await OrderFacad.ReportsService.GetOrderInfoWithItems(orderCode);
+                CachedOrderInfo info = new CachedOrderInfo();
+
+                if (result != null && result.IsSuccess && result.Value != null )
+                {
+                    var oInfo = result.Value.OrderInfo;
+                    var oItems = result.Value.OrderItems;
+
+                    info.AddressID = oInfo.AddressID;
+                    info.CustomerId = oInfo.CustomerId;
+                    info.DiscountPrice = oInfo.DiscountPrice.ToString().ToInt();
+                    info.EndTime = oInfo.EndTime;
+                    info.FinalPrice = oInfo.FinalPrice.ToString().ToInt();
+                    info.Id = oInfo.Id;
+                    info.OrderCode = oInfo.OrderCode;
+                    info.OrderDate = oInfo.OrderDate;
+                    info.OrderState = oInfo.OrderState;
+                    info.OrderTime = oInfo.OrderTime;
+                    info.PaymentType = 0;
+                    info.ShippingPrice = oInfo.ShippingPrice.ToString().ToInt();
+                    info.StartTime = oInfo.StartTime;
+                    info.StoreID = oInfo.StoreID;
+                    info.TaxPrice = oInfo.TaxPrice.ToString().ToInt();
+                    info.TotalPrice = oInfo.TotalPrice.ToString().ToInt();
+
+                    info.Items = oItems
+                                    .Select(s => new CachedOrderItem
+                                    {
+                                        Id=s.Id,
+                                        Description = s.Description,
+                                        DiscountPrice = s.DiscountPrice,
+                                        OrderId = s.OrderId,
+                                        ProductId = s.ProductId.ToString().ToInt(),
+                                        ProductName = s.ProductName,
+                                        Quantity = s.Quantity,
+                                        Status = s.Status.ToString().ToByte(),
+                                        TaxPrice = s.TaxPrice,
+                                        UnitPrice = s.UnitPrice
+                                    }).ToList();
+
+                    info = OrderFacad.CachedOrderService.SetRequest(info);
+                }
+
+
+                if (info == null || info.Id == 0)
+                {
+                    return Redirect("/Callcenter/Home/index");
+                }
+
+                //ShowProductList(TimeSpan sT, TimeSpan eT, long cId, long add, string sId, int shipp)
+
+                return Redirect($"/CallCenter/Order/ShowProductList?sT={info.StartTime}&eT={info.EndTime}&cId={info.CustomerId}&add={info.AddressID}&sId={info.StoreID.ToString(CultureInfo.InvariantCulture)}&shipp={info.ShippingPrice}");
+            }
+            catch
+            {
+                return Redirect("/Callcenter/Home/index");
+            }
+        }
+
+        //--------------------------------------------------
+        // Customer Product Process
+        // MGH - 1400/03/05
+        //--------------------------------------------------
+
+        public async Task<IActionResult> GetCustomerOrder(string customer="")
+        {
+            ViewBag.CustomerSearch = customer;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCustomerOrderPost(string customer)
+        {
+            ViewBag.CustomerSearch = customer;
+
+            DateTime dt = DateTime.Now;
+            List<Models.Reports.GetSummeryOrderStatusDetailsByDate> model =
+                new List<Models.Reports.GetSummeryOrderStatusDetailsByDate>();
+
+            var cus = await GetCustomerBySearch.GetCustomerInfoAsync(customer.Trim());
+
+            if(cus!=null)
+            {
+                model = await _reportFacad.ReportsService.GetCustomerOrder(cus.Id, dt.AddDays(-60), dt.AddDays(1));
+            }
+
+            return View(model);
+        }
     }
 }

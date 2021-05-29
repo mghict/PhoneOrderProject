@@ -36,7 +36,7 @@
                         }
                         @foreach (var item in Model)
                         {
-                            string count = item.OrderCount.ToString("#,#") ?? "0";
+                            
                             row++;
 
                             <tr role="row">
@@ -46,8 +46,8 @@
                                 <td>@item.CustomerName</td>
                                 <td>@item.OrderDate.ToPersianDate()</td>
                                 <td>@item.OrderTime.GetTime()</td>
-                                <td>@count</td>
-                                <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td>@item.OrderCount.ToString("#,##0")</td>
+                                <td>@item.FinalPrice.ToString("#,##0")</td>
                                 <td>@item.OrderStateStr</td>
                                 <td>
                                     <a href="/CallCenter/Report/GetOrderInfoWithItems?orderCode=@item.OrderCode" class="d-inline"

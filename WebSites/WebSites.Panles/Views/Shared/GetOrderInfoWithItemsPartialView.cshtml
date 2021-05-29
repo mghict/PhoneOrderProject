@@ -64,7 +64,7 @@
                                 int row = 0;
                                 @foreach (var item in Model.OrderItems)
                                 {
-                                    string count = item.Quantity > 0 ? item.Quantity.ToString("#,#") : "0";
+                                    
                                     var sum = (item.Quantity * item.UnitPrice) + item.TaxPrice - item.DiscountPrice;
                                     row++;
 
@@ -73,11 +73,11 @@
                                         <td>@item.DisplayName</td>
                                         <td>@item.BrandName</td>
                                         <td>@item.CategoryName</td>
-                                        <td>@count</td>
-                                        <td>@item.UnitPrice.ToString("#,#")</td>
-                                        <td>@item.DiscountPrice.ToString("#,#")</td>
-                                        <td>@item.TaxPrice.ToString("#,#")</td>
-                                        <td>@sum.ToString("#,#")</td>
+                                        <td>@item.Quantity.ToString("#,##0")</td>
+                                        <td>@item.UnitPrice.ToString("#,##0")</td>
+                                        <td>@item.DiscountPrice.ToString("#,##0")</td>
+                                        <td>@item.TaxPrice.ToString("#,##0")</td>
+                                        <td>@sum.ToString("#,##0")</td>
                                         <td>@item.StatusName</td>
                                         <td>@item.Description</td>
 
@@ -88,27 +88,27 @@
                         <tfoot>
                             <tr>
                                 <td colspan="8" class="text-left">تعداد کالا</td>
-                                <td colspan="3" class="text-right">@Model.OrderItems.Select(p => p.Quantity).Sum().ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderItems.Select(p => p.Quantity).Sum().ToString("#,##0")</td>
                             </tr>
                             <tr>
                                 <td colspan="8" class="text-left">جمع کالا</td>
-                                <td colspan="3" class="text-right">@Model.OrderInfo.TotalPrice.ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.TotalPrice.ToString("#,##0")</td>
                             </tr>
                             <tr>
                                 <td colspan="8" class="text-left">جمع تخفیف</td>
-                                <td colspan="3" class="text-right">@Model.OrderInfo.DiscountPrice.ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.DiscountPrice.ToString("#,##0")</td>
                             </tr>
                             <tr>
                                 <td colspan="8" class="text-left">جمع مالیات</td>
-                                <td colspan="3" class="text-right">@Model.OrderInfo.TaxPrice.ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.TaxPrice.ToString("#,##0")</td>
                             </tr>
                             <tr>
                                 <td colspan="8" class="text-left">کرایه حمل</td>
-                                <td colspan="3" class="text-right">@Model.OrderInfo.ShippingPrice.ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.ShippingPrice.ToString("#,##0")</td>
                             </tr>
                             <tr>
                                 <td colspan="8" class="text-left">مبلغ قابل پرداخت</td>
-                                <td colspan="3" class="text-right">@Model.OrderInfo.FinalPrice.ToString("#,#")</td>
+                                <td colspan="3" class="text-right">@Model.OrderInfo.FinalPrice.ToString("#,##0")</td>
                             </tr>
                         </tfoot>
                     </table>

@@ -31,5 +31,29 @@ namespace StoreManagment.Persistence.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> ReplaceProductItemAsync(long orginalId, int replaceId,int count)
+        {
+
+            try
+            {
+                var query = "exec [dbo].[OrderItemReplaceProduct] @OrginalId,@ProductId,@Quantity";
+
+                var param = new
+                {
+                    @OrginalId=orginalId,
+                    @ProductId= replaceId,
+                    @Quantity= count
+                };
+
+                var item = await db.QueryFirstAsync<bool>(query, param);
+
+                return item;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

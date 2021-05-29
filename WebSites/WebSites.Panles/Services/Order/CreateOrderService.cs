@@ -26,6 +26,7 @@ namespace WebSites.Panles.Services.Order
             {
                 Models.Order.OrderInfo info = new Models.Order.OrderInfo()
                 {
+                    Id = model.Id,
                     AddressId = model.AddressID,
                     CustomerId = model.CustomerId,
                     DiscountPrice = model.DiscountPrice,
@@ -41,6 +42,7 @@ namespace WebSites.Panles.Services.Order
                     TotalPrice = model.TotalPrice,
                     Detail = new Models.Order.OrderInfoDetails()
                     {
+                        OrderId=model.Id,
                         EndTime = model.EndTime,
                         StartTime = model.StartTime,
                         UserId = userId,
@@ -49,6 +51,7 @@ namespace WebSites.Panles.Services.Order
 
                     Items = model.Items.Select(p => new Models.Order.OrderItems
                     {
+                        OrderId=model.Id,
                         Description = p.Description,
                         DiscountPrice = p.DiscountPrice,
                         ProductId = p.ProductId,

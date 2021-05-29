@@ -1,0 +1,301 @@
+﻿@model Models.Reports.GetOrderInfoWithItems
+@using BehsamFramework.Util
+@using BehsamFramework.Utility
+
+@{
+    ViewData["Title"] = "ReplaceOrderDetails";
+    Layout = "_Layout";
+    var info = Model?.OrderInfo;
+    var items = Model?.OrderItems;
+    string statusCss = "";
+}
+
+<div class="card">
+    @if (Model != null)
+    {
+        <div class="card-header">
+            @if (info != null)
+            {
+                <a class="btn btn-info float-right p-2"
+                   href="#" onclick="deleteOrder('@info.OrderCode')">
+                    عدم تمایل مشتری به ارسال سفارش
+                </a>
+                @if (info.OrderState < 5 && info.OrderState != 1)
+                {
+                    <a class="btn btn-warning float-right p-2 mr-3 ml-3"
+                       href="/CallCenter/Order/EditOrder?orderCode=@info.OrderCode">
+                        ویرایش
+                    </a>
+                }
+
+            }
+
+            <a data-toggle="tooltip" data-placement="bottom" title="بازگشت"
+               class="btn btn-primary float-left p-2"
+               href="@ViewBag.UrlBack">
+                بازگشت
+            </a>
+
+
+        </div>
+        <div class="card-body">
+            @if (info != null)
+            {
+                <div class="card bg-danger">
+                    <div class="card-header">
+                        <h6>شماره سفارش: @info.OrderCode</h6>
+                    </div>
+                    <div class="card-body" style="color:white">
+                        <div class="row">
+                            <div class="col-6 text-wrap text-right">
+                                مشتری: @info.CustomerName<br />
+                                تلفن: @info.DefaultMobile<br />
+                            </div>
+                            <div class="col-6 text-wrap text-left">
+                                زمان سفارش: @(info.OrderDate.ToPersianDate() + "-"+ info.OrderTime)<br />
+                                زمان تحویل: @(info.StartTime.ToString().Substring(0,5)+ "-"+ info.EndTime.ToString().Substring(0, 5))
+                            </div>
+                            <div class="col-12 text-wrap mt-2">
+                                آدرس: @info.AddressValue
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (items != null && items.Count > 0)
+                {
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>محصول</th>
+                                            <th>بارکد</th>
+                                            <th>برند</th>
+                                            <th>تعداد</th>
+                                            <th>فی</th>
+                                            <th>تخفیف</th>
+                                            <th>جمع</th>
+                                            <th>وضعیت</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < items.Count; i++)
+                                        {
+                                            var item = items[i];
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                <td>@(item.DisplayName)</td>
+                                                <td>@(item.ProductCode)</td>
+                                                <td>@(item.BrandName)</td>
+                                                <td>@(item.Quantity.ToString("#,##0"))</td>
+                                                <td>@(item.UnitPrice.ToString("#,##0"))</td>
+                                                <td>@(item.DiscountPrice.ToString("#,##0"))</td>
+                                                <td>@((item.Quantity*item.UnitPrice).ToString("#,##0"))</td>
+
+                                                @switch (item.Status)
+                                                {
+                                                    case 2:
+                                                        statusCss = "text-danger";
+                                                        break;
+                                                    case 3:
+                                                        statusCss = "text-warning";
+                                                        break;
+                                                    case 4:
+                                                    case 5:
+                                                    case 6:
+                                                        statusCss = "text-success";
+                                                        break;
+                                                }
+                                                <td class="@statusCss">@(item.StatusName)</td>
+                                                <td>
+                                                    <a class="d-inline m-2" href="#" onclick="deleteItems('@item.OrderId','@item.Id')"
+                                                       data-toggle="tooltip" data-placement="bottom" title="حذف کالا">
+                                                        <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                                    </a>
+
+                                                    @if (item.Status == 3)
+                                                    {
+                                                        <a class="d-inline " href="#" onclick="showItemReplace('@item.Id')"
+                                                           data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات">
+                                                            <i class="fa fa-cubes text-warning" aria-hidden="true"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+                <div class="col-12 mt-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="col-12" id="divReplaceProducts">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="card-footer">
+
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+        function showItemReplace(id) {
+            var postData = {
+                'id': id
+            };
+
+            $('#divReplaceProducts').html('');
+
+            $.ajax({
+                type: "POST",
+                url: "/CallCenter/Order/ReplaceOrderItemDetails",
+                data: postData,
+                beforeSend: function () {
+                    showBehsamLoading();
+                },
+                complete: function () {
+                    hideBehsamLoading();
+                },
+                success: function (data) {
+                    hideBehsamLoading();
+                    $('#divReplaceProducts').html(data);
+                },
+                error: function (request, status, error) {
+                    hideBehsamLoading();
+                    console.log(request);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
+        }
+
+        function deleteItems(orderId,itemId) {
+            let postData = {
+                'orderId': orderId,
+                'itemId': itemId
+            };
+
+            swal.fire({
+                title: 'تایید',
+                text: 'آیا از حذف کالا مطمئن هستید؟ درصورت حذف قابل بازگشت نخواهد بود',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله، حذف شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+
+                    $.ajax({
+                        //contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "/CallCenter/Order/RemoveItemFromOrder",
+                        data: postData,
+                        beforeSend: function () {
+                            showBehsamLoading();
+                        },
+                        complete: function () {
+                            hideBehsamLoading();
+                        },
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                toastr.success('با موفقیت انجام شد', 'پیغام');
+                                location.reload();
+                                @* swal.fire(
+                                    'موفق!',
+                                    'با موفقیت انجام شد',
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.reload();
+                                });*@
+                            }
+                            else {
+                                toastr.error(data.message, 'هشدار');
+                                @*swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );*@
+                            }
+                        },
+                        error: function (request, status, error) {
+                            hideBehsamLoading();
+                        }
+
+                    });
+
+                }
+            });
+        }
+
+        function deleteOrder(orderCode) {
+            let postData = {
+                'orderCode': orderCode
+            };
+
+            swal.fire({
+                title: 'تایید',
+                text: 'آیا از لغو سفارش مطمئن هستید؟ عملیات قابل بازگشت نخواهد بود',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله، لغو شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+
+                    $.ajax({
+                        //contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "/CallCenter/Order/DeleteOrder",
+                        data: postData,
+                        beforeSend: function () {
+                            showBehsamLoading();
+                        },
+                        complete: function () {
+                            hideBehsamLoading();
+                        },
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                toastr.success('با موفقیت انجام شد', 'پیغام');
+                                location.replace('/CallCenter/Order/ReplaceOrders');
+                            }
+                            else {
+                                toastr.error(data.message, 'هشدار');
+                            }
+                        },
+                        error: function (request, status, error) {
+                            hideBehsamLoading();
+                        }
+
+                    });
+
+                }
+            });
+        }
+    </script>
+}

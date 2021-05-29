@@ -175,6 +175,48 @@ namespace SettingManagment.API.Controllers
 
         #endregion
 
+        #region UpdateGlobal
+
+        [HttpPost("UpdateGlobal")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<bool>>>
+            UpdateGlobalAsync([FromBody] Application.StoreShippingFeature.Commands.UpdateShippingGlobalCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    await SendDataForLog(command, "Update", "StoreGeneralShippingTbl", 1);
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(result);
+            }
+
+            
+        }
+
+        #endregion
+
         //------------------------
         #region DeleteArea
 
@@ -288,6 +330,48 @@ namespace SettingManagment.API.Controllers
             {
                 return BadRequest(result);
             }
+        }
+
+        #endregion
+
+        #region GetByIdGlobal
+
+        [HttpPost("GetByIdGlobal")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.StoreGeneralShippingTbl>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.StoreGeneralShippingTbl>>>
+            GetByIdGlobalAsync([FromBody] Application.StoreShippingFeature.Commands.GetShippingGlobalCommand command)
+        {
+
+            FluentResults.Result<Domain.Entities.StoreGeneralShippingTbl> result =
+                new FluentResults.Result<Domain.Entities.StoreGeneralShippingTbl>();
+            try
+            {
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(result.ToResult());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+                return BadRequest(result.ToResult());
+            }
+
+            
         }
 
         #endregion

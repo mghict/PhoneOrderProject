@@ -17,7 +17,7 @@ namespace WebSites.Panles.Services.Order
         bool DeleteItem(float storeId, long customerId, int productId);
         Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime,int shipping);
         Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId);
-
+        Models.Order.CachedOrderInfo SetRequest(Models.Order.CachedOrderInfo input);
 
     }
     public class CachedOrderService : Base.ServiceBase,ICachedOrderService
@@ -41,6 +41,7 @@ namespace WebSites.Panles.Services.Order
                     sItem.Quantity += count;
                     sItem.UnitPrice = price;
                     sItem.TaxPrice = sItem.Quantity * sItem.UnitPrice * tax/100;
+                    sItem.Status = 1;
                 }
                 else
                 {
@@ -121,7 +122,7 @@ namespace WebSites.Panles.Services.Order
         public Models.Order.CachedOrderInfo CreateRequest(float storeId, long customerId, long addressId, TimeSpan startTime, TimeSpan endTime,int Shipping)
         {
             DateTime dt = DateTime.Now;
-            string key = "R->" + customerId.ToString() + "->" + storeId.ToString("#.##", CultureInfo.InvariantCulture);
+            string key = "R->" + customerId.ToString() + "->" + storeId.ToString(CultureInfo.InvariantCulture);
 
             var request = CacheService.Get< Models.Order.CachedOrderInfo>(key);
 
@@ -155,13 +156,13 @@ namespace WebSites.Panles.Services.Order
             return request;
         }
 
-        public Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId)
+        public Models.Order.CachedOrderInfo SetRequest(Models.Order.CachedOrderInfo input)
         {
-            string key = "R->" + customerId.ToString() + "->" + storeId.ToString();
 
             try
             {
-                var request = CacheService.Get<Models.Order.CachedOrderInfo>(key);
+                var request = input;
+                UdpateRequestInfo(request);
                 return request;
             }
             catch
@@ -171,10 +172,29 @@ namespace WebSites.Panles.Services.Order
 
             
         }
+
+        public Models.Order.CachedOrderInfo GetRequest(float storeId, long customerId)
+        {
+            string key = "R->" + customerId.ToString() + "->" + storeId.ToString(CultureInfo.InvariantCulture);
+
+            try
+            {
+                var request = CacheService.Get<Models.Order.CachedOrderInfo>(key);
+                UdpateRequestInfo(request);
+                return request;
+            }
+            catch
+            {
+                return new Models.Order.CachedOrderInfo();
+            }
+
+
+        }
+
         private void UdpateRequestInfo(Models.Order.CachedOrderInfo request)
         {
             
-            var items=request.Items.Where(p => p.Status == 1);
+            var items=request.Items.Where(p => p.Status != 2 ).ToList();
 
             int total = items.Select(p => p.Quantity * p.UnitPrice).Sum();
             request.DiscountPrice = items.Select(p=> p.DiscountPrice ).Sum();
@@ -183,7 +203,7 @@ namespace WebSites.Panles.Services.Order
             //request.ShippingPrice = 10;
             request.FinalPrice = request.TotalPrice+ request.TaxPrice + request.ShippingPrice- request.DiscountPrice;
 
-            string key = "R->" + request.CustomerId.ToString() + "->" + request.StoreID.ToString();
+            string key = "R->" + request.CustomerId.ToString() + "->" + request.StoreID.ToString( CultureInfo.InvariantCulture);
 
             request = CacheService.RemoveAndSet(
                 request,

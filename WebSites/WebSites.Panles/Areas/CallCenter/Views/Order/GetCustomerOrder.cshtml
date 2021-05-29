@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "GetCustomerOrder";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
+    string customerCode = "";
+    customerCode = ViewBag?.CustomerSearch;
+}
+
+<div class="card ">
+    <div class="card-header">
+        <h5> سفارشات مشتری</h5>
+    </div>
+    <div class="card-body">
+        <div class="row row-sm">
+            <div class="col col-md-12 col-sm-12 col-lg-12">
+                @*<form data-parsley-validate="" action="/CallCenter/Order/OrderRegister" method="post">*@
+                <input id="searchKey" name="searchKey" class="form-control mb-3" placeholder="کد مشتری و یا تلفن ایشان" required="" type="text" value="@(string.IsNullOrWhiteSpace(customerCode)?"":customerCode.Trim())">
+                <input type="button" class="btn btn-outline-danger btn-rounded" value=" مشتری را جستجو کن " onclick="callSearch()" />
+                @*</form>*@
+            </div>
+        </div>
+        <hr />
+        <div class="col col-md-12 col-sm-12 col-lg-12" id="divProfile">
+
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        function callSearch() {
+
+            $('#divProfile').html('');
+
+            var search = $("#searchKey").val();
+
+            if (search == null || search.trim() == "") {
+                toastr.error('مقدار جستجو را وارد کنید');
+                return;
+            }
+
+
+            var postData = {
+                'customer': search
+            };
+
+            $.ajax(
+                {
+                    url: '/CallCenter/Order/GetCustomerOrderPost',
+                    type: 'post',
+                    data: postData,
+                    beforeSend: function () {
+                        showBehsamLoading();
+                    },
+                    success: function (result, status, err) {
+                        $('#divProfile').html(result);
+                    },
+                    error: function (request, status, error) {
+                        console.log(request);
+                    },
+                    complete: function () {
+                        hideBehsamLoading();
+                    }
+                });
+
+        }
+
+        $(document).ready(function () {
+            callSearch();
+        });
+
+    </script>
+}
+

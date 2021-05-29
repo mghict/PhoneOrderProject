@@ -22,5 +22,6 @@ namespace SettingManagment.Persistence
         Domain.IRepositories.Area.IAreaGeoQueryRepository AreaGeoQueryRepository { get; }
         Domain.IRepositories.Store.IStoreShippingAreaQueryRepository StoreShippingAreaQueryRepository { get; }
         Domain.IRepositories.Store.IStoreShippingQueryRepository StoreShippingQueryRepository { get; }
+        Domain.IRepositories.Store.IShippingGlobalQueryRepository ShippingGlobalQueryRepository { get; }
     }
 }

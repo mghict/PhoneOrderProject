@@ -9,6 +9,8 @@ namespace WebSites.Panles.Models.Reports
         public long OrderCode { get; set; }
         public long Id { get; set; }
         public string CustomerName { get; set; }
+        public long CustomerId { get; set; }
+        public long DefaultMobile { get; set; }
         public DateTime OrderDate { get; set; }
         public TimeSpan OrderTime { get; set; }
         public long TotalPrice { get; set; }

@@ -10,11 +10,12 @@ namespace StoreManagment.Application.OrderInfoFeature.Validators
         {
             RuleFor(current => current.OrderCode)
                 .NotEmpty()
+                .WithName("شماره سفارش")
                 .WithErrorCode("10")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired)
+                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent)
                 .NotNull()
                 .WithErrorCode("11")
-                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequired);
+                .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent);
 
         }
     }

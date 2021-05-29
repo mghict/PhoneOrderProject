@@ -5,10 +5,13 @@
 
 @{
     ViewData["Title"] = "ReplaceOrders";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/CallCenter/Views/Shared/_Layout.cshtml";
 }
 
 <div class="card ">
+    <div class="card-header">
+        <h7>سفارشات نیازمند جایگزینی کالا</h7>
+    </div>
     <div class="card-body">
         @if (Model != null && Model.Count > 0)
         {
@@ -42,7 +45,7 @@
                                 <td>@item.OrderCount.ToString("#,##0")</td>
                                 <td>@item.FinalPrice.ToString("#,##0")</td>
                                 <td>
-                                    <a href="/CallCenter/Report/GetOrderInfoWithItems?orderCode=@item.OrderCode" class="d-inline"
+                                    <a href="/CallCenter/Order/ReplaceOrderDetails?orderCode=@item.OrderCode" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش سفارش">
                                         <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
                                     </a>

@@ -43,7 +43,7 @@
                                 <td>@item.OrderDate.ToPersianDate()</td>
                                 <td>@item.OrderStatusStr</td>
                                 <td>@count</td>
-                                <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td>@item.FinalPrice.ToString("#,##0")</td>
                                 <td>
                                     <a href="/CallCenter/Report/GetOrderInfoWithItems?orderCode=@item.OrderCode" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش سفارش">

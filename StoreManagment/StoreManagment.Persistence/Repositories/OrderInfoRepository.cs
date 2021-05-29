@@ -25,9 +25,9 @@ namespace StoreManagment.Persistence.Repositories
             var query = "exec dbo.OrderChangeStatus @OrderCode,@Status,@Reason";
             var param = new
             {
-                @OrderCode= orderCode,
-                @Status= status,
-                @Reason= reason
+                @OrderCode = orderCode,
+                @Status = status,
+                @Reason = reason
             };
 
             bool response = false;
@@ -37,7 +37,7 @@ namespace StoreManagment.Persistence.Repositories
                 await db.ExecuteAsync(query, param);
                 response = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response = false;
             }
@@ -47,9 +47,6 @@ namespace StoreManagment.Persistence.Repositories
 
         public async Task RegisterOrderAsync(OrderInfo entity)
         {
-
-           
-
             db.Open();
 
             var isoLevel = System.Data.IsolationLevel.Serializable;
@@ -57,7 +54,7 @@ namespace StoreManagment.Persistence.Repositories
             {
                 try
                 {
-                    var effect =db.Insert(entity, transaction);
+                    var effect = db.Insert(entity, transaction);
 
                     entity.Detail.OrderId = effect;
 
@@ -70,8 +67,8 @@ namespace StoreManagment.Persistence.Repositories
                     var items = entity.Items;
                     var detail = entity.Detail;
 
-                    var detailEffect = db.Insert(detail,transaction);
-                    var itemEffect = await db.InsertAsync(items,transaction);
+                    var detailEffect = db.Insert(detail, transaction);
+                    var itemEffect = await db.InsertAsync(items, transaction);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -84,5 +81,77 @@ namespace StoreManagment.Persistence.Repositories
 
             return;
         }
+
+        public async Task UpdateOrderAsync(OrderInfo entity)
+        {
+            db.Open();
+
+            var isoLevel = System.Data.IsolationLevel.Serializable;
+            using (var transaction = db.BeginTransaction(isoLevel))
+            {
+
+                try
+                {
+                    var query = "Delete from CustomerPreOrderItemsTbl where OrderID=@OrderID";
+                    var param = new
+                    {
+                        @OrderID = entity.Id
+                    };
+
+                    var res = await db.ExecuteAsync(query, param,transaction);
+
+                    //-----------------------------------------
+                    //-----------------------------------------
+                    
+                    await db.UpdateAsync(entity, transaction);
+
+                    //-----------------------------------------
+                    //-----------------------------------------
+
+                    foreach (var item in entity.Items)
+                    {
+                        item.OrderId = entity.Id;
+                    }
+
+                    entity.Detail.OrderId = entity.Id;
+
+                    var items = entity.Items;
+                    var respIns = await db.InsertAsync(items,transaction);
+
+                    transaction.Commit();
+
+                    if (entity.OrderState==4)
+                    {
+                        long resultStatus =0;
+                        query = "Select count(ID) from [dbo].[CustomerPreOrderItemsTbl] where OrderId=@OrderID and Status=3";
+                        try
+                        {
+                            resultStatus =await db.QueryFirstAsync<long>(query, param);
+                        }
+                        catch(Exception ex)
+                        {
+                            resultStatus = -1;
+                        }
+
+                        if(resultStatus==0)
+                        {
+                            query = "update [dbo].[CustomerPreOrderInfoTbl] set OrderState=3 where ID=@OrderID ";
+                            await db.ExecuteAsync(query, param);
+                        }
+                    }
+
+                    
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("عدم امکان درج اطلاعات" + Environment.NewLine + ex.Message);
+                }
+
+            }
+
+            return;
+        }
+
     }
 }

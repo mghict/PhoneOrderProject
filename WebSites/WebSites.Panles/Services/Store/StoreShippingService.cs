@@ -21,7 +21,11 @@ namespace WebSites.Panles.Services.Store
         Task<List<Models.Store.StoreShippingAreaTbl>> GetByStoreIdAreaAsync(float storeId);
         Task<List<Models.Store.StoreShippingTbl>> GetAllAsync();
         Task<List<Models.Store.StoreShippingAreaTbl>> GetAllAreaAsync();
-
+        //----------------------------------------------
+        // Global Shipping
+        //----------------------------------------------
+        Task<FluentResult> UpdateGlobal(Models.Store.StoreGeneralShippingModel model);
+        Task<Models.Store.StoreGeneralShippingModel> GetGlobalAsync();
     }
     public class StoreShippingService : Base.ServiceBase, IStoreShippingService
     {
@@ -387,6 +391,73 @@ namespace WebSites.Panles.Services.Store
                     TimeSpan.FromMinutes(20),
                     Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
                     TokenCachClass.StoreShippingArea
+                    );
+            }
+
+            return ret;
+        }
+
+        //----------------------------------------------
+        // Global Shipping
+        //----------------------------------------------
+        public async Task<FluentResult> UpdateGlobal(Models.Store.StoreGeneralShippingModel model)
+        {
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/UpdateGlobal", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShipping);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+
+        private async Task<Models.Store.StoreGeneralShippingModel> getGlobal()
+        {
+            var command = new
+            {
+                
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<Models.Store.StoreGeneralShippingModel>("Setting/StoreShipping/GetByIdGlobal", command);
+                if (ret != null && ret.IsSuccess)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return new Models.Store.StoreGeneralShippingModel();
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Models.Store.StoreGeneralShippingModel();
+            }
+        }
+
+        public async Task<Models.Store.StoreGeneralShippingModel> GetGlobalAsync()
+        {
+            string key = $"GlobalShipping";
+            var ret = await CacheService.GetAsync<Models.Store.StoreGeneralShippingModel>(key);
+            if (ret == null)
+            {
+                ret = await getGlobal();
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShipping
                     );
             }
 

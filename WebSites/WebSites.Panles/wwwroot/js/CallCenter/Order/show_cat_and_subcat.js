@@ -133,7 +133,7 @@ function showCart() {
 function showCartDetails() {
 
     let storeId = $('#txtStoreId').val();
-    let customerId = $('#CustomerId').val();
+    let customerId = $('#txtCustomerId').val();
 
     var postData = {
         'storeId': storeId,

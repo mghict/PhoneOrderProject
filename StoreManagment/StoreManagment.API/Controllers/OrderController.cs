@@ -62,14 +62,14 @@ namespace StoreManagment.API.Controllers
                 }
                 else
                 {
-                    return BadRequest(error: result);
+                    return BadRequest(error: result.ToResult());
                 }
             }
             catch (Exception ex)
             {
                 result.WithError(ex.Message);
 
-                return BadRequest(error: result);
+                return BadRequest(error: result.ToResult());
             }
             
 
@@ -879,6 +879,151 @@ namespace StoreManagment.API.Controllers
         {
             FluentResults.Result<List<Domain.Entities.OrderItemsReserve>> result =
                 new FluentResults.Result<List<Domain.Entities.OrderItemsReserve>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
+        //-------------------------------------
+        //-------------------------------------
+
+        #region GetOrderByStatusItem
+
+        [HttpPost("GetOrderByStatusItem")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.OrderByStatusItem>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.OrderByStatusItem>>>>
+            GetOrderByStatusItemAsync([FromBody] Application.OrderInfoFeature.Commands.GetOrderByStatusItem command)
+        {
+            FluentResults.Result<List<Domain.Entities.OrderByStatusItem>> result =
+                new FluentResults.Result<List<Domain.Entities.OrderByStatusItem>>();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result.ToResult());
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result.ToResult());
+            }
+
+
+        }
+
+        #endregion
+
+        #region ReplaceProductToOrderAccept
+
+        [HttpPost("ReplaceProductToOrderAccept")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            ReplaceProductToOrderAcceptAsync([FromBody] Application.OrderInfoFeature.Commands.ReplaceProductToOrderCommand command)
+        {
+            DateTime createDate = System.DateTime.Now;
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+
+                result = await Mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    try
+                    {
+                        string action = ControllerContext.ActionDescriptor.ActionName;
+                        var tasklog = SendDataForLog(createDate, command, action, "CustomerPreOrderItemsTbl", command.OrginalItemId, 2, "جایگزینی کالا");
+
+                        Task.WaitAll(tasklog);
+                    }
+                    catch
+                    {
+
+                    }
+                    return Ok(value: result);
+                }
+                else
+                {
+                    return BadRequest(error: result);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+
+                return BadRequest(error: result);
+            }
+
+
+        }
+
+        #endregion
+
+        //-------------------------------
+        //-------------------------------
+
+        #region GetCustomerOrder
+
+        [HttpPost("GetCustomerOrder")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.GetSummeryOrderStatusDetailsByDate>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.GetSummeryOrderStatusDetailsByDate>>>>
+            GetCustomerOrderAsync([FromBody] Application.OrderInfoFeature.Commands.GetCustomerOrder command)
+        {
+            FluentResults.Result<List<Domain.Entities.GetSummeryOrderStatusDetailsByDate>> result =
+                new FluentResults.Result<List<Domain.Entities.GetSummeryOrderStatusDetailsByDate>>();
             try
             {
 

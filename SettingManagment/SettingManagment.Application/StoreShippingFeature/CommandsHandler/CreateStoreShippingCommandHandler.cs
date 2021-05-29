@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
 {
+
+
     public class CreateStoreShippingCommandHandler :
-        MediatR.IRequestHandler<Commands.CreateStoreShippingCommand, FluentResults.Result< int>>
+        MediatR.IRequestHandler<Commands.CreateStoreShippingCommand, FluentResults.Result<int>>
     {
         protected AutoMapper.IMapper Mapper { get; }
         protected Persistence.IUnitOfWork UnitOfWork { get; }
@@ -29,7 +31,7 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
             try
             {
                 result =
-                    await BehsamFramework.Util.Utility.Validate<Commands.CreateStoreShippingCommand, int>
+                    await BehsamFramework.Util.Utility.Validate<Commands.CreateStoreShippingCommand,int>
                         (validator: new Validation.CreateStoreShoppingValidator(), command: request);
 
                 if (result.IsFailed)
@@ -38,7 +40,6 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 }
 
                 // **************************************************
-
                 var entity = Mapper.Map<Domain.Entities.StoreShippingTbl>(request);
 
                 var inActive = await UnitOfWork.StoreShippingRepository.InsertAsync(entity);
@@ -51,9 +52,8 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 if (inActive !=null)
                 {
                     result.WithSuccess
-                        (successMessage: BehsamFramework.Resources.Messages.SuccessInsert);
+                       (successMessage: BehsamFramework.Resources.Messages.SuccessInsert);
                     result.WithValue(inActive.Id);
-
                 }
                 else
                 {
@@ -65,10 +65,7 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
             {
                 result.WithError(e.Message);
             }
-            finally
-            {
 
-            }
             return result;
         }
     }

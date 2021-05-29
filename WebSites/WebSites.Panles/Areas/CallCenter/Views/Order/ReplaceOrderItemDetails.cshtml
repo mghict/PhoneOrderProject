@@ -1,0 +1,83 @@
+﻿@model List<BehsamFramework.Models.OrderItemsReserveModel>
+@{
+    Layout = null;
+}
+
+<div class="container">
+    <div class="row">
+        @if (Model != null)
+        {
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var item = Model[i];
+                <div class="col col-6 col-md-4" id="card@(item.Id)">
+                    <div class="card">
+                        <div class="card-body" >
+                            <div class="pro-img-box d-flex align-items-sm-center justify-content-center">
+                                <img  src="~/admin/Content/assets/img/ownimage/product.jpg" style="width:150px;height:150px;" alt="تصویر محصول">
+                            </div>
+                            <div class="text-center pt-3 ">
+                                <div style="height:80px;">
+                                    <p class="product-title text-wrap">
+                                        @(item.DisplayName)
+                                    </p>
+                                </div>
+                                <p> @(item.BrandName)</p>
+                                <p>بارکد: @(item.ProductCode)</p>
+                                <a class="btn btn-sm btn-success float-left" href="#" onclick="replaceProduct('@item.OrderItemId','@item.ProductId')"
+                                   data-toggle="tooltip" data-placement="bottom" title="جایگزینی با کالا">
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                </a>
+                                <a class="btn btn-sm btn-danger float-right" href="#" onclick="hideProduct('card@(item.Id)')"
+                                   data-toggle="tooltip" data-placement="bottom" title="عدم نمایش کالا">
+                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<script>
+    function replaceProduct(itemId, productId) {
+        var postData = {
+            'itemId': itemId,
+            'productId': productId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/CallCenter/Order/ReplaceOrderItemAccept",
+            data: postData,
+            beforeSend: function () {
+                showBehsamLoading();
+            },
+            complete: function () {
+                hideBehsamLoading();
+            },
+            success: function (data) {
+                hideBehsamLoading();
+                if (data.isSuccess == true) {
+                    toastr.success('با موفقیت جایگزین گردید', 'پیغام');
+                    location.reload();
+                }
+                else {
+                    toastr.error('عملیات انجام نشد' + ' ' + data.message, 'خطا');
+                }
+            },
+            error: function (request, status, error) {
+                hideBehsamLoading();
+                console.log(request);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+
+    function hideProduct(id) {
+        $('#' + id).hide();
+    }
+
+</script>

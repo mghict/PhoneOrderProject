@@ -5,6 +5,7 @@ namespace WebSites.Panles.Models.Order
 {
     public class CachedOrderItem
     {
+        public long Id { get; set; }
         public long OrderId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }

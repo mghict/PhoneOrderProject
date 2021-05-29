@@ -64,5 +64,9 @@ namespace SettingManagment.Persistence
         private IStoreShippingRepository _storeShippingRepository;
         public IStoreShippingRepository StoreShippingRepository =>
             _storeShippingRepository = _storeShippingRepository ?? new Repositories.Store.StoreShippingRepository(IDbConnection);
+
+        private IShippingGlobalRepository _shippingGlobalRepository;
+        public IShippingGlobalRepository ShippingGlobalRepository =>
+            _shippingGlobalRepository = _shippingGlobalRepository ?? new Repositories.Store.ShippingGlobalRepository(IDbConnection);
     }
 }

@@ -84,7 +84,7 @@
         </div>
 
     </div>
-    
+
     <!-- /Loader -->
     <!-- main-sidebar -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
@@ -221,6 +221,11 @@
     <!-- Bootstrap Bundle js -->
     <script src="~/admin/Content/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!--SignalR-->
+    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
+    <script src="~/notification.js"></script>
+    <script src="~/usernotification.js"></script>
+
     <!-- Moment js -->
     <script src="~/admin/Content/assets/plugins/moment/moment.js"></script>
 
@@ -306,6 +311,7 @@
     <!-- Internal Form-validation js -->
     <script src="~/admin/Content/assets/js/form-validation.js"></script>
 
+    
 
 
     <!---SweetAlert js-->
@@ -320,11 +326,9 @@
 
     @RenderSection("Scripts", false)
 
-    <script src="~/lib/aspnet/signalr/dist/browser/signalr.js"></script>
-    <script src="~/notification.js"></script>
-    <script src="~/usernotification.js"></script>
+
     @*<script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
-    </script>*@
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlOA0kfEdoq8TnAZl7K1XBgBsAKRopbYY">
+        </script>*@
 </body>
 </html>

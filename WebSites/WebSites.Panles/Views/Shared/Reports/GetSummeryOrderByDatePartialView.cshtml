@@ -32,8 +32,8 @@
                             <tr role="row">
                                 <td>@item.StoreName</td>
                                 <td>@item.OrderDate.ToPersianDate()</td>
-                                <td>@item.OrderCount.ToString("#,#")</td>
-                                <td>@item.FinalPrice.ToString("#,#")</td>
+                                <td>@item.OrderCount.ToString("#,##0")</td>
+                                <td>@item.FinalPrice.ToString("#,##0")</td>
                                 <td>
                                     <a href="/CallCenter/Report/GetSummeryOrderStatusByDate?StoreId=@item.StoreId.ToString(CultureInfo.InvariantCulture)&StartDate=@ViewBag.StartDate&EndDate=@ViewBag.EndDate" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="نمایش جزئیات">

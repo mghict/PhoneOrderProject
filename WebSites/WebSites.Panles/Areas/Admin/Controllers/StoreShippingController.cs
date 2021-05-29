@@ -217,5 +217,53 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 return Json(new { IsSuccess = false, Message = ex.Message });
             }
         }
+
+
+        //----------------------------------------------------------------
+        // Global Shipping
+        //----------------------------------------------------------------
+        [HttpGet]
+        public async Task<IActionResult> GlobalShipping()
+        {
+            var item = await _SettingFacad.StoreShippingService.GetGlobalAsync();
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GlobalShipping(Models.Store.StoreGeneralShippingModel model)
+        {
+            try
+            {
+
+
+                if (ModelState.IsValid)
+                {
+                    var resp = await _SettingFacad.StoreShippingService.UpdateGlobal(model);
+                    if(resp==null ||resp.IsFailed)
+                    {
+                        
+                        if(resp==null)
+                        {
+                            resp = new FluentResult();
+                            resp.WithError("خروجی مورد نظر از سمت سرور ارائه نشد");
+                        }
+
+                        ModelState.AddModelError("Error", resp.GetErrors());
+                        return View("GlobalShipping", model);
+                    }
+
+                    return Redirect("/Admin/Home/Index");
+                }
+                else
+                {
+                    return View("GlobalShipping", model);
+                }
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("GlobalShipping", model);
+            }
+        }
     }
 }

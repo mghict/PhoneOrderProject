@@ -6,7 +6,8 @@
 }
 @*<input type="text" value="@urlBack" id="txtUrlProduct" maxlength="750"/>*@
 
-<input type="hidden" value="@ViewBag.CustomerId?.ToString(CultureInfo.InvariantCulture)" id="CustomerId" />
+<input type="hidden" value="@ViewBag.CustomerId" id="CustomerId" />
+<input type="hidden" value="@ViewBag.CustomerId" id="txtCustomerId" />
 <input type="hidden" value="@ViewBag.AddressId?.ToString(CultureInfo.InvariantCulture)" id="AddressId" />
 <input type="hidden" value="@ViewBag.StartTime?.ToString("c",CultureInfo.InvariantCulture)" id="StartTime" />
 <input type="hidden" value="@ViewBag.EndTime?.ToString("c",CultureInfo.InvariantCulture)" id="EndTime" />

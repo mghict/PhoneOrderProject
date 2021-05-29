@@ -18,10 +18,12 @@ namespace StoreManagment.Application.OrderInfoFeature.CommandsHandler
     {
         protected AutoMapper.IMapper Mapper { get; }
         protected Persistence.IUnitOfWork UnitOfWork { get; }
-        public  CreateOrderCommandHandler (IMapper mapper, IUnitOfWork unitOfWork)
+        protected Persistence.IQueryUnitOfWork QueryUnitOfWork { get; }
+        public  CreateOrderCommandHandler (IMapper mapper, IUnitOfWork unitOfWork, IQueryUnitOfWork queryUnitOfWork)
         {
             Mapper = mapper;
             UnitOfWork = unitOfWork;
+            QueryUnitOfWork = queryUnitOfWork;
         }
 
         public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -39,8 +41,23 @@ namespace StoreManagment.Application.OrderInfoFeature.CommandsHandler
                     return result;
                 }
 
-                                
-                await UnitOfWork.OrderInfoRepository.RegisterOrderAsync(request.OrderInfo);
+
+                if (request.OrderInfo.Id == 0)
+                {
+                    await UnitOfWork.OrderInfoRepository.RegisterOrderAsync(request.OrderInfo);
+                }
+                else
+                {
+                    var exists = await QueryUnitOfWork.OrderInfoQueryRepository.GetByIdAsync(request.OrderInfo.Id);
+                    if(exists!=null && exists.Id>0)
+                    {
+                        await UnitOfWork.OrderInfoRepository.UpdateOrderAsync(request.OrderInfo);
+                    }
+                    else
+                    {
+                        await UnitOfWork.OrderInfoRepository.RegisterOrderAsync(request.OrderInfo);
+                    }
+                }
                 result.WithSuccess("اطلاعات ذخیره شد");
             }
             catch(Exception ex)
