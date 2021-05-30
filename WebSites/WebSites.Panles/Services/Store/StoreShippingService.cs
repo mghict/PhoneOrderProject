@@ -38,6 +38,17 @@ namespace WebSites.Panles.Services.Store
         Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeGlobalPrice(int fromAmount, int toAmount);
         Task<List<Models.Store.StoreGeneralShippingPriceModel>> GetRangeByAmountGlobalPrice(int amount);
 
+        //----------------------------------------------
+        // Global Shipping By Distance
+        //----------------------------------------------
+        Task<FluentResult> CreateGlobalDistance(Models.Store.StoreGeneralShippingDistanceModel model);
+        Task<FluentResult> UpdateGlobalDistance(Models.Store.StoreGeneralShippingDistanceModel model);
+        Task<FluentResult> DeleteGlobalDistance(int id);
+        Task<Models.Store.StoreGeneralShippingDistanceModel> GetByIdGlobalDistance(int id);
+        Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetAllGlobalDistance();
+        Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetRangeGlobalDistance(int fromDistance, int toDistance);
+        Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetRangeByDistanceGlobalDistance(int distance);
+
     }
     public class StoreShippingService : Base.ServiceBase, IStoreShippingService
     {
@@ -709,6 +720,247 @@ namespace WebSites.Panles.Services.Store
                     TimeSpan.FromMinutes(20),
                     Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
                     TokenCachClass.GlobalShippingPrice
+                    );
+            }
+
+            return ret;
+        }
+
+
+        //----------------------------------------------
+        // Global Shipping By Distance
+        //----------------------------------------------
+
+        public async Task<FluentResult> CreateGlobalDistance(Models.Store.StoreGeneralShippingDistanceModel model)
+        {
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/CreateShippingByDistance", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingDistance);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+        public async Task<FluentResult> UpdateGlobalDistance(Models.Store.StoreGeneralShippingDistanceModel model)
+        {
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/UpdateShippingByDistance", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingDistance);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+        public async Task<FluentResult> DeleteGlobalDistance(int id)
+        {
+            var model = new
+            {
+                Id = id
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithoutValue("Setting/StoreShipping/DeleteShippingByDistance", model);
+                if (ret.IsSuccess)
+                {
+                    await CacheService.ClearTokenAsync(TokenCachClass.GlobalShippingDistance);
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                return new FluentResult();
+            }
+        }
+
+
+        private async Task<Models.Store.StoreGeneralShippingDistanceModel> getByIdGlobalDistance(int id)
+        {
+            var command = new
+            {
+                Id = id
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<Models.Store.StoreGeneralShippingDistanceModel>("Setting/StoreShipping/GetByIdShippingByDistance", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> getAllGlobalDistance()
+        {
+            var command = new
+            {
+
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingDistanceModel>>("Setting/StoreShipping/GetAllShippingByDistance", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count > 0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> getRangeGlobalDistance(int fromDistance, int toDistance)
+        {
+            var command = new
+            {
+                FromDistance = fromDistance,
+                ToDistance = toDistance
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingDistanceModel>>("Setting/StoreShipping/GetRangeShippingByDistance", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count > 0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> getRangeByDistanceGlobalDistance(int distance)
+        {
+            var command = new
+            {
+                Distance = distance
+            };
+
+            try
+            {
+                var ret = await ServiceCaller.PostDataWithValue<List<Models.Store.StoreGeneralShippingDistanceModel>>("Setting/StoreShipping/GetRangeByDistanceShippingByDistance", command);
+                if (ret != null && ret.IsSuccess && ret.Value != null && ret.Value.Count > 0)
+                {
+                    return ret.Value;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        public async Task<Models.Store.StoreGeneralShippingDistanceModel> GetByIdGlobalDistance(int id)
+        {
+            string key = $"GlobalShippingDistanceById-{id}";
+            var ret = await CacheService.GetAsync<Models.Store.StoreGeneralShippingDistanceModel>(key);
+            if (ret == null)
+            {
+                ret = await getByIdGlobalDistance(id);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingDistance
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetAllGlobalDistance()
+        {
+            string key = $"GlobalShippingDistanceAll";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingDistanceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getAllGlobalDistance();
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingDistance
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetRangeGlobalDistance(int fromDistance, int toDistance)
+        {
+            string key = $"GlobalShippingDistanceByRange-{fromDistance}-{toDistance}";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingDistanceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getRangeGlobalDistance(fromDistance, toDistance);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingDistance
+                    );
+            }
+
+            return ret;
+        }
+        public async Task<List<Models.Store.StoreGeneralShippingDistanceModel>> GetRangeByDistanceGlobalDistance(int distance)
+        {
+            string key = $"GlobalShippingDistanceByDistance-{distance}";
+            var ret = await CacheService.GetAsync<List<Models.Store.StoreGeneralShippingDistanceModel>>(key);
+            if (ret == null)
+            {
+                ret = await getRangeByDistanceGlobalDistance(distance);
+                await CacheService.RemoveAndSetAsync(
+                    ret,
+                    key,
+                    TimeSpan.FromMinutes(30),
+                    TimeSpan.FromMinutes(20),
+                    Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal,
+                    TokenCachClass.GlobalShippingDistance
                     );
             }
 

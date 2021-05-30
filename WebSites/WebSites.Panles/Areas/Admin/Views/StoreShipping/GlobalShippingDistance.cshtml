@@ -1,16 +1,16 @@
-﻿@model List<WebSites.Panles.Models.Store.StoreGeneralShippingPriceModel>
+﻿@model List<WebSites.Panles.Models.Store.StoreGeneralShippingDistanceModel>
 @{
-    ViewData["Title"] = "GlobalShippingPrice";
+    ViewData["Title"] = "GlobalShippingDistance";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <div class="card ">
     <div class="card-header">
         <h6 class="card-title ">
-            کرایه براساس قیمت
+            کرایه براساس مسافت
         </h6>
         <hr />
-        <a class="btn btn-danger" href="/admin/StoreShipping/CreateShippingPrice">ایجاد رکورد جدید</a>
+        <a class="btn btn-danger" href="/admin/StoreShipping/CreateShippingDistance">ایجاد رکورد جدید</a>
     </div>
 
     <div class="card-body">
@@ -19,8 +19,8 @@
                 <thead>
                     <tr>
                         <th rowspan="1" colspan="1">#</th>
-                        <th rowspan="1" colspan="1">از مبلغ فاکتور</th>
-                        <th rowspan="1" colspan="1">تا مبلغ فاکتور</th>
+                        <th rowspan="1" colspan="1">از مسافت</th>
+                        <th rowspan="1" colspan="1">تا مسافت</th>
                         <th rowspan="1" colspan="1">مبلغ کرایه</th>
                         <th rowspan="1" colspan="1">وضعیت</th>
                         <th rowspan="1" colspan="1">عملیات</th>
@@ -35,8 +35,8 @@
 
                             <tr role="row">
                                 <td>@(i+1)</td>
-                                <td>@item.FromSum</td>
-                                <td>@item.ToSum</td>
+                                <td>@item.FromDistance</td>
+                                <td>@item.ToDistance</td>
                                 <td>@item.ShippingPrice</td>
                                 <td>
                                     @if (item.Status)
@@ -49,7 +49,7 @@
                                     }
                                 </td>
                                 <td>
-                                    <a href="/Admin/StoreShipping/UpdateShippingPrice?Id=@item.Id" class="d-inline"
+                                    <a href="/Admin/StoreShipping/UpdateShippingDistance?Id=@item.Id" class="d-inline"
                                        data-toggle="tooltip" data-placement="bottom" title="ویرایش">
                                         <i class="fa fa-credit-card  text-danger" aria-hidden="true"></i>
                                     </a>

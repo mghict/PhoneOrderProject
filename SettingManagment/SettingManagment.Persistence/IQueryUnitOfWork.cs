@@ -24,5 +24,6 @@ namespace SettingManagment.Persistence
         Domain.IRepositories.Store.IStoreShippingQueryRepository StoreShippingQueryRepository { get; }
         Domain.IRepositories.Store.IShippingGlobalQueryRepository ShippingGlobalQueryRepository { get; }
         Domain.IRepositories.Store.IShippingGlobalPriceQueryRepository ShippingGlobalPriceQueryRepository { get; }
+        Domain.IRepositories.Store.IShippingGlobalDistanceQueryRepository ShippingGlobalDistanceQueryRepository { get; }
     }
 }

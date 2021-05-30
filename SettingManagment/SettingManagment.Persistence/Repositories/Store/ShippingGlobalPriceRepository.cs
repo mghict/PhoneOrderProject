@@ -42,7 +42,7 @@ namespace SettingManagment.Persistence.Repositories.Store
             
         }
 
-        private async Task<int> ExistsInRangeAsync(int fromSum, int toSum)
+        public async Task<int> ExistsInRangeAsync(int fromSum, int toSum)
         {
             var query = "select top 1 Id from StoreGeneralShippingByPriceTbl " +
                         " where @fromSum between FromSum and ToSum or " +

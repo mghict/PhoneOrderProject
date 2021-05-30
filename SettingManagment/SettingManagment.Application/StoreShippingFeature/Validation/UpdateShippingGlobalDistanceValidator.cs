@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 namespace SettingManagment.Application.StoreShippingFeature.Validation
 {
-    public class UpdateShippingGlobalPriceValidator :
-        FluentValidation.AbstractValidator<Commands.UpdateShippingGlobalPriceCommand>
+    public class UpdateShippingGlobalDistanceValidator :
+        FluentValidation.AbstractValidator<Commands.UpdateShippingGlobalDistanceCommand>
     {
-        public UpdateShippingGlobalPriceValidator() : base()
+        public UpdateShippingGlobalDistanceValidator() : base()
         {
             RuleFor(current => current.Id)
                .NotEmpty()
@@ -24,24 +24,24 @@ namespace SettingManagment.Application.StoreShippingFeature.Validation
                .WithErrorCode("9")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
 
-            RuleFor(current => current.FromSum)
+            RuleFor(current => current.FromDistance)
                .GreaterThanOrEqualTo(0)
                .WithName("بازه ابتدایی")
-               .WithErrorCode("10")
+               .WithErrorCode("9")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
                .LessThanOrEqualTo(int.MaxValue)
-               .WithErrorCode("11")
+               .WithErrorCode("9")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
 
-            RuleFor(current => current.ToSum)
+            RuleFor(current => current.ToDistance)
                .GreaterThan(0)
                .WithName("بازه انتهایی")
-               .WithErrorCode("10")
-               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
+               .WithErrorCode("9")
+               .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent)
                .LessThanOrEqualTo(int.MaxValue)
-               .WithErrorCode("11")
+               .WithErrorCode("9")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
-               .GreaterThanOrEqualTo(c => c.FromSum)
+               .GreaterThanOrEqualTo(c => c.FromDistance)
                .WithErrorCode("11")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
 

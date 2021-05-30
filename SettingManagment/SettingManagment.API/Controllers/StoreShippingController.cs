@@ -810,5 +810,282 @@ namespace SettingManagment.API.Controllers
         }
 
         #endregion
+
+
+        //-------------------------------------------
+        // Global Shipping By Distance
+        //-------------------------------------------
+        #region CreateShippingByDistance
+
+        [HttpPost("CreateShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            CreateShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.CreateShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region UpdateShippingByDistance
+
+        [HttpPost("UpdateShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            UpdateShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.UpdateShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region DeleteShippingByDistance
+
+        [HttpPost("DeleteShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result>>
+            DeleteShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.DeleteShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result result =
+                new FluentResults.Result();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetByIdShippingByDistance
+
+        [HttpPost("GetByIdShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<Domain.Entities.StoreGeneralShippingByDistanceTbl>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<Domain.Entities.StoreGeneralShippingByPriceTbl>>>
+            GetByIdShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.GetByIdShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result<Domain.Entities.StoreGeneralShippingByDistanceTbl> result =
+                new FluentResults.Result<Domain.Entities.StoreGeneralShippingByDistanceTbl>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetAllShippingByDistance
+
+        [HttpPost("GetAllShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>>>
+            GetAllShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.GetAllShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetRangeShippingByDistance
+
+        [HttpPost("GetRangeShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>>>
+            GetRangeShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.GetRangeShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
+
+        #region GetRangeByDistanceShippingByDistance
+
+        [HttpPost("GetRangeByDistanceShippingByDistance")]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType
+        (type: typeof(FluentResults.Result),
+            statusCode: Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest)]
+
+        public async
+            Task<ActionResult<FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>>>
+            GetRangeByDistanceShippingByDistanceAsync([FromBody] Application.StoreShippingFeature.Commands.GetRangeForDistanceShippingGlobalDistanceCommand command)
+        {
+
+            FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>> result =
+                new FluentResults.Result<List<Domain.Entities.StoreGeneralShippingByDistanceTbl>>();
+            try
+            {
+                result = await Mediator.Send(command);
+            }
+            catch (Exception ex)
+            {
+                result.WithError(ex.Message);
+            }
+
+            if (result.IsSuccess)
+            {
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        #endregion
     }
 }

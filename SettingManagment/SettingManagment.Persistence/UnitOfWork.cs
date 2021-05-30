@@ -74,5 +74,9 @@ namespace SettingManagment.Persistence
         private IShippingGlobalPriceRepository _shippingGlobalPriceRepository;
         public IShippingGlobalPriceRepository ShippingGlobalPriceRepository =>
             _shippingGlobalPriceRepository= _shippingGlobalPriceRepository?? new Repositories.Store.ShippingGlobalPriceRepository(IDbConnection);
+
+        private IShippingGlobalDistanceRepository _shippingGlobalDistanceRepository;
+        public IShippingGlobalDistanceRepository ShippingGlobalDistanceRepository =>
+            _shippingGlobalDistanceRepository = _shippingGlobalDistanceRepository ?? new Repositories.Store.ShippingGlobalDistanceRepository(IDbConnection);
     }
 }

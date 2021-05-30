@@ -3,6 +3,7 @@ using FluentResults;
 using SettingManagment.Application.StoreShippingFeature.Commands;
 using SettingManagment.Persistence;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,11 +14,13 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
     {
         protected AutoMapper.IMapper Mapper { get; }
         protected Persistence.IUnitOfWork UnitOfWork { get; }
+        protected Persistence.IQueryUnitOfWork QueryUnitOfWork { get; }
 
-        public UpdateShippingGlobalPriceCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public UpdateShippingGlobalPriceCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IQueryUnitOfWork queryUnitOfWork)
         {
             Mapper = mapper;
             UnitOfWork = unitOfWork;
+            QueryUnitOfWork = queryUnitOfWork;
         }
 
         public async Task<Result> Handle(UpdateShippingGlobalPriceCommand request, CancellationToken cancellationToken)
@@ -39,6 +42,42 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 // **************************************************
                 var entity = Mapper.Map<Domain.Entities.StoreGeneralShippingByPriceTbl>(request);
 
+                //---------------------------------------------------------------------------------
+                //کنترل تکراری نبودن اطلاعات
+                //---------------------------------------------------------------------------------
+                var isExists = await UnitOfWork.ShippingGlobalPriceRepository.ExistsInRangeAsync(entity.FromSum, entity.ToSum);
+                if (isExists == -1)
+                {
+                    result.WithError("خطا در زمان ورود اطلاعات");
+                    return result;
+                }
+                else if (isExists == 0)
+                {
+                    result.WithError("اطلاعات برای بازه مشخص شده وجود ندارد");
+                    return result;
+                }
+                else if (isExists != entity.Id)
+                {
+                    result.WithError("اطلاعات برای بازه مشخص شده وجود دارد");
+                    return result;
+                }
+
+                //---------------------------------------------------------------------------------
+                //کنترل مبلغ با مبلغ کرایه کلی
+                //---------------------------------------------------------------------------------
+                var shippingGlobal = await QueryUnitOfWork.ShippingGlobalQueryRepository.GetAllAsync();
+                foreach (var item in shippingGlobal.ToList())
+                {
+                    if (item.ShippingPrice < entity.ShippingPrice)
+                    {
+                        result.WithError("کرایه مشخص شده از کرایه کلی تعریف شده بیشتر است");
+                        return result;
+                    }
+                }
+
+                //************************************************************************
+                //************************************************************************
+
                 var inActive = await UnitOfWork.ShippingGlobalPriceRepository.UpdateAsync(entity);
 
 
@@ -46,7 +85,7 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
 
                 // **************************************************
 
-                if (inActive != null)
+                if (inActive)
                 {
                     result.WithSuccess
                         (successMessage: BehsamFramework.Resources.Messages.SuccessInsert);

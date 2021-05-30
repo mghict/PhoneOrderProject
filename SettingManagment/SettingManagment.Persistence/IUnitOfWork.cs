@@ -14,5 +14,6 @@
         Domain.IRepositories.Store.IStoreShippingRepository StoreShippingRepository { get; }
         Domain.IRepositories.Store.IShippingGlobalRepository ShippingGlobalRepository { get; }
         Domain.IRepositories.Store.IShippingGlobalPriceRepository ShippingGlobalPriceRepository { get; }
+        Domain.IRepositories.Store.IShippingGlobalDistanceRepository ShippingGlobalDistanceRepository { get; }
     }
 }

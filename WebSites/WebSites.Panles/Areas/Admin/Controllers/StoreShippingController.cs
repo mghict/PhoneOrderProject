@@ -364,5 +364,104 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             }
 
         }
+
+
+        //----------------------------------------------------------------
+        // Global Shipping By Distance
+        //----------------------------------------------------------------
+        [HttpGet]
+        public async Task<IActionResult> GlobalShippingDistance()
+        {
+            var ret = await _SettingFacad.StoreShippingService.GetAllGlobalDistance();
+
+            return View(ret);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateShippingDistance(int id)
+        {
+            var ret = await _SettingFacad.StoreShippingService.GetByIdGlobalDistance(id);
+
+            return View(ret);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateShippingDistance(Models.Store.StoreGeneralShippingDistanceModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var ret = await _SettingFacad.StoreShippingService.UpdateGlobalDistance(model);
+                    if (ret == null || ret.IsFailed)
+                    {
+                        if (ret == null)
+                        {
+                            ret = new FluentResult();
+                        }
+
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("UpdateShippingDistance", model);
+                    }
+
+                    return Redirect("/Admin/StoreShipping/GlobalShippingDistance");
+                }
+                else
+                {
+                    return View("UpdateShippingDistance", model);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("UpdateShippingDistance", model);
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateShippingDistance()
+        {
+            var ret = new Models.Store.StoreGeneralShippingDistanceModel();
+
+            return await Task.FromResult(View(ret));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateShippingDistance(Models.Store.StoreGeneralShippingDistanceModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var ret = await _SettingFacad.StoreShippingService.CreateGlobalDistance(model);
+                    if (ret == null || ret.IsFailed)
+                    {
+                        if (ret == null)
+                        {
+                            ret = new FluentResult();
+                        }
+
+                        ModelState.AddModelError("Error", ret.GetErrors());
+                        return View("CreateShippingDistance", model);
+                    }
+
+                    return Redirect("/Admin/StoreShipping/GlobalShippingDistance");
+                }
+                else
+                {
+                    return View("UpdateShippingDistance", model);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return View("CreateShippingDistance", model);
+            }
+
+        }
     }
 }

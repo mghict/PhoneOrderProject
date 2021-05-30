@@ -7,28 +7,35 @@ namespace SettingManagment.Application.StoreShippingFeature.Validation
         public CreateShippingGlobalPriceValidator() : base()
         {
             RuleFor(current => current.ShippingPrice)
-               .ExclusiveBetween(0, int.MaxValue)
+               .GreaterThanOrEqualTo(0)
                .WithName("کرایه حمل")
                .WithErrorCode("9")
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
+               .LessThanOrEqualTo(int.MaxValue)
+               .WithErrorCode("11")
                .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
 
             RuleFor(current => current.FromSum)
-               .NotEmpty()
+               .GreaterThanOrEqualTo(0)
                .WithName("بازه ابتدایی")
                .WithErrorCode("10")
-               .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent)
-               .NotNull()
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
+               .LessThanOrEqualTo(int.MaxValue)
                .WithErrorCode("11")
-               .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent);
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
 
             RuleFor(current => current.ToSum)
-               .NotEmpty()
+               .GreaterThan(0)
                .WithName("بازه انتهایی")
                .WithErrorCode("10")
-               .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent)
-               .NotNull()
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
+               .LessThanOrEqualTo(int.MaxValue)
                .WithErrorCode("11")
-               .WithMessage(BehsamFramework.Resources.Messages.ErrorRequiredFluent);
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent)
+               .GreaterThanOrEqualTo(c=>c.FromSum)
+               .WithErrorCode("11")
+               .WithMessage(BehsamFramework.Resources.Messages.MaxLenghtFluent);
+            
 
         }
     }
