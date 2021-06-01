@@ -4,5 +4,6 @@
         BehsamFramework.Mediator.CommandWithoutReturnValue
     {
         public int ShippingPrice { get; set; }
+        public int MinShippingPrice { get; set; }
     }
 }

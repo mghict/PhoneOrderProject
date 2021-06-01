@@ -28,5 +28,7 @@ namespace BehsamFramework.Models
         public int UnitDistanceValue { get; set; }
         public string UnitDistanceText { get; set; }
         public int ShippingPrice { get; set; }
+        public int? ShippingPricePayment { get; set; }
+        public int OrderCount { get; set; }
     }
 }

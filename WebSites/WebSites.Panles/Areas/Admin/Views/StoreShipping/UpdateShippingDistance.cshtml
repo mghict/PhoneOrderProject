@@ -19,17 +19,11 @@
                             <div class="card card-body pd-20 pd-md-40 border shadow-none">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
-                                    <input asp-for="Id" class="form-control" type="hidden" />
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="FromDistance" class="control-label"></label>
-                                    <input asp-for="FromDistance" class="form-control" type="number" required />
-                                    <span asp-validation-for="FromDistance" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ToDistance" class="control-label"></label>
-                                    <input asp-for="ToDistance" class="form-control" type="number" required />
-                                    <span asp-validation-for="ToDistance" class="text-danger"></span>
+
+                                    <input asp-for="Id" type="hidden" />
+                                    <input asp-for="ToDistance" type="hidden" />
+                                    <input asp-for="FromDistance" type="hidden" />
+
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="ShippingPrice" class="control-label"></label>

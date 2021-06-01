@@ -48,6 +48,8 @@ namespace StoreManagment.Application.OrderInfoFeature.CommandsHandler
                 {
                     result.WithError("اطلاعات ذخیره نشد");
                 }
+
+                await UnitOfWork.OrderInfoRepository.UpdateOrderData(request.OrderId);
             }
             catch (Exception ex)
             {

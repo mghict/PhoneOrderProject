@@ -19,8 +19,9 @@ namespace WebSites.Panles.Models.Store
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
         public int ToSum { get; set; }
 
-        [Display(Name = "کرایه حمل")]
+        [Display(Name = "درصد تخفیف کرایه")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        [Range(0, 100, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int ShippingPrice { get; set; }
 
         [Display(Name = "وضعیت")]

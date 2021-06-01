@@ -12,9 +12,14 @@ namespace WebSites.Panles.Models.Store
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
         public byte Id { get; set; }
 
-        [Display(Name = "مبلغ کرایه")]
+        [Display(Name = "حداکثر مبلغ کرایه")]
         [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
-        [Range(1, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        [Range(0, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
         public int ShippingPrice { get; set; }
+
+        [Display(Name = "حداقل مبلغ کرایه")]
+        [Required(ErrorMessage = "مقدار {0} اجباری می باشد")]
+        [Range(0, int.MaxValue, ErrorMessage = "مقدار {0} صحیح نیست")]
+        public int MinShippingPrice { get; set; }
     }
 }

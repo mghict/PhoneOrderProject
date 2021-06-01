@@ -14,6 +14,7 @@ namespace WebSites.Panles.Services
 {
     public interface IOrderFacad
     {
+
         Services.TimeSheet.IGetTimeSheetService GetTimeSheetService { get; }
         Store.IGetStoreOrderService GetStoreOrderService { get; }
         Store.IGetCategoryByParentService GetCategoryByParentService { get; }
@@ -38,8 +39,13 @@ namespace WebSites.Panles.Services
         private ICachedOrderService cachedOrderService;
         private ICreateOrderService _CreateOrderService;
         private IReportsService _ReportsService;
-        public OrderFacad(ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
+
+        private readonly IStoreShippingService _StoreShippingService;
+        public OrderFacad(
+            IStoreShippingService StoreShippingService,
+            ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
         {
+            _StoreShippingService = StoreShippingService;
         }
 
         public IGetTimeSheetService GetTimeSheetService =>
@@ -59,7 +65,7 @@ namespace WebSites.Panles.Services
             getProductByCategoryAndStoreService= getProductByCategoryAndStoreService ?? new GetProductByCategoryAndStoreService(CacheService, ServiceCaller, ClientFactory, Mapper);
 
         public ICachedOrderService CachedOrderService =>
-            cachedOrderService= cachedOrderService?? new CachedOrderService(CacheService, ServiceCaller, ClientFactory, Mapper);
+            cachedOrderService= cachedOrderService?? new CachedOrderService(_StoreShippingService,CacheService, ServiceCaller, ClientFactory, Mapper);
 
         public ICreateOrderService CreateOrderService =>
             _CreateOrderService= _CreateOrderService?? new Order.CreateOrderService(CacheService, ServiceCaller, ClientFactory, Mapper);

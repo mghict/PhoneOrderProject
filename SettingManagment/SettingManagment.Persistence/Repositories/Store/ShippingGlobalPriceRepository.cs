@@ -3,6 +3,8 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SettingManagment.Persistence.Repositories.Store
 {
@@ -29,24 +31,25 @@ namespace SettingManagment.Persistence.Repositories.Store
 
         public override async Task<bool> UpdateAsync(StoreGeneralShippingByPriceTbl obj)
         {
-            var exist = await ExistsInRangeAsync(obj.FromSum, obj.ToSum);
-            if (exist == obj.Id)
-            {
-                return await base.UpdateAsync(obj);
-            }
-            else
-            {
-                return false;
-            }
+            //var exist = await ExistsInRangeAsync(obj.FromSum, obj.ToSum);
+            //if (exist == obj.Id)
+            //{
+            //    return await base.UpdateAsync(obj);
+            //}
+            //else
+            //{
+            //    return false;
+            //}
 
-            
+            return await base.UpdateAsync(obj);
         }
 
         public async Task<int> ExistsInRangeAsync(int fromSum, int toSum)
         {
-            var query = "select top 1 Id from StoreGeneralShippingByPriceTbl " +
+            
+            var query = " select * from StoreGeneralShippingByPriceTbl " +
                         " where @fromSum between FromSum and ToSum or " +
-                        "       @toSum between FromSum and ToSum ";
+                        "       @toSum   between FromSum and ToSum ";
             var param = new
             {
                 @fromSum = fromSum,
@@ -54,9 +57,19 @@ namespace SettingManagment.Persistence.Repositories.Store
             };
             try
             {
-                var result = await db.QueryFirstOrDefaultAsync<int>(query, param);
-                return result;
+                var item = await db.QueryFirstOrDefaultAsync<StoreGeneralShippingByPriceTbl>(query,param);
+                
+                if(item==null)
+                {
+                    return 0;
+                }
 
+                if(item.ToSum==fromSum)
+                {
+                    return 0;
+                }
+
+                return item.Id;
             }
             catch(Exception ex)
             {

@@ -47,7 +47,23 @@ namespace StoreManagment.Application.OrderInfoFeature.CommandsHandler
                 {
                     result.WithError("اطلاعات ذخیره نشد");
                 }
+
+
+                try
+                {
+                    var retCode = await UnitOfWork.OrderItemsRepository.GetByIdAsync(request.OrginalItemId);
+                    if (retCode!=null)
+                    {
+                        await UnitOfWork.OrderInfoRepository.UpdateOrderData(retCode.OrderId);
+                    }
+                        
+                }
+                catch
+                {
+
+                }
                 
+
             }
             catch (Exception ex)
             {

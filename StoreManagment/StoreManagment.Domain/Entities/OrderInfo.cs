@@ -28,6 +28,8 @@ namespace StoreManagment.Domain.Entities
         public long AddressId { get; set; }
         public float StoreId { get; set; }
 
+        [Dapper.Contrib.Extensions.Write(false)]
+        public int? ShippingPricePayment { get; set; }
 
         [Dapper.Contrib.Extensions.Write(false)]
         public List<OrderItems> Items { get; set; }

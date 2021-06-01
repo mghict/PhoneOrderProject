@@ -90,7 +90,17 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">کرایه</td>
-                                        <td colspan="4">@Model.ShippingPrice.ToString("#,##0")</td>
+                                        <td colspan="4">
+                                            @if (Model.ShippingPricePayment == Model.ShippingPrice)
+                                            {
+                                                <span>@Model.ShippingPrice.ToString("#,##0")</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="text-decoration:line-through;" class="text-danger">@Model.ShippingPrice.ToString("#,##0")</span>
+                                                @(Model.ShippingPricePayment.ToString("#,##0"))
+                                            }
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">جمع فاکتور</td>

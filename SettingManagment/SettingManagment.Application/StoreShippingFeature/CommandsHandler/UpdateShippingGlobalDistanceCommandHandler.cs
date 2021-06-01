@@ -45,22 +45,22 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 //---------------------------------------------------------------------------------
                 //کنترل تکراری نبودن اطلاعات
                 //---------------------------------------------------------------------------------
-                var isExists = await UnitOfWork.ShippingGlobalDistanceRepository.ExistsInRangeAsync(entity.FromDistance, entity.ToDistance);
-                if (isExists == -1)
-                {
-                    result.WithError("خطا در زمان ورود اطلاعات");
-                    return result;
-                }
-                else if (isExists == 0)
-                {
-                    result.WithError("اطلاعات برای بازه مشخص شده وجود ندارد");
-                    return result;
-                }
-                else if (isExists != entity.Id)
-                {
-                    result.WithError("اطلاعات برای بازه مشخص شده وجود دارد");
-                    return result;
-                }
+                //var isExists = await UnitOfWork.ShippingGlobalDistanceRepository.ExistsInRangeAsync(entity.FromDistance, entity.ToDistance);
+                //if (isExists == -1)
+                //{
+                //    result.WithError("خطا در زمان ورود اطلاعات");
+                //    return result;
+                //}
+                //else if (isExists == 0)
+                //{
+                //    result.WithError("اطلاعات برای بازه مشخص شده وجود ندارد");
+                //    return result;
+                //}
+                //else if (isExists != entity.Id)
+                //{
+                //    result.WithError("اطلاعات برای بازه مشخص شده وجود دارد");
+                //    return result;
+                //}
 
                 //---------------------------------------------------------------------------------
                 //کنترل مبلغ با مبلغ کرایه کلی
@@ -70,7 +70,13 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 {
                     if (item.ShippingPrice < entity.ShippingPrice)
                     {
-                        result.WithError("کرایه مشخص شده از کرایه کلی تعریف شده بیشتر است");
+                        result.WithError("کرایه مشخص شده از حداکثر کرایه کلی تعریف شده بیشتر است");
+                        return result;
+                    }
+
+                    if (item.MinShippingPrice > entity.ShippingPrice)
+                    {
+                        result.WithError("کرایه مشخص شده از حداقل کرایه کلی تعریف شده کمتر است");
                         return result;
                     }
                 }

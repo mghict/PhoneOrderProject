@@ -207,7 +207,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{ED3D12CC-BF8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BillManagement.API", "BillManagement\BillManagement.API\BillManagement.API.csproj", "{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSite.JourChin", "Panels\WebSite.JourChin\WebSite.JourChin.csproj", "{8B775F5A-8591-4E34-80BF-1317CD3FE9D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSite.JourChin", "Panels\WebSite.JourChin\WebSite.JourChin.csproj", "{8B775F5A-8591-4E34-80BF-1317CD3FE9D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSite.Safir", "WebSite\WebSite.Safir\WebSite.Safir.csproj", "{8931FF8C-D2A2-40C1-A74A-21B2A3947F89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -399,6 +401,10 @@ Global
 		{8B775F5A-8591-4E34-80BF-1317CD3FE9D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B775F5A-8591-4E34-80BF-1317CD3FE9D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B775F5A-8591-4E34-80BF-1317CD3FE9D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8931FF8C-D2A2-40C1-A74A-21B2A3947F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8931FF8C-D2A2-40C1-A74A-21B2A3947F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8931FF8C-D2A2-40C1-A74A-21B2A3947F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8931FF8C-D2A2-40C1-A74A-21B2A3947F89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -506,6 +512,7 @@ Global
 		{ED3D12CC-BF8D-44B8-80B3-B532C29BFFF4} = {588596F8-EA68-4D9B-850F-DACC0A0102DA}
 		{1F47ADAA-EB66-40C5-9DB9-5B12A6AC67EA} = {ED3D12CC-BF8D-44B8-80B3-B532C29BFFF4}
 		{8B775F5A-8591-4E34-80BF-1317CD3FE9D0} = {96F2660B-11A3-4CD9-BE2A-447FC50C0F2C}
+		{8931FF8C-D2A2-40C1-A74A-21B2A3947F89} = {96F2660B-11A3-4CD9-BE2A-447FC50C0F2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BCC8689D-A361-4643-AACA-B00A7F70292E}

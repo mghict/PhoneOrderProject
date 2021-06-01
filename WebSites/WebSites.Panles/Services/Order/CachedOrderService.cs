@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebSites.Panles.Helper;
+using WebSites.Panles.Services.Store;
 
 namespace WebSites.Panles.Services.Order
 {
@@ -22,8 +23,12 @@ namespace WebSites.Panles.Services.Order
     }
     public class CachedOrderService : Base.ServiceBase,ICachedOrderService
     {
-        public CachedOrderService(ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
+        private readonly IStoreShippingService _settingFacad;
+        public CachedOrderService(
+            IStoreShippingService SettingFacad,
+            ICacheService cacheService, ServiceCaller serviceCaller, IHttpClientFactory clientFactory, IMapper mapper) : base(cacheService, serviceCaller, clientFactory, mapper)
         {
+            _settingFacad = SettingFacad;
         }
 
         public int AddItem(float storeId,long customerId,long addressId,TimeSpan startTime,TimeSpan endTime,int productId,float unitPrice,int count,string name,int shipping,int tax=9)
@@ -194,14 +199,47 @@ namespace WebSites.Panles.Services.Order
         private void UdpateRequestInfo(Models.Order.CachedOrderInfo request)
         {
             
-            var items=request.Items.Where(p => p.Status != 2 ).ToList();
+            var items=request.Items.Where(p => p.Status != 2 )?.ToList();
+            if (items != null && items.Count > 0)
+            {
+                int total = items.Select(p => p.Quantity * p.UnitPrice).Sum();
+                request.DiscountPrice = items.Select(p => p.DiscountPrice).Sum();
+                request.TaxPrice = items.Select(p => p.Quantity * p.TaxPrice).Sum();
+                request.TotalPrice = total;
+                //request.ShippingPrice = 10;
+                request.FinalPrice = request.TotalPrice + request.TaxPrice + request.ShippingPrice - request.DiscountPrice;
 
-            int total = items.Select(p => p.Quantity * p.UnitPrice).Sum();
-            request.DiscountPrice = items.Select(p=> p.DiscountPrice ).Sum();
-            request.TaxPrice = items.Select(p => p.Quantity * p.TaxPrice).Sum();
-            request.TotalPrice = total;
-            //request.ShippingPrice = 10;
-            request.FinalPrice = request.TotalPrice+ request.TaxPrice + request.ShippingPrice- request.DiscountPrice;
+                //*************************************************
+                //*************************************************
+
+                request.ShippingPricePayment = request.ShippingPrice;
+
+                var billAmount = total - request.DiscountPrice;
+
+                var globalMinShipping = _settingFacad.GetGlobalAsync().Result.MinShippingPrice;
+
+                var lstShippingPrice = _settingFacad.GetAllGlobalPrice().Result;
+
+                var shippingCalc = lstShippingPrice.FirstOrDefault(p => billAmount >= p.FromSum && billAmount <= p.ToSum);
+
+                if (shippingCalc != null)
+                {
+                    var shipp = request.ShippingPrice - (request.ShippingPrice * shippingCalc.ShippingPrice / 100);
+
+                    if (shipp < globalMinShipping)
+                    {
+                        shipp = globalMinShipping;
+                    }
+
+                    request.ShippingPricePayment = shipp;
+
+                    request.FinalPrice = request.TotalPrice + request.TaxPrice + shipp - request.DiscountPrice;
+                }
+
+            }
+
+            //*************************************************
+            //*************************************************
 
             string key = "R->" + request.CustomerId.ToString() + "->" + request.StoreID.ToString( CultureInfo.InvariantCulture);
 

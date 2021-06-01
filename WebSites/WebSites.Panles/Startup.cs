@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using WebSites.Panles.Helper;
+using WebSites.Panles.Services.Store;
 
 namespace WebSites.Panles
 {
@@ -85,6 +86,7 @@ namespace WebSites.Panles
             services.AddScoped<Services.CustomerAddress.IGetCustomerAddressService, Services.CustomerAddress.GetCustomerAddressService>();
             services.AddScoped<Services.Customer.IGetCustomerBySearch, Services.Customer.GetCustomerBySearch>();
             services.AddScoped<Services.Store.IGetStoreInfoPaginationService, Services.Store.GetStoreInfoPaginationService>();
+            services.AddScoped<IStoreShippingService, StoreShippingService>();
             //Facad Services
             services.AddScoped<Services.IOrderFacad, Services.OrderFacad>();
             services.AddScoped<Services.ISettingFacad, Services.SettingFacad>();

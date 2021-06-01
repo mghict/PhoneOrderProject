@@ -19,36 +19,37 @@
                 {
                     <div class="col col-sm-12 col-md-6 col-xl-4 col-lg-4" tabindex="1">
                         @*<div class="card " style="border-width: 2px;border-color: #fedede;">
-                            <div class="row">
-                                <br />
-                                <div class="col col-10 col-sm-10 col-md-10 col-lg-10 m-2" style="background-color: transparent;">
-                                    <span class="m-2 mt-3" style="color: #ff0000;"><strong>@item.StoreName</strong></span>
-                                    <p class="m-2" style="height:60px;overflow:auto;">@item.StoreAddress</p>
+                                <div class="row">
                                     <br />
-                                    <p><small class="text-muted ">منطقه آدرس مشتری : @item.AreaName</small></p>
-                                    <p class="text-primary ">زمان تقریبی : <span class="text-pink"> @item.TimeDistanceText </span></p>
-                                    <p class="text-primary ">فاصله تقریبی : <span class="text-pink">@item.UnitDistanceText (@item.UnitDistanceValue.ToString("#,#") متر)</span></p>
-                                    <br />
-                                    <p class="text-primary ">کرایه : <span class="text-pink">@item.ShippingPrice ریال</span></p>
-                                    <a class="btn btn-outline-danger btn-block " data-toggle="tooltip" style="color:black;"
-                                       href="/CallCenter/Order/ShowProductList?sT=@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)&eT=@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)&cId=@ViewBag.CustomerId&add=@ViewBag.AddressId&sId=@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)&shipp=@item.ShippingPrice">
-                                        انتخاب
-                                    </a>
+                                    <div class="col col-10 col-sm-10 col-md-10 col-lg-10 m-2" style="background-color: transparent;">
+                                        <span class="m-2 mt-3" style="color: #ff0000;"><strong>@item.StoreName</strong></span>
+                                        <p class="m-2" style="height:60px;overflow:auto;">@item.StoreAddress</p>
+                                        <br />
+                                        <p><small class="text-muted ">منطقه آدرس مشتری : @item.AreaName</small></p>
+                                        <p class="text-primary ">زمان تقریبی : <span class="text-pink"> @item.TimeDistanceText </span></p>
+                                        <p class="text-primary ">فاصله تقریبی : <span class="text-pink">@item.UnitDistanceText (@item.UnitDistanceValue.ToString("#,#") متر)</span></p>
+                                        <br />
+                                        <p class="text-primary ">کرایه : <span class="text-pink">@item.ShippingPrice ریال</span></p>
+                                        <a class="btn btn-outline-danger btn-block " data-toggle="tooltip" style="color:black;"
+                                           href="/CallCenter/Order/ShowProductList?sT=@ViewBag.StartTime.ToString("c",CultureInfo.InvariantCulture)&eT=@ViewBag.EndTime.ToString("c",CultureInfo.InvariantCulture)&cId=@ViewBag.CustomerId&add=@ViewBag.AddressId&sId=@item.StoreCode.ToString(System.Globalization.CultureInfo.InvariantCulture)&shipp=@item.ShippingPrice">
+                                            انتخاب
+                                        </a>
+                                    </div>
+                                    <div class="col-2 col-sm-2 col-md-2 col-lg-2 rounded-left" style="background-color: #fdeaea;border: 1px solid transparent;">
+                                        <i class="fa fa-map-marker"></i>
+                                    </div>
                                 </div>
-                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 rounded-left" style="background-color: #fdeaea;border: 1px solid transparent;">
-                                    <i class="fa fa-map-marker"></i>
-                                </div>
-                            </div>
 
-                        </div>*@
+                            </div>*@
 
                         <div class="card card-danger">
                             <div class="card-header pb-0  text-danger">
                                 <h5 class="card-title mb-1 pb-0"><strong>@item.StoreName</strong></h5>
                             </div>
                             <div class="card-body" style="background-color: #fcfafa;">
-                                <p class="m-2" style="height:60px;overflow:auto;">@item.StoreAddress</p>
-                                <p><small class="text-muted ">منطقه آدرس مشتری : @item.AreaName</small></p>
+                                @*<p class="m-2" style="height:60px;overflow:auto;">@item.StoreAddress</p>*@
+                                @*<p><small class="text-muted ">منطقه آدرس مشتری : @item.AreaName</small></p>*@
+                                <p><small class="text-muted ">تعداد سفارش جاری : @item.OrderCount.ToString("#,##0")</small></p>
                                 <p class="text-primary ">زمان تقریبی : <span class="text-pink"> @item.TimeDistanceText </span></p>
                                 <p class="text-primary ">فاصله تقریبی : <span class="text-pink">@item.UnitDistanceText (@item.UnitDistanceValue.ToString("#,#") متر)</span></p>
                                 <p class="text-primary ">کرایه : <span class="text-pink">@item.ShippingPrice ریال</span></p>

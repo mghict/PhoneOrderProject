@@ -40,7 +40,8 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 var entity = new Domain.Entities.StoreGeneralShippingTbl()
                 {
                     Id = 1,
-                    ShippingPrice = request.ShippingPrice
+                    ShippingPrice = request.ShippingPrice,
+                    MinShippingPrice=request.MinShippingPrice
                 };
 
                 var inActive = await UnitOfWork.ShippingGlobalRepository.UpdateAsync(entity);

@@ -26,6 +26,7 @@ namespace WebSites.Panles.Models.Order
         public int PaymentType { get; set; }
         public long AddressId { get; set; }
         public float StoreId { get; set; }
+        public int? ShippingPricePayment { get; set; }
 
         public List<OrderItems> Items { get; set; }
 

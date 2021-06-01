@@ -79,6 +79,8 @@ namespace StoreManagment.Persistence.Repositories
 
             }
 
+            await UpdateOrderData(entity.OrderCode);
+
             return;
         }
 
@@ -150,8 +152,28 @@ namespace StoreManagment.Persistence.Repositories
 
             }
 
+            await UpdateOrderData(entity.OrderCode);
             return;
         }
 
+        public async Task UpdateOrderData(long orderCode)
+        {
+            var query = "exec dbo.UpdateOrderData @OrderCode";
+            var param = new
+            {
+                @OrderCode = orderCode
+            };
+
+            try
+            {
+                await db.ExecuteAsync(query, param);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            return;
+        }
     }
 }

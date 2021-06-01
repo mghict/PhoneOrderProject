@@ -15,22 +15,22 @@ namespace WebSites.Panles.Areas.Admin.Controllers
     public class StoreShippingController : BaseController
     {
         private Services.ISettingFacad _SettingFacad;
-        
-        public StoreShippingController(Services.ISettingFacad SettingFacad,IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller,memoryCache, _clientFactory, _cacheService, staticValues, mapper)
+
+        public StoreShippingController(Services.ISettingFacad SettingFacad, IMemoryCache memoryCache, IHttpClientFactory _clientFactory, ICacheService _cacheService, StaticValues staticValues, IMapper mapper, ServiceCaller serviceCaller) : base(serviceCaller, memoryCache, _clientFactory, _cacheService, staticValues, mapper)
         {
             _SettingFacad = SettingFacad;
         }
 
         public async Task<IActionResult> StoreShipping(float storeId)
         {
-            
+
             var model = await _SettingFacad.StoreShippingService.GetByStoreIdAsync(storeId);
-            if(model==null || model.Id==0)
+            if (model == null || model.Id == 0)
             {
                 model = new Models.Store.StoreShippingTbl()
                 {
                     Id = 0,
-                    StoreID=storeId
+                    StoreID = storeId
                 };
             }
 
@@ -40,7 +40,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> StoreShipping(Models.Store.StoreShippingTbl model,string storeIdStr)
+        public async Task<IActionResult> StoreShipping(Models.Store.StoreShippingTbl model, string storeIdStr)
         {
             ViewBag.StoreId = storeIdStr;
             try
@@ -55,36 +55,36 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
                 //if(ModelState.IsValid)
                 //{
-                    FluentResult resp = new FluentResult();
+                FluentResult resp = new FluentResult();
 
-                    if(model.Id==0)
-                    {
-                        resp = await _SettingFacad.StoreShippingService.Create(model);
-                    }
-                    else
-                    {
-                        resp = await _SettingFacad.StoreShippingService.Update(model);
-                    }
+                if (model.Id == 0)
+                {
+                    resp = await _SettingFacad.StoreShippingService.Create(model);
+                }
+                else
+                {
+                    resp = await _SettingFacad.StoreShippingService.Update(model);
+                }
 
-                    if(!resp.IsSuccess)
-                    {
-                        ModelState.AddModelError("Error", resp.GetErrors());
-                        return View("StoreShipping", model);
-                    }
+                if (!resp.IsSuccess)
+                {
+                    ModelState.AddModelError("Error", resp.GetErrors());
+                    return View("StoreShipping", model);
+                }
 
-                    return Redirect("/Admin/Store/Index");
+                return Redirect("/Admin/Store/Index");
                 //}
                 //else
                 //{
                 //    return View("StoreShipping", model);
                 //}
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("Error", ex.Message);
                 return View("StoreShipping", model);
             }
-            
+
         }
 
 
@@ -109,7 +109,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         {
             var lst = await _SettingFacad.AreaInfoService.GetByCityAsync(cityId, 2);
 
-            ViewBag.AreaList = new SelectList(lst,"Id","AreaName");
+            ViewBag.AreaList = new SelectList(lst, "Id", "AreaName");
             ViewBag.CityId = cityId;
             ViewBag.StoreId = storeId.ToString(CultureInfo.InvariantCulture);
 
@@ -117,13 +117,13 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAreaShipping(int cityId,string storeIdStr,Models.Store.StoreShippingAreaTbl model)
+        public async Task<IActionResult> AddAreaShipping(int cityId, string storeIdStr, Models.Store.StoreShippingAreaTbl model)
         {
             var lst = await _SettingFacad.AreaInfoService.GetByCityAsync(cityId, 2);
 
             ViewBag.AreaList = new SelectList(lst, "Id", "AreaName");
             ViewBag.CityId = cityId;
-            ViewBag.StoreId = storeIdStr; 
+            ViewBag.StoreId = storeIdStr;
 
             try
             {
@@ -136,7 +136,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 model.StoreID = sId;
 
                 var resp = await _SettingFacad.StoreShippingService.CreateArea(model);
-                if(resp.IsSuccess)
+                if (resp.IsSuccess)
                 {
                     return Redirect($"/Admin/StoreShipping/AreaShipping?storeId={sId.ToString(CultureInfo.InvariantCulture)}&cityId={cityId}");
                 }
@@ -144,7 +144,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                 ModelState.AddModelError("Error", resp.GetErrors());
                 return View("AddAreaShipping", model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("Error", ex.Message);
                 return View("AddAreaShipping", model);
@@ -153,9 +153,9 @@ namespace WebSites.Panles.Areas.Admin.Controllers
 
 
 
-        public async Task<IActionResult> UpdateAreaShipping(int cityId,int id)
+        public async Task<IActionResult> UpdateAreaShipping(int cityId, int id)
         {
-            var lst =  _SettingFacad.AreaInfoService.GetByCityAsync(cityId, 2);
+            var lst = _SettingFacad.AreaInfoService.GetByCityAsync(cityId, 2);
             var model = _SettingFacad.StoreShippingService.GetByIdAreaAsync(id);
 
             Task.WaitAll(lst, model);
@@ -165,7 +165,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             ViewBag.AreaList = new SelectList(lst.Result, "Id", "AreaName");
             return View(model.Result);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> UpdateAreaShipping(int cityId, string storeIdStr, Models.Store.StoreShippingAreaTbl model)
         {
@@ -235,14 +235,17 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             try
             {
 
-
+                if(model.MinShippingPrice>model.ShippingPrice)
+                {
+                    throw new Exception("حداقل کرایه بایستی کمتر یا مساوی حداکثر کرایه باشد");
+                }
                 if (ModelState.IsValid)
                 {
                     var resp = await _SettingFacad.StoreShippingService.UpdateGlobal(model);
-                    if(resp==null ||resp.IsFailed)
+                    if (resp == null || resp.IsFailed)
                     {
-                        
-                        if(resp==null)
+
+                        if (resp == null)
                         {
                             resp = new FluentResult();
                             resp.WithError("خروجی مورد نظر از سمت سرور ارائه نشد");
@@ -259,7 +262,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                     return View("GlobalShipping", model);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("Error", ex.Message);
                 return View("GlobalShipping", model);
@@ -291,13 +294,13 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         {
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
 
                     var ret = await _SettingFacad.StoreShippingService.UpdateGlobalPrice(model);
-                    if(ret==null || ret.IsFailed)
+                    if (ret == null || ret.IsFailed)
                     {
-                        if(ret==null)
+                        if (ret == null)
                         {
                             ret = new FluentResult();
                         }
@@ -313,12 +316,28 @@ namespace WebSites.Panles.Areas.Admin.Controllers
                     return View("UpdateShippingPrice", model);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("Error", ex.Message);
                 return View("UpdateShippingPrice", model);
             }
-            
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteShippingPrice(int id)
+        {
+            try
+            {
+
+                var ret = await _SettingFacad.StoreShippingService.DeleteGlobalPrice(id);
+                return Json(new { IsSuccess = ret.IsSuccess, Message = ret.GetErrors() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Message = ex.Message });
+            }
+
         }
 
         [HttpGet]
@@ -326,7 +345,7 @@ namespace WebSites.Panles.Areas.Admin.Controllers
         {
             var ret = new Models.Store.StoreGeneralShippingPriceModel();
 
-            return await Task.FromResult( View(ret));
+            return await Task.FromResult(View(ret));
 
         }
 
@@ -416,6 +435,21 @@ namespace WebSites.Panles.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("Error", ex.Message);
                 return View("UpdateShippingDistance", model);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteShippingDistance(int id)
+        {
+            try
+            {
+                var ret = await _SettingFacad.StoreShippingService.DeleteGlobalDistance(id);
+                return Json(new { IsSuccess = ret.IsSuccess, Message = ret.GetErrors() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { IsSuccess = false, Message = ex.Message });
             }
 
         }

@@ -29,22 +29,22 @@ namespace SettingManagment.Persistence.Repositories.Store
 
         public override async Task<bool> UpdateAsync(StoreGeneralShippingByDistanceTbl obj)
         {
-            var exist = await ExistsInRangeAsync(obj.FromDistance, obj.ToDistance);
-            if (exist == obj.Id)
-            {
-                return await base.UpdateAsync(obj);
-            }
-            else
-            {
-                return false;
-            }
-
+            //var exist = await ExistsInRangeAsync(obj.FromDistance, obj.ToDistance);
+            //if (exist == obj.Id)
+            //{
+            //    return await base.UpdateAsync(obj);
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            return await base.UpdateAsync(obj);
 
         }
 
         public async Task<int> ExistsInRangeAsync(int fromDistance, int toDistance)
         {
-            var query = "select top 1 Id from StoreGeneralShippingByDistanceTbl " +
+            var query = "select * from StoreGeneralShippingByDistanceTbl " +
                         " where @fromDistance between FromDistance and ToDistance or " +
                         "       @toDistance between FromDistance and ToDistance ";
             var param = new
@@ -52,11 +52,22 @@ namespace SettingManagment.Persistence.Repositories.Store
                 @fromDistance = fromDistance,
                 @toDistance = toDistance
             };
+           
             try
             {
-                var result = await db.QueryFirstOrDefaultAsync<int>(query, param);
-                return result;
+                var item = await db.QueryFirstOrDefaultAsync<StoreGeneralShippingByDistanceTbl>(query, param);
 
+                if (item == null)
+                {
+                    return 0;
+                }
+
+                if (item.ToDistance == fromDistance)
+                {
+                    return 0;
+                }
+
+                return item.Id;
             }
             catch (Exception ex)
             {

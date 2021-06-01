@@ -287,10 +287,15 @@ namespace WebSites.Panles.Helper
 
                 var respons = await result.Content.ReadAsStringAsync();
                 resultList = JsonConvert.DeserializeObject<FluentResult>(respons);
+                if(resultList == null)
+                {
+                    resultList = new FluentResult();
+                }
 
             }
             catch (Exception ex)
             {
+                resultList = new FluentResult();
                 resultList.WithError(ex.Message);
             }
 

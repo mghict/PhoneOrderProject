@@ -21,7 +21,7 @@ namespace WebSites.Panles.Models.Order
         public float StoreID { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-
+        public int ShippingPricePayment { get; set; }
         public List<CachedOrderItem> Items { get; set; }
     }
 }

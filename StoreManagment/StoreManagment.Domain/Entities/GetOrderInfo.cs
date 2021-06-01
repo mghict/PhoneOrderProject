@@ -25,5 +25,6 @@ namespace StoreManagment.Domain.Entities
         public int OrderCount { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public int? ShippingPricePayment { get; set; }
     }
 }

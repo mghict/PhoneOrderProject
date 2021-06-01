@@ -26,11 +26,14 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
         private readonly Services.IOrderFacad OrderFacad;
         private readonly Services.IReportFacad _reportFacad;
-        private readonly Services.Notification.INotificationService _notificationService;
+        private readonly Services.ISettingFacad _SettingFacad;
 
+        private readonly Services.Notification.INotificationService _notificationService;
+        
         public OrderController(
             Services.Map.NeshanMapService neshanMapService,
             Services.Notification.INotificationService NotificationService,
+            Services.ISettingFacad SettingFacad,
             Services.IOrderFacad orderFacad,
             Services.IReportFacad reportFacad,
             Services.Customer.IGetCustomerBySearch getCustomerBySearch,
@@ -48,6 +51,7 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             _notificationService = NotificationService;
             NeshanMapService = neshanMapService;
             _reportFacad = reportFacad;
+            _SettingFacad = SettingFacad;
         }
 
         public IActionResult Index()
@@ -106,6 +110,10 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
 
             var data = await OrderFacad.GetStoreOrderService.GetStores(startTime, endTime, requestDate, address);
 
+            
+            
+
+
             List<Models.Map.Location> distination = new List<Models.Map.Location>();
             var disItem = data.Select(s => new Models.Map.Location
             {
@@ -151,6 +159,38 @@ namespace WebSites.Panles.Areas.CallCenter.Controllers
             ViewBag.EndTime = endTime;
 
             data = data.OrderBy(p => p.UnitDistanceValue).ThenBy(p => p.TimeDistanceValue).ToList();
+
+            
+            
+            //******************************************************
+            // Get Global Shipping 
+            //******************************************************
+            var lstShippingGlobal = await _SettingFacad.StoreShippingService.GetAllGlobalDistance();
+            var globalShipping = lstShippingGlobal.FirstOrDefault();
+
+
+            //******************************************************
+            // Get Shipping Distance
+            //******************************************************
+            var lstShippingDistance = await _SettingFacad.StoreShippingService.GetAllGlobalDistance();
+            
+            if (data != null && data.Count > 0)
+            {
+                foreach (var item in data.ToList())
+                {
+                    var distance = (item.UnitDistanceValue / 1000);
+                    var shipping = lstShippingDistance.FirstOrDefault(p => p.FromDistance >= distance && p.ToDistance < distance);
+                    if(shipping==null)
+                    {
+                        item.ShippingPrice = globalShipping.ShippingPrice;
+                    }
+                    else
+                    {
+                        item.ShippingPrice = shipping.ShippingPrice;
+                    }
+
+                }
+            }
 
             return View(data);
         }

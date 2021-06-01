@@ -16,17 +16,24 @@
                     <div class="col-md-10 col-lg-8 col-xl-6 mx-auto d-block">
                         <div class="card card-body pd-20 pd-md-40 border shadow-none">
 
-                            
+
 
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="form-group">
                                 <input type="hidden" asp-for="Id" />
                             </div>
                             <div class="form-group">
+                                <label asp-for="MinShippingPrice" class="control-label"></label>
+                                <input asp-for="MinShippingPrice" name="ShippingPrice" class="form-control" type="number" min="1000" step="100" required autocomplete="off" />
+                                <span asp-validation-for="MinShippingPrice" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
                                 <label asp-for="ShippingPrice" class="control-label"></label>
                                 <input asp-for="ShippingPrice" name="ShippingPrice" class="form-control" type="number" min="1000" step="100" required autocomplete="off" />
                                 <span asp-validation-for="ShippingPrice" class="text-danger"></span>
                             </div>
+
 
                             <div class="form-group">
                                 <input type="submit" value="ویرایش اطلاعات" class="btn btn-danger btn-block" />

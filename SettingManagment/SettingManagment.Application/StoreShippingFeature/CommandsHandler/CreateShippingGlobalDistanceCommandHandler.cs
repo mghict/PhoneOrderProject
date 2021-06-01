@@ -65,7 +65,13 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 {
                     if (item.ShippingPrice < entity.ShippingPrice)
                     {
-                        result.WithError("کرایه مشخص شده از کرایه کلی تعریف شده بیشتر است");
+                        result.WithError("کرایه مشخص شده از حداکثر کرایه کلی تعریف شده بیشتر است");
+                        return result;
+                    }
+
+                    if (item.MinShippingPrice > entity.ShippingPrice)
+                    {
+                        result.WithError("کرایه مشخص شده از حداقل کرایه کلی تعریف شده کمتر است");
                         return result;
                     }
                 }

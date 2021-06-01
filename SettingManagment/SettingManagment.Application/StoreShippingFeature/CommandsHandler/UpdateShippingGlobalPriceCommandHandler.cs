@@ -45,22 +45,22 @@ namespace SettingManagment.Application.StoreShippingFeature.CommandsHandler
                 //---------------------------------------------------------------------------------
                 //کنترل تکراری نبودن اطلاعات
                 //---------------------------------------------------------------------------------
-                var isExists = await UnitOfWork.ShippingGlobalPriceRepository.ExistsInRangeAsync(entity.FromSum, entity.ToSum);
-                if (isExists == -1)
-                {
-                    result.WithError("خطا در زمان ورود اطلاعات");
-                    return result;
-                }
-                else if (isExists == 0)
-                {
-                    result.WithError("اطلاعات برای بازه مشخص شده وجود ندارد");
-                    return result;
-                }
-                else if (isExists != entity.Id)
-                {
-                    result.WithError("اطلاعات برای بازه مشخص شده وجود دارد");
-                    return result;
-                }
+                //var isExists = await UnitOfWork.ShippingGlobalPriceRepository.ExistsInRangeAsync(entity.FromSum, entity.ToSum);
+                //if (isExists == -1)
+                //{
+                //    result.WithError("خطا در زمان ورود اطلاعات");
+                //    return result;
+                //}
+                //else if (isExists == 0)
+                //{
+                //    result.WithError("اطلاعات برای بازه مشخص شده وجود ندارد");
+                //    return result;
+                //}
+                //else if (isExists != entity.Id)
+                //{
+                //    result.WithError("اطلاعات برای بازه مشخص شده وجود دارد");
+                //    return result;
+                //}
 
                 //---------------------------------------------------------------------------------
                 //کنترل مبلغ با مبلغ کرایه کلی

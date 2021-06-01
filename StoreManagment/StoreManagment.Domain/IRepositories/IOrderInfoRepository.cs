@@ -12,6 +12,8 @@ namespace StoreManagment.Domain.IRepositories
         Task RegisterOrderAsync(Entities.OrderInfo entity);
         Task UpdateOrderAsync(Entities.OrderInfo entity);
         Task<bool> ChangeOrderStatus(long orderCode,byte status,string reason);
-        
+        Task UpdateOrderData(long orderCode);
+
+
     }
 }

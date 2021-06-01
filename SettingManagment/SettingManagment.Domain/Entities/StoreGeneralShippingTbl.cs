@@ -13,5 +13,6 @@ namespace SettingManagment.Domain.Entities
         [Dapper.Contrib.Extensions.Key]
         public byte Id { get; set; }
         public int ShippingPrice { get; set; }
+        public int MinShippingPrice { get; set; }
     }
 }

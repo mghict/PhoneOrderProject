@@ -30,7 +30,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="ShippingPrice" class="control-label"></label>
-                                <input asp-for="ShippingPrice" class="form-control" type="number" required />
+                                <input asp-for="ShippingPrice" class="form-control" type="number" min="0" max="100" maxlength="3"  required />
                                 <span asp-validation-for="ShippingPrice" class="text-danger"></span>
                             </div>
                             <div class="form-group form-check">

@@ -59,6 +59,8 @@ namespace StoreManagment.Application.OrderInfoFeature.CommandsHandler
                     }
                 }
                 result.WithSuccess("اطلاعات ذخیره شد");
+
+                await UnitOfWork.OrderInfoRepository.UpdateOrderData(request.OrderInfo.OrderCode);
             }
             catch(Exception ex)
             {
