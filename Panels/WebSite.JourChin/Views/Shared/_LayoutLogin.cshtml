@@ -68,6 +68,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script src="~/js/pwa.js"></script>
-    
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 </html>

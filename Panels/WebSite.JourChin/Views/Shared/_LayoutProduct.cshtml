@@ -184,5 +184,7 @@
     <script src="~/js/home/logout.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 </html>

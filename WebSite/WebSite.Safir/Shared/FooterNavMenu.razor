@@ -1,0 +1,32 @@
+﻿<!-- Footer Nav-->
+@inject NavigationManager navManager
+
+<div class="footer-nav-area" id="footerNav">
+    <div class="container h-100 px-0">
+        <div class="suha-footer-nav h-100">
+            <ul class="h-100 d-flex align-items-center justify-content-between pl-0">
+                <li class="active">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> خانه
+                    </NavLink>
+                </li>
+
+                <li>
+                    <NavLink class="nav-link" href="" @onclick="logout">
+                        <span class="lni lni-power-switch" aria-hidden="true"></span> خروج
+                    </NavLink>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private void logout()
+    {
+        
+        navManager.NavigateTo("/acount/login");
+    }
+}
