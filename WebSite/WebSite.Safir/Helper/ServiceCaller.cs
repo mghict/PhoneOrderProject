@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Text;
 using WebSite.Safir.Helper;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace WebSite.Safir.Helper
 {
@@ -16,19 +17,24 @@ namespace WebSite.Safir.Helper
     {
         private string Token { get; set; }
         private HttpClient client { get; set; }
-
+        private UserLoginData _userData { get;}
         private Settings settings { get; set; }
-        //public ServiceCaller(IHttpClientFactory _clientFactory)
-        //{
-        //    client = _clientFactory.CreateClient("ApiGateway");
 
-        //}
-        public ServiceCaller(HttpClient HttpClient,Settings Settings)
+        public ServiceCaller(HttpClient HttpClient,Settings Settings, UserLoginData UserData)
         {
             client = HttpClient;
             settings = Settings;
+            _userData = UserData;
 
+            
             client.BaseAddress =new Uri(settings.ApiGatewayURL);
+
+            if (_userData != null && _userData.UserData != null)
+            {
+                SetToken(_userData.UserData.Token);
+            }
+
+            client.Timeout = TimeSpan.FromMinutes(2);
 
         }
 
@@ -36,31 +42,41 @@ namespace WebSite.Safir.Helper
         {
 
             client.DefaultRequestHeaders.Clear();
+
+            client.DefaultRequestHeaders.Add("Access-Control-Allow-Methods", "*");
+
+            client.DefaultRequestHeaders.Add("Acces-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+
+            client.DefaultRequestHeaders.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Accept, Authortization");
+
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "no-cors");
+            client.DefaultRequestHeaders.Add("Mode", "no-cors");
 
             if (!string.IsNullOrEmpty(Token))
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Token);
             }
 
-            //try
-            //{
-            //    var user = MyContext.HttpContext.Session.Get<Models.UserModel>("User");
-            //    if (user != null)
-            //    {
+            try
+            {
+                var user = _userData.UserData?? new Models.LoginUserModel();
+                if (user != null && user.UserId>0)
+                {
 
-            //        var userName = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(user.PhoneNumber));
+                    var userName = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(user.PhoneNumber));
 
 
-            //        client.DefaultRequestHeaders.TryAddWithoutValidation("Name", userName);
-            //        client.DefaultRequestHeaders.TryAddWithoutValidation("Id", user.UserId.ToString());
-            //        client.DefaultRequestHeaders.TryAddWithoutValidation("IP", user.UserIp.Trim() == "::1" ? "127.0.0.1" : user.UserIp.Trim());
-            //    }
-            //}
-            //catch
-            //{
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("Name", userName);
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("Id", user.UserId.ToString());
+                    client.DefaultRequestHeaders.TryAddWithoutValidation("IP", user.UserIp.Trim() == "::1" ? "127.0.0.1" : user.UserIp.Trim());
+                }
+            }
+            catch
+            {
 
-            //}
+            }
 
         }
 
@@ -78,6 +94,7 @@ namespace WebSite.Safir.Helper
 
             try
             {
+                
 
                 var result = await client.GetAsync(methodName);
                 var respons = await result.Content.ReadAsStringAsync();

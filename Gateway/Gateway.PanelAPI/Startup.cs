@@ -14,6 +14,8 @@ using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
 using Ocelot;
 using Ocelot.Provider.Polly;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.Net.Mime;
 
 namespace Gateway.PanelAPI
 {
@@ -22,6 +24,7 @@ namespace Gateway.PanelAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IConfigurationRoot Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IWebHostEnvironment env)
         {
@@ -46,12 +49,21 @@ namespace Gateway.PanelAPI
                     x.WithDictionaryHandle();
                 });
 
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                builder.AllowAnyOrigin() //WithOrigins("https://localhost:44338")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             //app.UseMiddleware<Middleware.JwtMiddleware>();
+            app.UseCors();
 
             app.UseOcelot().Wait();
 
@@ -59,6 +71,8 @@ namespace Gateway.PanelAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            
 
             app.UseRouting();
 
@@ -69,6 +83,7 @@ namespace Gateway.PanelAPI
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
+
         }
     }
 }

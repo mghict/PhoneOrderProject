@@ -31,11 +31,21 @@ namespace UserAuthorize.API
                     options.JsonSerializerOptions.Converters.Add(new BehsamFramework.Utility.TimeSpanToStringConverter());
                 }); 
             services.ConfigureServices(Configuration);
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                builder.AllowAnyOrigin() //WithOrigins("https://localhost:44338")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors();
+
             app.UseMiddleware<BehsamFramework.Util.Middleware.LoggingMiddleware>();
 
             if (env.IsDevelopment())

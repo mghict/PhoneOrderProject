@@ -21,22 +21,29 @@
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
 
     <!-- Stylesheet-->
-    <link rel="stylesheet" href="style.css">
     <link href="css/loader.css" rel="stylesheet" />
     <!-- Toast-->
     <link href="css/toastr.css" rel="stylesheet" />
     <!-- Sweetalert2 -->
-    <link href="js/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="css/sweetalert2.min.css" rel="stylesheet" />
 
+    <link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
-    <app>Loading...</app>
+    <app id="app">
+        <div class="preloader" id="preloader">
+            <div class="spinner-grow text-danger" role="status">
+                <div class="sr-only">بارگذاری...</div>
+            </div>
+        </div>
+    </app>
 
     <div id="blazor-error-ui">
-        <span class="text-danger">خطا غیرقابل پیشبینی رخ داده است</span>
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
+        <a class="dismiss mr-2 ml-2 ">🗙</a>
+        <span class="text-danger mr-2 ml-2">        خطا غیرقابل پیش بینی رخ داده است </span>
+        <a href="" class="reload"><span class="text-info mr-2 ml-2">"بارگذاری مجدد"</span></a>
+
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>

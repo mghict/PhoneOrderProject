@@ -14,16 +14,31 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.4" PrivateAssets="all" />
 		<PackageReference Include="System.Net.Http.Json" Version="5.0.0-preview.6.20305.6" />-->
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.0-preview.6.20312.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0-preview.6.20312.15" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="5.0.0-preview.6.20312.15" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.0-preview.6.20312.15" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
 		<PackageReference Include="System.Net.Http.Json" Version="5.0.0-preview.6.20305.6" />
 	</ItemGroup>
 
+	
+
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+	
+
+	<ItemGroup>
+	  <Content Update="wwwroot\style.css">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>

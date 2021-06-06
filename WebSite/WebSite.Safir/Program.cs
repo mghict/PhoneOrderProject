@@ -10,6 +10,10 @@ using Microsoft.Extensions.Logging;
 using WebSite.Safir.Helper;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components.Authorization;
+using WebSite.Safir.Services;
+using Microsoft.Extensions.Http;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace WebSite.Safir
 {
@@ -18,35 +22,45 @@ namespace WebSite.Safir
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-            //builder.Services.AddSingleton(async p =>
-            //{
-            //    var httpClient = p.GetRequiredService<HttpClient>();
-            //    var sett= await httpClient.GetJsonAsync<Settings>("appsettings.json")
-            //        .ConfigureAwait(false);
-
-            //    return sett;
-            //});
+            
+            builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton<Settings>();
 
-            builder.Services.AddScoped(p => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+
+
+            builder.Services.AddScoped(_ => new DefaultBrowserOptionsMessageHandler
+            {
+                DefaultBrowserRequestCache = BrowserRequestCache.NoStore,
+                DefaultBrowserRequestMode=BrowserRequestMode.SameOrigin
+            });
+
+            builder.Services.AddHttpClient("Default", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                .AddHttpMessageHandler<DefaultBrowserOptionsMessageHandler>();
+
+            builder.Services.AddScoped<HttpClient>(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Default"));
+
+
+
+
+            builder.Services.AddScoped<UserLoginData>();
             builder.Services.AddScoped<ServiceCaller>();
+            builder.Services.AddScoped<IAlertService, AlertService>();
 
-            builder.RootComponents.Add<App>("app");
 
 
-            //builder.Services.AddTransient(sp =>
-            // var client=new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
-            // return client;
-            //);
-            
+            var host = builder.Build();
 
-            await builder.Build().RunAsync();
+            var accountService = host.Services.GetRequiredService<IAccountService>();
+            await accountService.Initialize();
+
+            await host.RunAsync();
+
         }
 
-       
+
     }
 }

@@ -1,0 +1,221 @@
+﻿
+.btn-fill {
+    position: relative;
+    margin: 1em auto;
+    padding: 1em;
+    text-align: center;
+    text-decoration: none;
+    transition: 1.5s ease all;
+}
+
+.btn-fill-success {
+    position: relative;
+    margin: 1em auto;
+    padding: 1em;
+    border: 2px solid #017528;
+    text-align: center;
+    text-decoration: none;
+    color: #017528;
+    transition: 1.5s ease all;
+}
+
+.btn-fill-danger {
+    position: relative;
+    margin: 1em auto;
+    padding: 1em;
+    border: 2px solid #962137;
+    text-align: center;
+    text-decoration: none;
+    color: #962137;
+    transition: 1.5s ease all;
+}
+
+
+.btn-fill:hover {
+    color: #3d3d3d;
+    transition: .5s ease all;
+}
+
+.btn-fill-success:hover {
+    color: #3d3d3d;
+    background: MediumSpringGreen;
+    transition: .5s ease all;
+}
+
+.btn-fill-danger:hover {
+    color: #edf0ee;
+    transition: .5s ease all;
+}
+
+.btn-fill::before,
+.btn-fill::after,
+.btn-fill span::before,
+.btn-fill span::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    background: MediumSpringGreen;
+    transition: all 1.5s cubic-bezier(1.000, 0.005, 0.000, 1.000);
+}
+
+.btn-fill-success::before,
+.btn-fill-success::after,
+.btn-fill-success span::before,
+.btn-fill-success span::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    background: MediumSpringGreen;
+    transition: all 1.5s cubic-bezier(1.000, 0.005, 0.000, 1.000);
+}
+
+.btn-fill-danger::before,
+.btn-fill-danger::after,
+.btn-fill-danger span::before,
+.btn-fill-danger span::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    background: #962137;
+    transition: all 1.5s cubic-bezier(1.000, 0.005, 0.000, 1.000);
+}
+
+.btn-fill:hover::before,
+.btn-fill:hover::after,
+.btn-fill:hover span::before,
+.btn-fill:hover span::after {
+    transition: all 1.5s cubic-bezier(1.000, 0.005, 0.000, 1.000);
+}
+
+/* ------------- button fill directions ------------- */
+
+/* left to right */
+.btn-fill-ltr::before {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+}
+
+.btn-fill-ltr:hover::before {
+    width: 100%;
+}
+
+/* right to left */
+.btn-fill-rtl::before {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 0%;
+}
+
+.btn-fill-rtl:hover::before {
+    width: 100%;
+}
+
+/* top to bottom */
+.btn-fill-ttb::before {
+    top: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-ttb:hover::before {
+    height: 100%;
+}
+
+/* bottom to top */
+.btn-fill-btt::before {
+    bottom: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-btt:hover::before {
+    height: 100%;
+}
+
+/* shutter */
+.btn-fill-shut::before {
+    top: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-shut:hover::before {
+    height: 100%;
+}
+
+.btn-fill-shut::after {
+    bottom: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-shut:hover::after {
+    height: 100%;
+}
+
+/* out */
+.btn-fill-out::before {
+    top: 50%;
+    left: 50%;
+    height: 0;
+    width: 0;
+}
+
+.btn-fill-out:hover::before {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+/* in */
+.btn-fill-in::before {
+    top: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-in:hover::before {
+    height: 100%;
+}
+
+.btn-fill-in::after {
+    bottom: 0;
+    left: 0;
+    height: 0%;
+    width: 100%;
+}
+
+.btn-fill-in:hover::after {
+    height: 100%;
+}
+
+.btn-fill-in span::before {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+}
+
+.btn-fill-in:hover span::before {
+    width: 100%;
+}
+
+.btn-fill-in span::after {
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 0%;
+}
+
+.btn-fill-in:hover span::after {
+    width: 100%;
+}

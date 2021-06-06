@@ -1,28 +1,97 @@
 ﻿@page "/account/login"
 @layout LoginLayout
 
+@inject IAccountService   AccountService
+@inject IAlertService     AlertService
+@inject NavigationManager NavigationManager
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-sm-9 col-md-7 col-lg-6 col-xl-5">
-            <img class="big-logo" src= "img/brand/logo-white.png" alt="OK Logo">
+            <img class="big-logo" src="img/brand/logo-white.png" alt="OK Logo">
             <!-- Register Form-->
             <div class="register-form mt-5 px-4">
-                <div class="form-group text-left mb-4">
-                    <span>نام کاربری</span>
-                    <label for="username"><i class="lni lni-user text-light"></i></label>
-                    <input class="form-control" id="txtUserName" type="text" placeholder="شماره تلفن همراه">
-                </div>
-                <div class="form-group text-left mb-4">
-                    <span>کلمه عبور</span>
-                    <label for="password"><i class="lni lni-lock text-light"></i></label>
-                    <input class="form-control" id="txtPassword" type="password" placeholder="********************">
-                </div>
-                <a class="btn btn-success btn-lg w-100" href="#" onclick="login()" id="btnLogin">ورود</a>
+                <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+
+                    <div class="form-group text-left mb-4">
+                        <span>نام کاربری</span>
+                        <label for="username"><i class="lni lni-user text-dark"></i></label>
+                        <input class="form-control" id="txtUserName" type="text" placeholder="شماره تلفن همراه" @bind-value="model.UserName">
+                    </div>
+                    <div class="form-group text-left mb-4">
+                        <span>کلمه عبور</span>
+                        <label for="password"><i class="lni lni-lock text-dark"></i></label>
+                        <input class="form-control" id="txtPassword" type="password" placeholder="***********" @bind-value="model.Password">
+                    </div>
+                    <button class="btn btn-success btn-lg w-100" type="submit" disabled="@loading">
+                        ورود
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                    </button>
+                </EditForm>
             </div>
         </div>
     </div>
 </div>
 
 @code {
+
+    private Models.UserPassModel model;
+    private bool loading;
+    private bool hasError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = new UserPassModel();
+        hasError = false;
+        loading = false;
+    }
+
+    private async void OnValidSubmit()
+    {
+        // reset alerts on submit
+        AlertService.Clear();
+
+        loading = true;
+
+        try
+        {
+            var result=await AccountService.Login(model.UserName.ToLong(),model.Password,5);
+            if (result != null && result.IsSuccess)
+            {
+                var returnUrl = NavigationManager.QueryString("returnUrl") ?? "";
+                NavigationManager.NavigateTo(returnUrl);
+            }
+            else
+            {
+                if(result==null)
+                {
+                    result = new FluentResult();
+                    result.WithError("ورود با مشکل مواجه شده است");
+                }
+
+                for (int i = 0; i < result.Errors.Count; i++)
+                {
+                    var error = result.Errors[i];
+                    AlertService.Error(error.Message);
+                    hasError = true;
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            AlertService.Error(ex.Message);
+            StateHasChanged();
+            hasError = true;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
 
 }

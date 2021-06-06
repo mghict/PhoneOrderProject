@@ -1,23 +1,9 @@
 ﻿@page "/"
-@inject ServiceCaller service
+
 <h1>سفیر</h1>
 
 به برنامه سفیر خوش آمدید
 
-<button class="btn btn-success" @onclick="setTiken"> کلیک کنید </button>
-@*<SurveyPrompt Title="How is Blazor working for you?" />*@
 @code{ 
-
-    protected override void OnInitialized()
-    {
-        System.Console.WriteLine("Initialize");
-
-    }
-
-    protected void setTiken()
-    {
-        service.SetToken("1234");
-        System.Console.WriteLine("setTiken");
-    }
 
 }

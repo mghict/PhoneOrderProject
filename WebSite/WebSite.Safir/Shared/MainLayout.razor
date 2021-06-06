@@ -1,15 +1,34 @@
 ﻿@inherits LayoutComponentBase
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
 
+@if (LoggedIn)
+{
 <div>
-    <FooterNavMenu/>
+    <FooterNavMenu />
+</div>
+}
+
+<div class="app-container @(LoggedIn ? "bg-light" : "")">
+    <Alert />
+    @Body
 </div>
 
-<div class="main">
-    @*<div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-    </div>*@
+@code {
+    public bool LoggedIn;
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+    protected override void OnInitialized()
+    {
+        // redirect to home if already logged in
+        if (AccountService.User == null || AccountService.User.UserId<=0)
+        {
+            LoggedIn = false;
+            NavigationManager.NavigateTo("/account/login");
+        }
+        else
+        {
+            LoggedIn = true;
+            NavigationManager.NavigateTo("");
+        }
+    }
+}
